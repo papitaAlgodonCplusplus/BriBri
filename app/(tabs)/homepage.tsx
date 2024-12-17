@@ -1,9 +1,17 @@
 import React from 'react';
 import { StyleSheet, View, Image, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
 
-const HomePage = () => {
+import { NavigationProp } from '@react-navigation/native';
+
+const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const handlePress = () => {
-    Alert.alert('Button Pressed!', 'You clicked the button.');
+    navigation.navigate('LevelMapping');
+  };
+
+  const handleInstrucciones = () => {
+  };
+
+  const handleCreditos = () => {
   };
 
   return (
@@ -14,7 +22,7 @@ const HomePage = () => {
         resizeMode="cover"
       />
 
-      <TouchableOpacity onPress={handlePress} style={styles.button}>
+      <TouchableOpacity onPress={handlePress} style={styles.buttonImageContainer}>
         <Image
           source={require('@/assets/images/jugar.png')}
           style={styles.buttonImage}
@@ -26,14 +34,14 @@ const HomePage = () => {
         style={styles.buttonImageBottom}
       />
 
-      <TouchableOpacity onPress={handlePress} style={styles.button}>
+      <TouchableOpacity onPress={handleInstrucciones} style={styles.button}>
         <Image
           source={require('@/assets/images/instrucciones.png')}
           style={styles.instrucciones}
         />
       </TouchableOpacity> 
 
-      <TouchableOpacity onPress={handlePress} style={styles.button}>
+      <TouchableOpacity onPress={handleCreditos} style={styles.button}>
         <Image
           source={require('@/assets/images/creditos.png')}
           style={styles.creditos}
@@ -57,15 +65,22 @@ const styles = StyleSheet.create({
     }],
     resizeMode: 'cover',
   },
+  buttonImageContainer: {
+    position: 'absolute',
+    top: 100,
+    left: 10,
+    width: 450,
+    height: 170,
+  },
   button: {
     position: 'absolute',
-    left: 40,  
+    left: 40,
     top: '6%',
   },
   buttonImage: {
-    width: 350,
-    height: 350,
-    resizeMode: 'contain',
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
   buttonImageBottom: {
     width: '20%',

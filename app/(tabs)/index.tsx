@@ -1,19 +1,35 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import HomePage from '@/app/(tabs)/homepage';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomePage from './homepage';
+import LevelMapping from './level_mapping';
+import Level1 from '../levels/1/level_1';
+import Guide1 from '../levels/1/guide_1';
 
-const App = () => {
-    return (
-        <View style={styles.container}>
-        <HomePage />
-        </View>
-    );
+const Stack = createStackNavigator();
+
+export default function App() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="HomePage"
+        component={HomePage}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="LevelMapping"
+        component={LevelMapping}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Guide1"
+        component={Guide1}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Level1"
+        component={Level1}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
-
-export default App;
