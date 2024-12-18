@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const unlockNextLevel = async (nextLevelId) => {
     try {
       const currentProgress = await AsyncStorage.getItem('unlockedLevels');
@@ -6,10 +8,10 @@ const unlockNextLevel = async (nextLevelId) => {
       if (!levels.includes(nextLevelId)) {
         levels.push(nextLevelId);
         await AsyncStorage.setItem('unlockedLevels', JSON.stringify(levels));
-        setUnlockedLevels(levels);
       }
     } catch (error) {
       console.error('Failed to unlock next level:', error);
     }
   };
   
+  export { unlockNextLevel };

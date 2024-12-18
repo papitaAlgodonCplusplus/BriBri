@@ -16,6 +16,7 @@ import { Audio } from 'expo-av';
 import Draggable from 'react-native-draggable';
 import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../../misc/BackButton';
+import NextButton from '../../misc/NextButton';
 
 const bgImage = require('@/assets/images/lv_1_bg.png');
 
@@ -60,6 +61,7 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const [draggables, setDraggables] = useState(shuffleArray([...draggableElements]));
     const [dropZonesData] = useState(shuffleArray([...draggableElements]));
     const dropZones = useRef<Record<number, LayoutRectangle>>({});
+    const [canContinue, setCanContinue] = useState(false);
 
     // Play sound function
     const playSound = async (audio: any) => {
@@ -82,6 +84,10 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
             setScore((prevScore) => prevScore + 1);
             playSound(item.audio);
             setDraggables((prev: typeof draggableElements) => prev.filter((element) => element.id !== item.id));
+
+            if (score === 3) {
+                setCanContinue(true);
+            }
         } else {
             const neededX = dropZone.x - gestureState.moveX;
             const neededY = dropZone.y - gestureState.moveY;
@@ -95,9 +101,12 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 {/* Back Button */}
                 <BackButton navigation={navigation} />
 
+                {/* Next Button */}
+                {canContinue && <NextButton navigation={navigation} nextName="Level1Listening" />}
+
                 {/* Score Display */}
                 <View style={styles.scoreContainer}>
-                    <Text style={styles.scoreText}>Score: {score}</Text>
+                    <Text style={styles.scoreText}>Puntaje: {score}</Text>
                 </View>
 
                 {/* Draggable Elements in Green Containers */}
@@ -166,7 +175,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         marginVertical: 20,
-        marginTop: 100,
+        marginTop: 80,
     },
     greenContainer: {
         width: 70,
@@ -180,12 +189,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
     },
     whiteContainer: {
-        width: 60,
-        height: 60,
+        width: 80,
+        height: 80,
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
         borderColor: 'black',
         borderWidth: 2,
-        borderRadius: 30, // Change to circle
+        borderRadius: 40, // Change to circle
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 10,
@@ -199,8 +208,8 @@ const styles = StyleSheet.create({
         }],
     },
     wordImage: {
-        width: 80,
-        height: 80,
+        width: 120,
+        height: 120,
         resizeMode: 'contain',
     },
 });
