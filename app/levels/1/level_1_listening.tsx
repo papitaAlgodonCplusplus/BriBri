@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ImageBackground, View, Image, TouchableOpacity, StyleSheet, Text, Alert } from 'react-native';
 import { Audio } from 'expo-av';
-import { unlockNextLevel } from '@/app/backend/progress';
 import NextButton from '@/app/misc/NextButton';
 import BackButton from '@/app/misc/BackButton';
 
@@ -72,7 +71,6 @@ const Level1Listening: React.FC<Level1ListeningProps> = ({ navigation }) => {
             setDisabledIds([]);
 
             if (currentIndex === shuffledAudios.length - 1) {
-                unlockNextLevel(2);
                 setCanContinue(true);
             } else {
                 setCurrentIndex(currentIndex + 1);

@@ -18,41 +18,37 @@ import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../../misc/BackButton';
 import NextButton from '../../misc/NextButton';
 
-const bgImage = require('@/assets/images/lv_1_bg.png');
+const bgImage = require('@/assets/images/guide1.png');
 
 // Draggable elements data
 const draggableElements = [
     {
         id: 1,
-        image: require('@/assets/images/hamaca.png'),
-        wordImage: require('@/assets/images/nolo_nkuo.png'),
+        image: require('@/assets/images/nolo_nkuo.png'),
         audio: require('@/assets/audios/nolo_nkuo_caminito_de_la_casa.wav'),
         label: 'Hamaca',
     },
     {
         id: 2,
-        image: require('@/assets/images/techo_frente.png'),
-        wordImage: require('@/assets/images/nolo_kibi.png'),
+        image: require('@/assets/images/nolo_kibi.png'),
         audio: require('@/assets/audios/nolo_kibi_camino_antes_de_la_casa.wav'),
         label: 'Techo Frente',
     },
     {
         id: 3,
-        image: require('@/assets/images/camino.png'),
-        wordImage: require('@/assets/images/kapo.png'),
+        image: require('@/assets/images/kapo.png'),
         audio: require('@/assets/audios/kapo_hamaca.wav'),
         label: 'Camino',
     },
     {
         id: 4,
-        image: require('@/assets/images/entrada.png'),
-        wordImage: require('@/assets/images/ale.png'),
+        image: require('@/assets/images/ale.png'),
         audio: require('@/assets/audios/ale_alero.wav'),
         label: 'Entrada',
     },
 ];
 
-const shuffleArray = (array: any[]) => {
+const shuffleArray = (array: any) => {
     return array.sort(() => Math.random() - 0.5);
 };
 
@@ -70,34 +66,30 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
     };
 
     // Handle drop event
-    const handleDrop = (item: { id: any; image?: any; wordImage?: any; audio: any; label?: string; }, gestureState: PanResponderGestureState) => {
+    const handleDrop = (item: any, gestureState: any) => {
         const dropZone = dropZones.current[item.id];
-        const DRAGGABLE_SIZE = 100; // Size of the draggable element
+        const DRAGGABLE_SIZE = 120;
 
         if (
             dropZone &&
-            gestureState.moveX + DRAGGABLE_SIZE / 2 >= dropZone.x - 25 &&
-            gestureState.moveX - DRAGGABLE_SIZE / 2 <= dropZone.x - 25 + dropZone.width &&
-            gestureState.moveY + DRAGGABLE_SIZE / 2 >= dropZone.y - 45 &&
-            gestureState.moveY - DRAGGABLE_SIZE / 2 <= dropZone.y - 45 + dropZone.height
+            gestureState.moveX + DRAGGABLE_SIZE / 2 >= dropZone.x &&
+            gestureState.moveX - DRAGGABLE_SIZE / 2 <= dropZone.x + dropZone.width &&
+            gestureState.moveY + DRAGGABLE_SIZE / 2 >= dropZone.y &&
+            gestureState.moveY - DRAGGABLE_SIZE / 2 <= dropZone.y + dropZone.height
         ) {
             setScore((prevScore) => prevScore + 1);
             playSound(item.audio);
-            setDraggables((prev: typeof draggableElements) => prev.filter((element) => element.id !== item.id));
+            setDraggables((prev: any) => prev.filter((draggable: any) => draggable.id !== item.id));
 
             if (score === 3) {
                 setCanContinue(true);
             }
-        } else {
-            const neededX = dropZone.x - gestureState.moveX;
-            const neededY = dropZone.y - gestureState.moveY;
-            console.log(`Missed Drop Zone. Needed +X: ${neededX.toFixed(2)}, +Y: ${neededY.toFixed(2)}`);
         }
     };
 
     return (
-        <View style={{ flex: 1, backgroundColor: 'black' }}>
-            <ImageBackground source={bgImage} style={styles.container} imageStyle={{ opacity: 0.5 }}>
+        <View style={{ flex: 1 }}>
+            <ImageBackground source={bgImage} style={styles.container}>
                 {/* Back Button */}
                 <BackButton navigation={navigation} />
 
@@ -109,10 +101,10 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                     <Text style={styles.scoreText}>Puntaje: {score}</Text>
                 </View>
 
-                {/* Draggable Elements in Green Containers */}
-                <View style={styles.horizontalContainer}>
-                    {draggables.map((item: typeof draggableElements[0]) => (
-                        <View key={item.id} style={styles.greenContainer}>
+                {/* Draggable Elements at the Top */}
+                <View style={styles.draggableContainer}>
+                    {draggables.map((item: { id: number; image: any }) => (
+                        <View key={item.id} style={styles.whiteContainer}>
                             <Draggable
                                 x={0}
                                 y={0}
@@ -125,12 +117,12 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                     ))}
                 </View>
 
-                {/* Word Elements in White Containers (Drop Zones) */}
-                <View style={styles.horizontalContainer}>
-                    {dropZonesData.map((item: typeof draggableElements[0]) => (
+                {/* Drop Zones */}
+                <View style={styles.dropZonesContainer}>
+                    {dropZonesData.map((item: { id: number; image: any; audio: any; label: string }) => (
                         <View
                             key={item.id}
-                            style={styles.whiteContainer}
+                            style={styles.greenContainer}
                             ref={(ref) => {
                                 if (ref) {
                                     ref.measure((_, __, width, height, pageX, pageY) => {
@@ -138,9 +130,7 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                                     });
                                 }
                             }}
-                        >
-                            <Image source={item.wordImage} style={styles.wordImage} />
-                        </View>
+                        />
                     ))}
                 </View>
             </ImageBackground>
@@ -148,17 +138,15 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
     );
 };
 
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 10,
     },
     scoreContainer: {
         position: 'absolute',
-        top: 50,
+        bottom: 20,
         right: 20,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         padding: 10,
@@ -169,48 +157,41 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
     },
-    horizontalContainer: {
+    draggableContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         width: '100%',
-        marginVertical: 20,
-        marginTop: 80,
+        marginTop: 40,
+    },
+    dropZonesContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: '100%',
+        marginTop: 20,
     },
     greenContainer: {
-        width: 70,
-        height: 70,
-        backgroundColor: 'rgba(0, 255, 0, 0.3)',
-        borderColor: 'green',
-        borderWidth: 2,
-        borderRadius: 35, // Change to circle
+        width: 120,
+        height: 120,
+        borderRadius: 60,
+        backgroundColor: 'green',
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 10,
     },
     whiteContainer: {
-        width: 80,
-        height: 80,
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
-        borderColor: 'black',
-        borderWidth: 2,
-        borderRadius: 40, // Change to circle
+        width: 120,
+        height: 120,
+        borderRadius: 60,
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 10,
     },
     draggableImage: {
-        width: 60,
-        height: 60,
-        resizeMode: 'contain',
-        transform: [{
-            translateX: 3,
-        }],
-    },
-    wordImage: {
-        width: 120,
-        height: 120,
-        resizeMode: 'contain',
+        width: 180,
+        height:  50,
+        resizeMode: 'cover'
     },
 });
 

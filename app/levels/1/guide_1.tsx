@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { ImageBackground, StyleSheet, View, Image, Text, TouchableOpacity, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ImageBackground, StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from '@/app/misc/BackButton';
 import NextButton from '@/app/misc/NextButton';
 import { Audio } from 'expo-av';
@@ -8,7 +9,16 @@ import { NavigationProp } from '@react-navigation/native';
 const Guide = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const bgImage = require('@/assets/images/guide1.png');
 
+    const [mode, setMode] = useState<'read' | 'listen' | null>(null);
     const [imagesEnabled, setImagesEnabled] = useState(true);
+
+    useEffect(() => {
+        const fetchMode = async () => {
+            const storedMode = await AsyncStorage.getItem('mode');
+            setMode(storedMode === 'read' || storedMode === 'listen' ? storedMode : 'listen');
+        };
+        fetchMode();
+    }, []);
 
     interface GuideElement {
         id: number;
@@ -19,8 +29,10 @@ const Guide = ({ navigation }: { navigation: NavigationProp<any> }) => {
     }
 
     const playSound = async (audio: any): Promise<void> => {
-        const { sound } = await Audio.Sound.createAsync(audio);
-        await sound.playAsync();
+        if (mode === 'listen') {
+            const { sound } = await Audio.Sound.createAsync(audio);
+            await sound.playAsync();
+        }
     };
 
     const toggleImages = () => {
@@ -34,16 +46,35 @@ const Guide = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 <NextButton navigation={navigation} nextName="Level1" />
                 <Text style={styles.label}>Da tab sobre algun objeto para escuchar su pronunciación</Text>
 
-                <TouchableOpacity onPress={toggleImages} style={{ zIndex: 2, padding: 10, backgroundColor: 'white', borderRadius: 5, bottom: 15, left: 15, position: 'absolute', width: 180, alignItems: 'center', opacity: 1.0 }}>
+                <TouchableOpacity
+                    onPress={toggleImages}
+                    style={{
+                        zIndex: 2,
+                        padding: 10,
+                        backgroundColor: 'white',
+                        borderRadius: 5,
+                        bottom: 15,
+                        left: 15,
+                        position: 'absolute',
+                        width: 180,
+                        alignItems: 'center',
+                        opacity: 1.0,
+                    }}
+                >
                     <Text>{imagesEnabled ? "Desactivar Referencias" : "Activar Referencias"}</Text>
                 </TouchableOpacity>
 
                 {guide_elements.map((element) => (
                     <View key={element.id} style={styles[`guideElement${element.id}`]}>
-                        <TouchableOpacity onPress={() => playSound(element.audio)} disabled={!imagesEnabled}>
+                        <TouchableOpacity
+                            onPress={() => playSound(element.audio)}
+                            disabled={mode === 'read' || !imagesEnabled}
+                        >
                             {imagesEnabled && <Image source={element.image} style={styles[`image${element.id}`]} />}
                         </TouchableOpacity>
-                        {imagesEnabled && <Image source={element.wordImage} style={styles[`wordImage${element.id}`]} />}
+                        {mode === 'read' && imagesEnabled && (
+                            <Image source={element.wordImage} style={styles[`wordImage${element.id}`]} />
+                        )}
                     </View>
                 ))}
             </ImageBackground>

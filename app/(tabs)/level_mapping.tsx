@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp } from '@react-navigation/native';
@@ -6,33 +6,27 @@ import BackButton from '../misc/BackButton';
 import { LEVELS } from '../misc/constants';
 
 const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
-  const [unlockedLevels, setUnlockedLevels] = useState([1]);
+  const [buttonClicked, setButtonClicked] = useState(false);
 
-  useEffect(() => {
-    const loadProgress = async () => {
-      try {
-        const progress = await AsyncStorage.getItem('unlockedLevels');
-        if (progress) {
-          setUnlockedLevels(JSON.parse(progress));
-        }
-      } catch (error) {
-        console.error('Failed to load progress:', error);
-      }
-    };
-
-    loadProgress();
-  }, []);
+  const handleButtonClick = async (button: string) => {
+    try {
+      const mode = button === 'button1' ? 'listen' : 'read';
+      await AsyncStorage.setItem('mode', mode);
+      console.log(`${button} clicked, ${mode} stored in AsyncStorage`);
+      setButtonClicked(true);
+    } catch (error) {
+      console.error('Failed to store mode in AsyncStorage:', error);
+    }
+  };
 
   const handleLevelPress = (levelId: number) => {
-    if (unlockedLevels.includes(levelId)) {
-      switch (levelId) {
-        case 1:
-          navigation.navigate('Guide1');
-          break;
-        default:
-          console.error('Level not found');
-          break;
-      }
+    switch (levelId) {
+      case 1:
+        navigation.navigate('Guide1');
+        break;
+      default:
+        console.error('Level not found');
+        break;
     }
   };
 
@@ -43,22 +37,28 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
       {/* Back Button */}
       <BackButton navigation={navigation} />
 
-      <ScrollView horizontal contentContainerStyle={styles.levelContainer}>
-        {LEVELS && LEVELS.map((level) => (
-          <TouchableOpacity
-            key={level.id}
-            onPress={() => handleLevelPress(level.id)}
-            disabled={!unlockedLevels.includes(level.id)}
-            style={styles.levelButton}
-          >
-            <Image
-              source={level.image}
-              style={[styles.levelImage, !unlockedLevels.includes(level.id) && styles.lockedLevel]}
-            />
-            {!unlockedLevels.includes(level.id) && <Text style={styles.lockText}>Bloqueado</Text>}
+      {!buttonClicked ? (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.actionButton} onPress={() => handleButtonClick('button1')}>
+            <Text style={styles.buttonText}>Button 1</Text>
           </TouchableOpacity>
-        ))}
-      </ScrollView>
+          <TouchableOpacity style={styles.actionButton} onPress={() => handleButtonClick('button2')}>
+            <Text style={styles.buttonText}>Button 2</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <ScrollView horizontal contentContainerStyle={styles.levelContainer}>
+          {LEVELS && LEVELS.map((level) => (
+            <TouchableOpacity
+              key={level.id}
+              onPress={() => handleLevelPress(level.id)}
+              style={styles.levelButton}
+            >
+              <Image source={level.image} style={styles.levelImage} />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -74,6 +74,24 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  actionButton: {
+    marginHorizontal: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#4CAF50',
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
   levelContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -87,13 +105,6 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginBottom: 5,
-  },
-  lockedLevel: {
-    opacity: 0.5,
-  },
-  lockText: {
-    color: 'rgb(49, 49, 49)',
-    fontWeight: 'bold',
   },
 });
 
