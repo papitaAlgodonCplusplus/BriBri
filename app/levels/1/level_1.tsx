@@ -24,32 +24,32 @@ const bgImage = require('@/assets/images/guide1.png');
 const draggableElements = [
     {
         id: 1,
-        image: require('@/assets/images/nolo_nkuo.png'),
-        audio: require('@/assets/audios/nolo_nkuo_caminito_de_la_casa.wav'),
-        label: 'Hamaca',
-    },
-    {
-        id: 2,
-        image: require('@/assets/images/nolo_kibi.png'),
-        audio: require('@/assets/audios/nolo_kibi_camino_antes_de_la_casa.wav'),
-        label: 'Techo Frente',
-    },
-    {
-        id: 3,
         image: require('@/assets/images/kapo.png'),
         audio: require('@/assets/audios/kapo_hamaca.wav'),
         label: 'Camino',
     },
     {
-        id: 4,
+        id: 2,
+        image: require('@/assets/images/nolo_nkuo.png'),
+        audio: require('@/assets/audios/nolo_nkuo_caminito_de_la_casa.wav'),
+        label: 'Hamaca',
+    },
+    {
+        id: 3,
         image: require('@/assets/images/ale.png'),
         audio: require('@/assets/audios/ale_alero.wav'),
         label: 'Entrada',
     },
+    {
+        id: 4,
+        image: require('@/assets/images/nolo_kibi.png'),
+        audio: require('@/assets/audios/nolo_kibi_camino_antes_de_la_casa.wav'),
+        label: 'Techo Frente',
+    },
 ];
 
 const shuffleArray = (array: any) => {
-    return array.sort(() => Math.random() - 0.5);
+    return array
 };
 
 const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
@@ -68,14 +68,14 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
     // Handle drop event
     const handleDrop = (item: any, gestureState: any) => {
         const dropZone = dropZones.current[item.id];
-        const DRAGGABLE_SIZE = 120;
+        const DRAGGABLE_SIZE = 30;
 
         if (
             dropZone &&
-            gestureState.moveX + DRAGGABLE_SIZE / 2 >= dropZone.x &&
-            gestureState.moveX - DRAGGABLE_SIZE / 2 <= dropZone.x + dropZone.width &&
-            gestureState.moveY + DRAGGABLE_SIZE / 2 >= dropZone.y &&
-            gestureState.moveY - DRAGGABLE_SIZE / 2 <= dropZone.y + dropZone.height
+            gestureState.moveX + DRAGGABLE_SIZE >= dropZone.x &&
+            gestureState.moveX - DRAGGABLE_SIZE <= dropZone.x + dropZone.width &&
+            gestureState.moveY + DRAGGABLE_SIZE >= dropZone.y &&
+            gestureState.moveY - DRAGGABLE_SIZE <= dropZone.y + dropZone.height
         ) {
             setScore((prevScore) => prevScore + 1);
             playSound(item.audio);
@@ -119,10 +119,10 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
                 {/* Drop Zones */}
                 <View style={styles.dropZonesContainer}>
-                    {dropZonesData.map((item: { id: number; image: any; audio: any; label: string }) => (
+                    {dropZonesData.map((item: { id: number; image: any; audio: any; label: string }, index: number) => (
                         <View
                             key={item.id}
-                            style={styles.greenContainer}
+                            style={dropZoneStyles[`greenContainer${index + 1}`]}
                             ref={(ref) => {
                                 if (ref) {
                                     ref.measure((_, __, width, height, pageX, pageY) => {
@@ -138,6 +138,58 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
     );
 };
 
+const dropZoneStyles = StyleSheet.create({
+    greenContainer1: {
+        width: 230,
+        height: 90,
+        borderRadius: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 10,
+        left: 580,
+        top: -40,
+        borderColor: 'red',
+        borderWidth: 4,
+    },
+    greenContainer2: {
+        width: 400,
+        height: 80,
+        borderRadius: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 10,
+        left: -280,
+        top: 100,
+        transform: [{ rotate: '20deg' }],
+        borderColor: 'orange',
+        borderWidth: 4,
+    },
+    greenContainer3: {
+        width: 120,
+        height: 50,
+        borderRadius: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 10,
+        left: -430,
+        top: 65,
+        borderColor: 'yellow',
+        borderWidth: 4,
+    },
+    greenContainer4: {
+        width: 160,
+        height: 120,
+        borderRadius: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 10,
+        left: -430,
+        top: -180,
+        borderColor: 'green',
+        borderWidth: 4,
+    },
+} as Record<string, any>);
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -146,7 +198,7 @@ const styles = StyleSheet.create({
     },
     scoreContainer: {
         position: 'absolute',
-        bottom: 20,
+        top: 20,
         right: 20,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         padding: 10,
@@ -171,27 +223,19 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 20,
     },
-    greenContainer: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        backgroundColor: 'green',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: 10,
-    },
-    whiteContainer: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: 10,
-    },
     draggableImage: {
         width: 180,
         height:  50,
         resizeMode: 'cover'
+    },
+    whiteContainer: {
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        borderRadius: 10,
+        padding: 10,
+        width: 200,
+        height: 50,
+        top: 220,
+        zIndex: 2,
     },
 });
 

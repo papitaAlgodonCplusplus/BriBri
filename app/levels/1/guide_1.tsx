@@ -41,10 +41,9 @@ const Guide = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <ImageBackground source={bgImage} style={styles.container} imageStyle={{ opacity: 0.7 }}>
+            <ImageBackground source={bgImage} style={styles.container} imageStyle={{ opacity: imagesEnabled ? 0.7 : 1.0 }}>
                 <BackButton navigation={navigation} />
                 <NextButton navigation={navigation} nextName="Level1" />
-                <Text style={styles.label}>Da tab sobre algun objeto para escuchar su pronunciación</Text>
 
                 <TouchableOpacity
                     onPress={toggleImages}
@@ -86,8 +85,8 @@ const guide_elements = [
     {
         id: 1,
         image: require('@/assets/images/hamaca_ref.png'),
-        wordImage: require('@/assets/images/nolo_nkuo.png'),
-        audio: require('@/assets/audios/nolo_nkuo_caminito_de_la_casa.wav'),
+        wordImage: require('@/assets/images/kapo.png'),
+        audio: require('@/assets/audios/kapo_hamaca.wav'),
         label: 'Hamaca',
     },
     {
@@ -100,8 +99,8 @@ const guide_elements = [
     {
         id: 3,
         image: require('@/assets/images/camino_ref.png'),
-        wordImage: require('@/assets/images/kapo.png'),
-        audio: require('@/assets/audios/kapo_hamaca.wav'),
+        wordImage: require('@/assets/images/nolo_nkuo.png'),
+        audio: require('@/assets/audios/nolo_nkuo_caminito_de_la_casa.wav'),
         label: 'Camino',
     },
     {
@@ -193,8 +192,8 @@ const styles: { [key: string]: any } = StyleSheet.create({
         height: 80,
         resizeMode: 'contain',
         position: 'absolute',
-        top: 120,
-        left: 240,
+        top: 115,
+        left: 200,
         transform: [{ rotate: '10deg' }],
     },
     wordImage4: {
