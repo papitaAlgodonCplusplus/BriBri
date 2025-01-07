@@ -24,6 +24,9 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
       case 1:
         navigation.navigate('Guide1');
         break;
+      case 2:
+        navigation.navigate('Guide2');
+        break;
       default:
         console.error('Level not found');
         break;
@@ -40,10 +43,10 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
       {!buttonClicked ? (
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.actionButton} onPress={() => handleButtonClick('button1')}>
-            <Text style={styles.buttonText}>Button 1</Text>
+            <Text style={styles.buttonText}>Pronunciación</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton} onPress={() => handleButtonClick('button2')}>
-            <Text style={styles.buttonText}>Button 2</Text>
+            <Text style={styles.buttonText}>Escritura</Text>
           </TouchableOpacity>
         </View>
       ) : (
