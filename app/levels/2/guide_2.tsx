@@ -20,14 +20,6 @@ const Guide = ({ navigation }: { navigation: NavigationProp<any> }) => {
         fetchMode();
     }, []);
 
-    interface GuideElement {
-        id: number;
-        image: any;
-        wordImage: any;
-        audio: any;
-        label: string;
-    }
-
     const playSound = async (audio: any): Promise<void> => {
         if (mode === 'listen') {
             const { sound } = await Audio.Sound.createAsync(audio);
@@ -43,7 +35,7 @@ const Guide = ({ navigation }: { navigation: NavigationProp<any> }) => {
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <ImageBackground source={bgImage} style={styles.container} imageStyle={{ opacity: imagesEnabled ? 0.6 : 1.0 }}>
                 <BackButton navigation={navigation} />
-                <NextButton navigation={navigation} nextName="Level1" />
+                <NextButton navigation={navigation} nextName="Level2" />
 
                 <TouchableOpacity
                     onPress={toggleImages}
