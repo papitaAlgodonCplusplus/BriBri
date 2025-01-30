@@ -14,6 +14,8 @@ import Level5 from '../levels/5/level_5';
 import Guide5 from '../levels/5/guide_5';
 import Guide6 from '../levels/6/guide_6';
 import Level6 from '../levels/6/level_6';
+import Guide7 from '../levels/7/guide_7';
+import Level7 from '../levels/7/level_7';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -87,6 +89,16 @@ export default function App() {
       <Stack.Screen
         name="Level6"
         component={Level6}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Guide7"
+        component={Guide7}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Level7"
+        component={Level7}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -39,6 +39,9 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
       case 6:
         navigation.navigate('Guide6');
         break;
+      case 7:
+        navigation.navigate('Guide7');
+        break;
       default:
         console.error('Level not found');
         break;

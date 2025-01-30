@@ -48,7 +48,7 @@ const Guide = ({ navigation }: { navigation: NavigationProp<any> }) => {
                         <Text>{imagesEnabled ? "Desactivar Referencias" : "Activar Referencias"}</Text>
                     </TouchableOpacity>
                 </ImageBackground>
-                <NextButton navigation={navigation} nextName="Level3" />
+                <NextButton navigation={navigation} nextName="Level4" />
             </ImageBackground>
         </View>
     );
