@@ -7,6 +7,16 @@ import { LEVELS } from '../misc/constants';
 
 const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const [buttonClicked, setButtonClicked] = useState(false);
+  const [mode, setMode] = useState<string | null>(null);
+
+
+  React.useEffect(() => {
+    const fetchMode = async () => {
+      const storedMode = await AsyncStorage.getItem('mode');
+      setMode(storedMode);
+    };
+    fetchMode();
+  }, [buttonClicked]);
 
   const handleButtonClick = async (button: string) => {
     try {
@@ -72,7 +82,7 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
               onPress={() => handleLevelPress(level.id)}
               style={styles.levelButton}
             >
-              <Image source={level.image} style={styles.levelImage} />
+              <Image source={buttonClicked && mode === 'read' ? level.image2 : level.image} style={styles.levelImage} />
             </TouchableOpacity>
           ))}
         </ScrollView>

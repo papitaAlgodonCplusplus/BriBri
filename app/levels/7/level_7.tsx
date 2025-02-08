@@ -84,9 +84,7 @@ const Level7 = ({ navigation }: { navigation: NavigationProp<any> }) => {
             </ImageBackground>
             <BackButton navigation={navigation} />
             {canContinue && <NextButton navigation={navigation} nextName="LevelMapping" />}
-            <View style={styles.scoreContainer}>
-                <Text style={styles.scoreText}>Puntaje: {score}</Text>
-            </View>
+    
 
             <View style={styles.dropZonesContainer}>
                 {dropZonesData.map((item) => (

@@ -2,190 +2,210 @@ import { LogBox } from 'react-native';
 LogBox.ignoreLogs([
     'Draggable: Support for defaultProps will be removed'
 ]);
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     ImageBackground,
     Image,
-    Text,
     StyleSheet,
-    LayoutRectangle,
-    PanResponderGestureState,
+    TouchableOpacity,
 } from 'react-native';
 import { Audio } from 'expo-av';
-import Draggable from 'react-native-draggable';
 import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../../misc/BackButton';
 import NextButton from '../../misc/NextButton';
 
-const bgImage = require('@/assets/images/guide1.png');
+const bgImage = require('@/assets/images/guia1juego.png');
 
-// Draggable elements data
+// Updated draggable elements with a "name" property for matching.
 const draggableElements = [
     {
-        id: 1,
-        image: require('@/assets/images/kapo.png'),
-        audio: require('@/assets/audios/kapo_hamaca.wav'),
-        label: 'Camino',
-    },
-    {
         id: 2,
-        image: require('@/assets/images/nolo_nkuo.png'),
-        audio: require('@/assets/audios/nolo_nkuo_caminito_de_la_casa.wav'),
-        label: 'Hamaca',
+        name: 'nolo kibi', // should match the drop zone that expects "nolo kibi"
+        image: require('@/assets/images/nolo_kibi.png'),
+        audio: require('@/assets/audios/nolo_kibi_camino_antes_de_la_casa.wav'),
     },
     {
         id: 3,
+        name: 'ale', // drop zone expects "ale"
         image: require('@/assets/images/ale.png'),
         audio: require('@/assets/audios/ale_alero.wav'),
-        label: 'Entrada',
+    },
+    {
+        id: 1,
+        name: 'nolo nkuo', // drop zone expects "nolo nkuo"
+        image: require('@/assets/images/nolo_nkuo.png'),
+        audio: require('@/assets/audios/nolo_nkuo_caminito_de_la_casa.wav'),
     },
     {
         id: 4,
-        image: require('@/assets/images/nolo_kibi.png'),
-        audio: require('@/assets/audios/nolo_kibi_camino_antes_de_la_casa.wav'),
-        label: 'Techo Frente',
+        name: 'kapo', // drop zone expects "kapo"
+        image: require('@/assets/images/kapo.png'),
+        audio: require('@/assets/audios/kapo_hamaca.wav'),
     },
 ];
 
-const shuffleArray = (array: any) => {
-    return array
-};
+// Define drop zones with the exact name they should match, and the expected color.
+const dropZonesData = [
+    {
+        matchName: 'kapo',
+        expectedColor: 'orange',
+    },
+    {
+        matchName: 'nolo kibi',
+        expectedColor: 'green',
+    },
+    {
+        matchName: 'nolo nkuo',
+        expectedColor: 'yellow',
+    },
+    {
+        matchName: 'ale',
+        expectedColor: 'red',
+    },
+];
 
 const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
-    const [score, setScore] = useState(0);
-    const [draggables, setDraggables] = useState(shuffleArray([...draggableElements]));
-    const [dropZonesData] = useState(shuffleArray([...draggableElements]));
-    const dropZones = useRef<Record<number, LayoutRectangle>>({});
+    // State to keep track of the selected word.
+    const [selectedWord, setSelectedWord] = useState<any>(null);
+    // Record of matches where key is the word's name and value is the assigned color.
+    const [matches, setMatches] = useState<Record<string, string>>({});
     const [canContinue, setCanContinue] = useState(false);
 
-    // Play sound function
+    // Play sound function remains unchanged.
     const playSound = async (audio: any) => {
         const { sound } = await Audio.Sound.createAsync(audio);
         await sound.playAsync();
     };
 
-    // Handle drop event
-    const handleDrop = (item: any, gestureState: any) => {
-        const dropZone = dropZones.current[item.id];
-        const DRAGGABLE_SIZE = 30;
-
-        if (
-            dropZone &&
-            gestureState.moveX + DRAGGABLE_SIZE >= dropZone.x &&
-            gestureState.moveX - DRAGGABLE_SIZE <= dropZone.x + dropZone.width &&
-            gestureState.moveY + DRAGGABLE_SIZE >= dropZone.y &&
-            gestureState.moveY - DRAGGABLE_SIZE <= dropZone.y + dropZone.height
-        ) {
-            setScore((prevScore) => prevScore + 1);
-            playSound(item.audio);
-            setDraggables((prev: any) => prev.filter((draggable: any) => draggable.id !== item.id));
-
-            if (score === 3) {
-                setCanContinue(true);
-            }
+    // Handle word selection. If the word is already matched, ignore it.
+    const handleWordPress = (item: any) => {
+        if (matches[item.name]) return; // Already matched.
+        if (selectedWord && selectedWord.name === item.name) {
+            setSelectedWord(null);
+        } else {
+            setSelectedWord(item);
         }
     };
 
+    // Handle drop zone press. Check if the selected word's name matches the drop zone's expected name.
+    const handleDropZonePress = (zoneItem: { matchName: string; expectedColor: string }) => {
+        if (!selectedWord) return;
+        console.log('Selected word:', selectedWord.name, 'Expected:', zoneItem.matchName);
+        if (selectedWord.name === zoneItem.matchName) {
+            setMatches((prev) => ({ ...prev, [zoneItem.matchName]: zoneItem.expectedColor }));
+            playSound(selectedWord.audio);
+        }
+        setSelectedWord(null);
+    };
+
+    // Enable "Next" button when all matches are made.
+    useEffect(() => {
+        if (Object.keys(matches).length === dropZonesData.length) {
+            setCanContinue(true);
+        }
+    }, [matches]);
+
     return (
         <View style={{ flex: 1 }}>
-            <ImageBackground source={bgImage} style={styles.container}>
-                {/* Back Button */}
-                <BackButton navigation={navigation} />
-
-                {/* Next Button */}
-                {canContinue && <NextButton navigation={navigation} nextName="LevelMapping" />}
-
-                {/* Score Display */}
-                <View style={styles.scoreContainer}>
-                    <Text style={styles.scoreText}>Puntaje: {score}</Text>
-                </View>
-
-                {/* Draggable Elements at the Top */}
-                <View style={styles.draggableContainer}>
-                    {draggables.map((item: { id: number; image: any }) => (
-                        <View key={item.id} style={styles.whiteContainer}>
-                            <Draggable
-                                x={0}
-                                y={0}
-                                onDragRelease={(_, gestureState) => handleDrop(item, gestureState)}
-                                shouldReverse={true}
-                            >
-                                <Image source={item.image} style={styles.draggableImage} />
-                            </Draggable>
-                        </View>
-                    ))}
-                </View>
-
-                {/* Drop Zones */}
-                <View style={styles.dropZonesContainer}>
-                    {dropZonesData.map((item: { id: number; image: any; audio: any; label: string }, index: number) => (
-                        <View
-                            key={item.id}
-                            style={dropZoneStyles[`greenContainer${index + 1}`]}
-                            ref={(ref) => {
-                                if (ref) {
-                                    ref.measure((_, __, width, height, pageX, pageY) => {
-                                        dropZones.current[item.id] = { x: pageX, y: pageY, width, height };
-                                    });
-                                }
-                            }}
-                        />
-                    ))}
-                </View>
+            <ImageBackground source={bgImage} style={styles.bgImage}>
             </ImageBackground>
+
+            {/* Back Button */}
+            <BackButton navigation={navigation} />
+
+            {/* Next Button – only shown once all matches have been made */}
+            {canContinue && <NextButton navigation={navigation} nextName="LevelMapping" />}
+
+            {/* Words container – the clickable words (represented here by images) */}
+            <View style={styles.wordsContainer}>
+                {draggableElements.map((item) => (
+                    <TouchableOpacity
+                        key={item.id}
+                        style={[
+                            styles.wordButton,
+                            selectedWord && selectedWord.name === item.name && styles.selectedWord,
+                            // If matched, show its assigned background color.
+                            matches[item.name] && { backgroundColor: matches[item.name] },
+                        ]}
+                        onPress={() => handleWordPress(item)}
+                        disabled={!!matches[item.name]} // Disable clicks on matched words.
+                    >
+                        <Image source={item.image} style={{ width: 130, height: 50 }} />
+                    </TouchableOpacity>
+                ))}
+            </View>
+
+            {/* Drop zones container – the clickable boxes */}
+            <View style={styles.dropZonesContainer}>
+                {dropZonesData.map((zone, index) => (
+                    <TouchableOpacity
+                        key={zone.matchName}
+                        style={[
+                            dropZoneStyles[`zoneContainer${index + 1}`],
+                            // If matched, fill the box with its assigned color.
+                            matches[zone.matchName] && { backgroundColor: matches[zone.matchName] },
+                        ]}
+                        onPress={() => handleDropZonePress(zone)}
+                    >
+                        {/* You can optionally place a label here if needed */}
+                    </TouchableOpacity>
+                ))}
+            </View>
         </View>
     );
 };
 
 const dropZoneStyles = StyleSheet.create({
-    greenContainer1: {
-        width: 230,
-        height: 90,
-        borderRadius: 60,
+    // Order here: zoneContainer1 expects "nolo kibi" (orange), zoneContainer2 expects "ale" (green),
+    // zoneContainer3 expects "nolo nkuo" (yellow), zoneContainer4 expects "kapo" (red).
+    zoneContainer1: {
+        width: 145, // reduced size in half
+        height: 45, // reduced size in half
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 10,
-        left: 580,
-        top: -40,
-        borderColor: 'red',
-        borderWidth: 4,
-    },
-    greenContainer2: {
-        width: 400,
-        height: 80,
-        borderRadius: 60,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: 10,
-        left: -280,
-        top: 100,
-        transform: [{ rotate: '20deg' }],
+        left: 380, // adjusted from 580, -50
+        top: -155, // adjusted from -60, -100
         borderColor: 'orange',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
         borderWidth: 4,
     },
-    greenContainer3: {
-        width: 120,
-        height: 50,
-        borderRadius: 60,
+    zoneContainer2: {
+        width: 200, // reduced size in half
+        height: 40, // reduced size in half
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 10,
-        left: -430,
-        top: 65,
+        left: -180, // adjusted from -280, -50
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        top: -70, // adjusted from 80, -100
+        transform: [{ rotate: '20deg' }],
+        borderColor: 'green',
+        borderWidth: 4,
+    },
+    zoneContainer3: {
+        width: 60, // reduced size in half
+        height: 25, // reduced size in half
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 10,
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        left: -335, // adjusted from -430, -50
+        top: -90, // adjusted from 45, -100
         borderColor: 'yellow',
         borderWidth: 4,
     },
-    greenContainer4: {
-        width: 160,
-        height: 120,
-        borderRadius: 60,
+    zoneContainer4: {
+        width: 80, // reduced size in half
+        height: 60, // reduced size in half
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 10,
-        left: -430,
-        top: -180,
-        borderColor: 'green',
+        left: -420, // adjusted from -430, -50
+        top: -250, // adjusted from -120, -100
+        borderColor: 'red',
         borderWidth: 4,
     },
 } as Record<string, any>);
@@ -196,25 +216,30 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    scoreContainer: {
-        position: 'absolute',
-        top: 20,
-        right: 20,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        padding: 10,
-        borderRadius: 10,
-    },
-    scoreText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    draggableContainer: {
+    wordsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         width: '100%',
-        marginTop: 40,
+        top: 340,
+        zIndex: 3,
+        backgroundColor: 'rgba(0, 0, 0, 0.65)',
+        paddingVertical: 10,
+        position: 'absolute',
+    },
+    wordButton: {
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        borderRadius: 10,
+        padding: 10,
+        width: 200,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 5,
+    },
+    selectedWord: {
+        borderWidth: 2,
+        borderColor: 'blue',
     },
     dropZonesContainer: {
         flexDirection: 'row',
@@ -223,19 +248,14 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: 20,
     },
-    draggableImage: {
-        width: 180,
-        height:  50,
-        resizeMode: 'cover'
-    },
-    whiteContainer: {
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
-        borderRadius: 10,
-        padding: 10,
-        width: 200,
-        height: 50,
-        top: 220,
-        zIndex: 2,
+    bgImage: {
+        flex: 1,
+        resizeMode: 'cover',
+        justifyContent: 'center',
+        width: '115%',
+        height: '140%',
+        left: 18,
+        top: -100,
     },
 });
 

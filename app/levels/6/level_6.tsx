@@ -82,10 +82,7 @@ const Level6 = ({ navigation }: { navigation: NavigationProp<any> }) => {
             <ImageBackground source={bgImage} style={styles.container}>
                 <BackButton navigation={navigation} />
                 {canContinue && <NextButton navigation={navigation} nextName="LevelMapping" />}
-                <View style={styles.scoreContainer}>
-                    <Text style={styles.scoreText}>Puntaje: {score}</Text>
-                </View>
-
+             
                 {/* Drop Zones Positioned Individually with Custom Styles */}
                 <View style={styles.dropZonesContainer}>
                     {dropZonesData.map((item) => (

@@ -28,9 +28,9 @@ const NextButton: React.FC<NextButtonProps> = ({ navigation, nextName }) => {
 
 const styles = StyleSheet.create({
     adelante: {
-        width: 90,
-        height: 45,
-        transform: [{ rotate: '180deg' }],
+        width: 70,
+        height: 40,
+        transform: [{ rotate: '180deg' }, { translateX: 0 }, { translateY: 1 }],
         resizeMode: 'stretch',
     },
     button: {
@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     buttonImageBottom: {
-        width: '100%',
-        height: 115,
+        width: '95%',
+        height: 110,
         position: 'absolute',
         bottom: -34,
         right: 1,
