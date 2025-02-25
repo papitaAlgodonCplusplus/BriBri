@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../misc/BackButton';
@@ -60,18 +61,26 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('@/assets/images/cr_bg.png')} style={styles.backgroundImage} />
+      <Image source={require('@/assets/images/pantalla_nivel_modo.jpg')} style={styles.backgroundImage} />
 
       {/* Back Button */}
       <BackButton navigation={navigation} />
 
       {!buttonClicked ? (
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.actionButton} onPress={() => handleButtonClick('button1')}>
-            <Text style={styles.buttonText}>Pronunciación</Text>
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => handleButtonClick('button1')}>
+          <Image
+                source={require('@/assets/images/niveles_texto.png')}
+                style={styles.buttonImage}
+                resizeMode="stretch"
+              />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton} onPress={() => handleButtonClick('button2')}>
-            <Text style={styles.buttonText}>Escritura</Text>
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => handleButtonClick('button2')}>
+          <Image
+                source={require('@/assets/images/niveles_imagenes.png')}
+                style={styles.buttonImage}
+                resizeMode="stretch"
+              />
           </TouchableOpacity>
         </View>
       ) : (
@@ -108,17 +117,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 20,
   },
-  actionButton: {
-    marginHorizontal: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#4CAF50',
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 16,
+  buttonImage: {
+    width: wp('20%'),
+    height: hp('37%'),
   },
   levelContainer: {
     flexDirection: 'row',
