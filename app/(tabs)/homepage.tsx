@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
-
+import { StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const handlePress = () => {
@@ -9,97 +10,97 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
   };
 
   const handleInstrucciones = () => {
+    // Lógica para instrucciones
   };
 
   const handleCreditos = () => {
+    // Lógica para créditos
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Image
-        source={require('@/assets/images/pantalla_principal.png')}
-        style={styles.backgroundImage}
-        resizeMode="cover"
-      />
-
-      <TouchableOpacity onPress={handlePress} style={styles.buttonImageContainer}>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
         <Image
-          source={require('@/assets/images/jugar.png')}
-          style={styles.buttonImage}
+          source={require('@/assets/images/pantalla_principal.png')}
+          style={styles.backgroundImage}
+          resizeMode="stretch"
         />
-      </TouchableOpacity>
 
-      <Image
-        source={require('@/assets/images/button.png')}
-        style={styles.buttonImageBottom}
-      />
+        <TouchableOpacity onPress={handlePress} style={styles.buttonImageContainer}>
+          <Image
+            source={require('@/assets/images/jugar.png')}
+            style={styles.buttonImage}
+            resizeMode="stretch"
+          />
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleInstrucciones} style={styles.button}>
         <Image
-          source={require('@/assets/images/instrucciones.png')}
-          style={styles.instrucciones}
+          source={require('@/assets/images/button.png')}
+          style={styles.buttonImageBottom}
+          resizeMode="stretch"
         />
-      </TouchableOpacity> 
 
-      <TouchableOpacity onPress={handleCreditos} style={styles.button}>
-        <Image
-          source={require('@/assets/images/creditos.png')}
-          style={styles.creditos}
-        />
-      </TouchableOpacity>
-    </SafeAreaView>
+        <TouchableOpacity onPress={handleInstrucciones} style={styles.button}>
+          <Image
+            source={require('@/assets/images/instrucciones.png')}
+            style={styles.instrucciones}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={handleCreditos} style={styles.button}>
+          <Image
+            source={require('@/assets/images/creditos.png')}
+            style={styles.creditos}
+            resizeMode="stretch"
+          />
+        </TouchableOpacity>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    backgroundColor: 'white',
   },
   backgroundImage: {
-    ...StyleSheet.absoluteFillObject,
-    width: '105%',
-    height: '103%',
+    width: wp('100%'),
+    height: hp('100%'),
     transform: [{ 
-      translateY: '-2%',
+      translateY: '-3%',
     }],
-    resizeMode: 'cover',
   },
   buttonImageContainer: {
     position: 'absolute',
-    top: 100,
-    left: 10,
-    width: 450,
-    height: 170,
+    top: hp('30%'),
+    left: wp('0.7%'),
+  },
+  buttonImage: {
+    width: wp('27%'),
+    height: hp('37%'),
+  },
+  buttonImageBottom: {
+    position: 'absolute',
+    width: wp('20%'),
+    height: hp('30%'),
+    bottom: wp('-2%'),
+    right: hp('5%'),
   },
   button: {
     position: 'absolute',
-    left: 40,
-    top: '6%',
-  },
-  buttonImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  buttonImageBottom: {
-    width: '20%',
-    height: 100,
-    position: 'absolute',
-    bottom: 1,
-    right: 10,
+    bottom: hp('7.9%'),
+    right: wp('13%'),
   },
   instrucciones: {
-    width: 40,
-    height: 40,
-    left: 685,
-    top: 315,
+    width: wp('7%'),
+    height: hp('7%'),
   },
   creditos: {
-    width: 40,
-    height: 40,
-    left: 745,
-    top: 315,
+    width: wp('7%'),
+    height: hp('7%'),
+    left: wp('7.5%'),
   },
 });
 
