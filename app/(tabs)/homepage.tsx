@@ -52,7 +52,7 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
           <Image
             source={require('@/assets/images/creditos.png')}
             style={styles.creditos}
-            resizeMode="stretch"
+            resizeMode="contain"
           />
         </TouchableOpacity>
       </SafeAreaView>
