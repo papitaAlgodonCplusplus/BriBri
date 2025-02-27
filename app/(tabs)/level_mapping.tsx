@@ -21,9 +21,9 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
   const handleButtonClick = async (button: string) => {
     try {
-      const mode = button === 'button1' ? 'listen' : 'read';
-      await AsyncStorage.setItem('mode', mode);
-      console.log(`${button} clicked, ${mode} stored in AsyncStorage`);
+      const newMode = button === 'button1' ? 'listen' : 'read';
+      await AsyncStorage.setItem('mode', newMode);
+      console.log(`${button} clicked, ${newMode} stored in AsyncStorage`);
       setButtonClicked(true);
     } catch (error) {
       console.error('Failed to store mode in AsyncStorage:', error);
@@ -72,7 +72,6 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
           <BackButton navigation={navigation} />
 
           {!buttonClicked ? (
-
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.button} onPress={() => handleButtonClick('button1')}>
                 <Image
@@ -90,7 +89,12 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
               </TouchableOpacity>
             </View>
           ) : (
-            <ScrollView horizontal contentContainerStyle={styles.levelContainer}>
+
+            <ScrollView 
+              horizontal 
+              contentContainerStyle={styles.levelContainer}
+              showsHorizontalScrollIndicator={false}
+            >
               {LEVELS && LEVELS.map((level) => (
                 <TouchableOpacity
                   key={level.id}
@@ -117,25 +121,22 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-
     alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
   },
   backgroundImage: {
     ...StyleSheet.absoluteFillObject,
-    width: '100%',
-    height: '100%',
+    width: wp('100%'),
+    height: hp('100%'),
   },
-
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     width: wp('80%'),
-    marginVertical: 20,
+    marginVertical: hp('2%'),
   },
-
   button: {
     marginHorizontal: wp('2%'),
   },
@@ -143,19 +144,26 @@ const styles = StyleSheet.create({
     width: wp('20%'),
     height: hp('37%'),
   },
+
   levelContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 20,
+    height: hp('15%'),
+    paddingHorizontal: wp('2%'),
   },
   levelButton: {
-    marginHorizontal: 10,
+    width: wp('10%'),
+    height: hp('100%'),
+    marginHorizontal: wp('1%'),
+    justifyContent: 'center',
     alignItems: 'center',
+    top: hp('40%'),
   },
+
   levelImage: {
-    width: 100,
-    height: 100,
-    marginBottom: 5,
+    width: wp('10%'),
+    height: hp('100%'),
+    resizeMode: 'contain',
   },
 });
 
