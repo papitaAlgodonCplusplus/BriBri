@@ -71,44 +71,55 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
           {/* Back Button */}
           <BackButton navigation={navigation} />
 
-          {!buttonClicked ? (
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={() => handleButtonClick('button1')}>
-                <Image
-                  source={require('@/assets/images/niveles_texto.png')}
-                  style={styles.buttonImage}
-                  resizeMode="stretch"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => handleButtonClick('button2')}>
-                <Image
-                  source={require('@/assets/images/niveles_imagenes.png')}
-                  style={styles.buttonImage}
-                  resizeMode="stretch"
-                />
-              </TouchableOpacity>
-            </View>
-          ) : (
-
-            <ScrollView 
-              horizontal 
-              contentContainerStyle={styles.levelContainer}
-              showsHorizontalScrollIndicator={false}
-            >
-              {LEVELS && LEVELS.map((level) => (
+          {/* Contenedor central para centrar el contenido */}
+          <View style={styles.content}>
+            {!buttonClicked ? (
+              <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                  key={level.id}
-                  onPress={() => handleLevelPress(level.id)}
-                  style={styles.levelButton}
+                  activeOpacity={0.7}
+                  style={styles.button}
+                  onPress={() => handleButtonClick('button1')}
                 >
                   <Image
-                    source={buttonClicked && mode === 'read' ? level.image2 : level.image}
-                    style={styles.levelImage}
+                    source={require('@/assets/images/niveles_texto.png')}
+                    style={styles.buttonImage}
+                    resizeMode="stretch"
                   />
                 </TouchableOpacity>
-              ))}
-            </ScrollView>
-          )}
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  style={styles.button}
+                  onPress={() => handleButtonClick('button2')}
+                >
+                  <Image
+                    source={require('@/assets/images/niveles_imagenes.png')}
+                    style={styles.buttonImage}
+                    resizeMode="stretch"
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <ScrollView 
+                horizontal 
+                contentContainerStyle={styles.levelContainer}
+                showsHorizontalScrollIndicator={false}
+              >
+                {LEVELS && LEVELS.map((level) => (
+                  <TouchableOpacity
+                    key={level.id}
+                    activeOpacity={0.7}
+                    onPress={() => handleLevelPress(level.id)}
+                    style={styles.levelButton}
+                  >
+                    <Image
+                      source={buttonClicked && mode === 'read' ? level.image2 : level.image}
+                      style={styles.levelImage}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            )}
+          </View>
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -122,13 +133,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignSelf: 'stretch',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   backgroundImage: {
     ...StyleSheet.absoluteFillObject,
     width: wp('100%'),
     height: hp('100%'),
+  },
+  // Contenedor central que centra el contenido (botones o niveles)
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -147,22 +162,20 @@ const styles = StyleSheet.create({
 
   levelContainer: {
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    height: hp('15%'),
     paddingHorizontal: wp('2%'),
   },
   levelButton: {
     width: wp('10%'),
-    height: hp('100%'),
+    height: hp('18%'),
     marginHorizontal: wp('1%'),
     justifyContent: 'center',
     alignItems: 'center',
-    top: hp('40%'),
   },
-
   levelImage: {
-    width: wp('10%'),
-    height: hp('100%'),
+    width: '100%',
+    height: '100%',
     resizeMode: 'contain',
   },
 });
