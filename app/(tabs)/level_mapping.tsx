@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../misc/BackButton';
@@ -9,7 +10,6 @@ import { LEVELS } from '../misc/constants';
 const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [mode, setMode] = useState<string | null>(null);
-
 
   React.useEffect(() => {
     const fetchMode = async () => {
@@ -60,49 +60,65 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image source={require('@/assets/images/pantalla_nivel_modo.jpg')} style={styles.backgroundImage} />
-
-      {/* Back Button */}
-      <BackButton navigation={navigation} />
-
-      {!buttonClicked ? (
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.buttonContainer} onPress={() => handleButtonClick('button1')}>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
           <Image
-                source={require('@/assets/images/niveles_texto.png')}
-                style={styles.buttonImage}
-                resizeMode="stretch"
-              />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonContainer} onPress={() => handleButtonClick('button2')}>
-          <Image
-                source={require('@/assets/images/niveles_imagenes.png')}
-                style={styles.buttonImage}
-                resizeMode="stretch"
-              />
-          </TouchableOpacity>
+            source={require('@/assets/images/pantalla_nivel_modo.jpg')}
+            style={styles.backgroundImage}
+          />
+
+          {/* Back Button */}
+          <BackButton navigation={navigation} />
+
+          {!buttonClicked ? (
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={() => handleButtonClick('button1')}>
+                <Image
+                  source={require('@/assets/images/niveles_texto.png')}
+                  style={styles.buttonImage}
+                  resizeMode="stretch"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={() => handleButtonClick('button2')}>
+                <Image
+                  source={require('@/assets/images/niveles_imagenes.png')}
+                  style={styles.buttonImage}
+                  resizeMode="stretch"
+                />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <ScrollView horizontal contentContainerStyle={styles.levelContainer}>
+              {LEVELS && LEVELS.map((level) => (
+                <TouchableOpacity
+                  key={level.id}
+                  onPress={() => handleLevelPress(level.id)}
+                  style={styles.levelButton}
+                >
+                  <Image
+                    source={buttonClicked && mode === 'read' ? level.image2 : level.image}
+                    style={styles.levelImage}
+                  />
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          )}
         </View>
-      ) : (
-        <ScrollView horizontal contentContainerStyle={styles.levelContainer}>
-          {LEVELS && LEVELS.map((level) => (
-            <TouchableOpacity
-              key={level.id}
-              onPress={() => handleLevelPress(level.id)}
-              style={styles.levelButton}
-            >
-              <Image source={buttonClicked && mode === 'read' ? level.image2 : level.image} style={styles.levelImage} />
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
-    </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
     flex: 1,
+
+    alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -111,11 +127,17 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    width: wp('80%'),
     marginVertical: 20,
+  },
+
+  button: {
+    marginHorizontal: wp('2%'),
   },
   buttonImage: {
     width: wp('20%'),
