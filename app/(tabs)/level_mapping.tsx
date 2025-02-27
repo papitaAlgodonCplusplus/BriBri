@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../misc/BackButton';
@@ -8,7 +10,6 @@ import { LEVELS } from '../misc/constants';
 const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [mode, setMode] = useState<string | null>(null);
-
 
   React.useEffect(() => {
     const fetchMode = async () => {
@@ -20,9 +21,9 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
   const handleButtonClick = async (button: string) => {
     try {
-      const mode = button === 'button1' ? 'listen' : 'read';
-      await AsyncStorage.setItem('mode', mode);
-      console.log(`${button} clicked, ${mode} stored in AsyncStorage`);
+      const newMode = button === 'button1' ? 'listen' : 'read';
+      await AsyncStorage.setItem('mode', newMode);
+      console.log(`${button} clicked, ${newMode} stored in AsyncStorage`);
       setButtonClicked(true);
     } catch (error) {
       console.error('Failed to store mode in AsyncStorage:', error);
@@ -76,80 +77,123 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image source={require('@/assets/images/cr_bg.png')} style={styles.backgroundImage} />
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <Image
+            source={require('@/assets/images/pantalla_nivel_modo.jpg')}
+            style={styles.backgroundImage}
+          />
 
-      {/* Back Button */}
-      <BackButton navigation={navigation} />
+          {/* Back Button */}
+          <BackButton navigation={navigation} />
 
-      {!buttonClicked ? (
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.actionButton} onPress={() => handleButtonClick('button1')}>
-            <Text style={styles.buttonText}>Pronunciación</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton} onPress={() => handleButtonClick('button2')}>
-            <Text style={styles.buttonText}>Escritura</Text>
-          </TouchableOpacity>
+          {/* Contenedor central para centrar el contenido */}
+          <View style={styles.content}>
+            {!buttonClicked ? (
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  style={styles.button}
+                  onPress={() => handleButtonClick('button1')}
+                >
+                  <Image
+                    source={require('@/assets/images/niveles_texto.png')}
+                    style={styles.buttonImage}
+                    resizeMode="stretch"
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  style={styles.button}
+                  onPress={() => handleButtonClick('button2')}
+                >
+                  <Image
+                    source={require('@/assets/images/niveles_imagenes.png')}
+                    style={styles.buttonImage}
+                    resizeMode="stretch"
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <ScrollView 
+                horizontal 
+                contentContainerStyle={styles.levelContainer}
+                showsHorizontalScrollIndicator={false}
+              >
+                {LEVELS && LEVELS.map((level) => (
+                  <TouchableOpacity
+                    key={level.id}
+                    activeOpacity={0.7}
+                    onPress={() => handleLevelPress(level.id)}
+                    style={styles.levelButton}
+                  >
+                    <Image
+                      source={buttonClicked && mode === 'read' ? level.image2 : level.image}
+                      style={styles.levelImage}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            )}
+          </View>
         </View>
-      ) : (
-        <ScrollView horizontal contentContainerStyle={styles.levelContainer}>
-          {LEVELS && LEVELS.map((level) => (
-            <TouchableOpacity
-              key={level.id}
-              onPress={() => handleLevelPress(level.id)}
-              style={styles.levelButton}
-            >
-              <Image source={buttonClicked && mode === 'read' ? level.image2 : level.image} style={styles.levelImage} />
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
-    </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
+    flex: 1,
+    alignSelf: 'stretch',
+  },
+  backgroundImage: {
+    ...StyleSheet.absoluteFillObject,
+    width: wp('100%'),
+    height: hp('100%'),
+  },
+  // Contenedor central que centra el contenido (botones o niveles)
+  content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  backgroundImage: {
-    ...StyleSheet.absoluteFillObject,
-    width: '100%',
-    height: '100%',
-  },
   buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: wp('80%'),
+    marginVertical: hp('2%'),
+  },
+  button: {
+    marginHorizontal: wp('2%'),
+  },
+  buttonImage: {
+    width: wp('20%'),
+    height: hp('37%'),
+  },
+
+  levelContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 20,
-  },
-  actionButton: {
-    marginHorizontal: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#4CAF50',
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  levelContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 20,
+    paddingHorizontal: wp('2%'),
   },
   levelButton: {
-    marginHorizontal: 10,
+    width: wp('10%'),
+    height: hp('18%'),
+    marginHorizontal: wp('1%'),
+    justifyContent: 'center',
     alignItems: 'center',
   },
   levelImage: {
-    width: 100,
-    height: 100,
-    marginBottom: 5,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
 });
 

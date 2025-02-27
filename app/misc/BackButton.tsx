@@ -13,10 +13,10 @@ const BackButton: React.FC<BackButtonProps> = ({ navigation }) => {
 
   return (
     <TouchableOpacity onPress={handleGoBack} style={styles.button}>
-      <Image
+      {/* <Image
         source={require('@/assets/images/button.png')}
         style={styles.buttonImageBottom}
-      />
+      /> */}
       <Image
         source={require('@/assets/images/atras.png')}
         style={styles.atras}
