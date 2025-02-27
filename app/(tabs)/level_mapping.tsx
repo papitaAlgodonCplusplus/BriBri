@@ -30,31 +30,48 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
   };
 
   const handleLevelPress = (levelId: number) => {
-    switch (levelId) {
-      case 1:
-        navigation.navigate('Guide1');
-        break;
-      case 2:
-        navigation.navigate('Guide2');
-        break;
-      case 3:
-        navigation.navigate('Guide3');
-        break;
-      case 4:
-        navigation.navigate('Guide4');
-        break;
-      case 5:
-        navigation.navigate('Guide5');
-        break;
-      case 6:
-        navigation.navigate('Guide6');
-        break;
-      case 7:
-        navigation.navigate('Guide7');
-        break;
-      default:
-        console.error('Level not found');
-        break;
+    if (mode === 'read') {
+      switch (levelId) {
+        case 1:
+          navigation.navigate('Guide1');
+          break;
+        case 2:
+          navigation.navigate('Guide2');
+          break;
+        case 3:
+          navigation.navigate('Guide3');
+          break;
+        case 4:
+          navigation.navigate('Guide4');
+          break;
+        case 5:
+          navigation.navigate('Guide5');
+          break;
+        case 6:
+          navigation.navigate('Guide6');
+          break;
+        case 7:
+          navigation.navigate('Guide7');
+          break;
+        default:
+          console.error('Level not found');
+          break;
+      }
+    } else {
+      switch (levelId) {
+        case 1:
+          navigation.navigate('Guide1Listen');
+          break;
+        case 2:
+          navigation.navigate('Guide2Listen');
+          break;
+        case 3:
+          navigation.navigate('Guide3Listen');
+          break;
+        default:
+          console.error('Level not found');
+          break;
+      }
     }
   };
 

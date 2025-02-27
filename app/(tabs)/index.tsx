@@ -16,6 +16,12 @@ import Guide6 from '../levels/6/guide_6';
 import Level6 from '../levels/6/level_6';
 import Guide7 from '../levels/7/guide_7';
 import Level7 from '../levels/7/level_7';
+import Guide1Listen from '../levels_listen/1/guide_1_listen';
+import Level1Listen from '../levels_listen/1/level_1_listen';
+import Guide2Listen from '../levels_listen/2/guide_2_listen';
+import Level2Listen from '../levels_listen/2/level_2_listen';
+import Guide3Listen from '../levels_listen/3/guide_3_listen';
+import Level3Listen from '../levels_listen/3/level_3_listen';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -99,6 +105,36 @@ export default function App() {
       <Stack.Screen
         name="Level7"
         component={Level7}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Guide1Listen"
+        component={Guide1Listen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Level1Listen"
+        component={Level1Listen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Guide2Listen"
+        component={Guide2Listen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Level2Listen"
+        component={Level2Listen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Guide3Listen"
+        component={Guide3Listen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Level3Listen"
+        component={Level3Listen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
