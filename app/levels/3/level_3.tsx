@@ -17,7 +17,7 @@ import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../../misc/BackButton';
 import NextButton from '../../misc/NextButton';
 
-const bgImage = require('@/assets/images/lv3bg.jpg');
+const bgImage = require('@/assets/images/ilustraciones-02.jpg');
 
 // Draggable elements data with names for matching
 const draggableElements = [
@@ -29,10 +29,10 @@ const draggableElements = [
 
 // Drop zones with predefined positions, sizes, and rotations
 const dropZonesData = [
-    { id: 1, matchName: 'u_tto', x: 90, y: 240, width: 130, height: 80, rotation: '-60deg', borderColor: 'red', expectedColor: 'rgba(255, 0, 0, 0.3)' },
-    { id: 2, matchName: 'uko', x: 490, y: 170, width: 80, height: 90, rotation: '-29deg', borderColor: 'blue', expectedColor: 'rgba(0, 0, 255, 0.3)' },
-    { id: 3, matchName: 'etsok', x: 190, y: 80, width: 420, height: 25, rotation: '-20deg', borderColor: 'green', expectedColor: 'rgba(0, 255, 0, 0.3)' },
-    { id: 4, matchName: 'u_tsi', x: 380, y: -50, width: 220, height: 500, rotation: '70deg', borderColor: 'purple', expectedColor: 'rgba(128, 0, 128, 0.3)' },
+    { id: 1, matchName: 'u_tto', x: 160, y: 210, width: 70, height: 70, rotation: '90deg', borderColor: 'red', expectedColor: 'rgba(255, 0, 0, 0.3)' },
+    { id: 2, matchName: 'uko', x: 640, y: 250, width: 80, height: 90, rotation: '-29deg', borderColor: 'orange', expectedColor: 'rgba(255, 165, 0, 0.3)' },
+    { id: 3, matchName: 'etsok', x: 165, y: 65, width: 80, height: 100, rotation: '-20deg', borderColor: 'green', expectedColor: 'rgba(0, 255, 0, 0.3)' },
+    { id: 4, matchName: 'u_tsi', x: 520, y: 180, width: 60, height: 140, rotation: '70deg', borderColor: 'pink', expectedColor: 'rgba(255, 192, 203, 0.3)' },
 ];
 
 const Level3 = ({ navigation }: { navigation: NavigationProp<any> }) => {
