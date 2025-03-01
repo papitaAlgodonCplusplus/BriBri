@@ -32,10 +32,10 @@ const draggableElements = [
 
 // Drop zones with predefined positions, sizes, and rotations
 const dropZonesData = [
-    { id: 1, x: 250, y: 230, width: 170, height: 120, rotation: '-30deg', borderColor: 'red', backgroundColor: 'rgba(255, 0, 0, 0.3)' },      // Drop zone for first element
-    { id: 2, x: 420, y: 40, width: 100, height: 150, rotation: '0deg', borderColor: 'blue', backgroundColor: 'rgba(0, 0, 255, 0.3)' },      // Drop zone for second element
-    { id: 3, x: 400, y: 240, width: 400, height: 95, rotation: '-30deg', borderColor: 'green', backgroundColor: 'rgba(0, 255, 0, 0.3)' },  // Drop zone for third element
-    { id: 4, x: 110, y: 230, width: 240, height: 20, rotation: '-29deg', borderColor: 'purple', backgroundColor: 'rgba(128, 0, 128, 0.3)' }, // Drop zone for fourth element
+    { id: 1, x: 270, y: 180, width: 30, height: 15, rotation: '-90deg', borderColor: 'red', backgroundColor: 'rgba(255, 0, 0, 0.3)' },      // Drop zone for first element
+    { id: 2, x: 620, y: 0, width: 30, height: 150, rotation: '0deg', borderColor: 'yellow', backgroundColor: 'rgba(255, 255, 0, 0.3)' },    // Drop zone for second element
+    { id: 3, x: 305, y: 60, width: 70, height: 70, rotation: '10deg', borderColor: 'purple', backgroundColor: 'rgba(128, 0, 128, 0.3)' }, // Drop zone for third element
+    { id: 4, x: 570, y: 235, width: 170, height: 50, rotation: '0deg', borderColor: 'green', backgroundColor: 'rgba(0, 128, 0, 0.3)' },    // Drop zone for fourth element
 ];
 
 const Level4 = ({ navigation }: { navigation: NavigationProp<any> }) => {
