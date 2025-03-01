@@ -32,10 +32,10 @@ const draggableElements = [
 
 // Drop zones with predefined positions, sizes, and rotations
 const dropZonesData = [
-    { id: 1, x: 380, y: 39, width: 60, height: 50, rotation: '-68deg', borderColor: 'red', backgroundColor: 'rgba(255, 0, 0, 0.3)' },      // "kowölö"
-    { id: 2, x: 312, y: 220, width: 90, height: 40, rotation: '0deg', borderColor: 'blue', backgroundColor: 'rgba(0, 0, 255, 0.3)' },      // "klö"
-    { id: 3, x: 485, y: 230, width: 150, height: 20, rotation: '-90deg', borderColor: 'green', backgroundColor: 'rgba(0, 255, 0, 0.3)' },  // "ko' klöwok"
-    { id: 4, x: 660, y: 280, width: 50, height: 150, rotation: '-40deg', borderColor: 'purple', backgroundColor: 'rgba(128, 0, 128, 0.3)' }, // "stairs"
+    { id: 1, x: 480, y: 39, width: 60, height: 50, rotation: '-68deg', borderColor: 'yellow', backgroundColor: 'rgba(255, 255, 0, 0.3)' },  // "kowolo"
+    { id: 2, x: 590, y: 180, width: 60, height: 80, rotation: '0deg', borderColor: 'green', backgroundColor: 'rgba(0, 255, 0, 0.3)' },      // "chane"
+    { id: 3, x: 570, y: 100, width: 90, height: 40, rotation: '-90deg', borderColor: 'red', backgroundColor: 'rgba(255, 0, 0, 0.3)' },      // "koklowok"
+    { id: 4, x: 630, y: 300, width: 50, height: 100, rotation: '-40deg', borderColor: 'purple', backgroundColor: 'rgba(128, 0, 128, 0.3)' }, // "stairs"
 ];
 
 const Level5 = ({ navigation }: { navigation: NavigationProp<any> }) => {
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     dropZonesContainer: { position: 'absolute', width: '100%', height: '100%' },
     draggableContainer: {
         position: 'absolute',
-        bottom: 20,
+        top: 10,
         flexDirection: 'row',
         width: '100%',
         paddingVertical: 10,
