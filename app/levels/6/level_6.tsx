@@ -20,7 +20,7 @@ import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../../misc/BackButton';
 import NextButton from '../../misc/NextButton';
 
-const bgImage = require('@/assets/images/lv6bg.jpg');
+const bgImage = require('@/assets/images/ilustraciones-04.jpg');
 
 // Draggable elements data (Placeholder names, adjust if necessary)
 const draggableElements = [

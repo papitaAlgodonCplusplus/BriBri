@@ -20,7 +20,7 @@ import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../../misc/BackButton';
 import NextButton from '../../misc/NextButton';
 
-const bgImage = require('@/assets/images/lv7bg_ref_2.png');
+const bgImage = require('@/assets/images/ilustraciones-05.jpg');
 
 const draggableElements = [
     { id: 1, image: require('@/assets/images/aiko_ko2.png'), audio: require('@/assets/audios/ko.wav') },
