@@ -35,13 +35,13 @@ const draggableElements = [
 
 // Drop zones with predefined positions, sizes, and rotations
 const dropZonesData = [
-    { id: 1, x: 370, y: 100, width: 80, height: 140, rotation: '0deg', borderColor: 'red', backgroundColor: 'rgba(255, 0, 0, 0.3)' },        // ukko2
-    { id: 2, x: 175, y: 240, width: 180, height: 50, rotation: '20deg', borderColor: 'blue', backgroundColor: 'rgba(0, 0, 255, 0.3)' },      // ushu2
-    { id: 3, x: 540, y: 330, width: 100, height: 80, rotation: '0deg', borderColor: 'green', backgroundColor: 'rgba(0, 255, 0, 0.3)' },     // akwawe2
-    { id: 4, x: 280, y: 5, width: 200, height: 40, rotation: '-25deg', borderColor: 'orange', backgroundColor: 'rgba(255, 165, 0, 0.3)' },  // ulok2
-    { id: 5, x: 620, y: 380, width: 50, height: 40, rotation: '0deg', borderColor: 'purple', backgroundColor: 'rgba(128, 0, 128, 0.3)' },   // iwo2
-    { id: 6, x: 480, y: 0, width: 200, height: 60, rotation: '-35deg', borderColor: 'yellow', backgroundColor: 'rgba(255, 255, 0, 0.3)' },  // ko2
-    { id: 7, x: 480, y: 110, width: 200, height: 50, rotation: '-33deg', borderColor: 'cyan', backgroundColor: 'rgba(0, 255, 255, 0.3)' },  // kapokua2
+    // ukko2
+    { id: 2, x: 400, y: 270, width: 150, height: 80, rotation: '0deg', borderColor: 'purple', backgroundColor: 'rgba(128, 0, 128, 0.3)' },
+    { id: 3, x: 120, y: 30, width: 80, height: 60, rotation: '0deg', borderColor: 'blue', backgroundColor: 'rgba(0, 0, 255, 0.3)' },          // akwawe2
+    { id: 4, x: 250, y: 35, width: 100, height: 20, rotation: '0deg', borderColor: 'orange', backgroundColor: 'rgba(255, 165, 0, 0.3)' },  // ulok2
+    { id: 5, x: 170, y: 60, width: 40, height: 30, rotation: '0deg', borderColor: 'red', backgroundColor: 'rgba(255, 0, 0, 0.3)' },    // iwo2
+    { id: 6, x: 450, y: 30, width: 100, height: 30, rotation: '0deg', borderColor: 'yellow', backgroundColor: 'rgba(255, 255, 0, 0.3)' },  // ko2
+    { id: 7, x: 450, y: 140, width: 100, height: 25, rotation: '0deg', borderColor: 'cyan', backgroundColor: 'rgba(0, 255, 255, 0.3)' },   // kapokua2
 ];
 
 

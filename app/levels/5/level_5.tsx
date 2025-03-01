@@ -3,84 +3,95 @@ LogBox.ignoreLogs([
     'Draggable: Support for defaultProps will be removed'
 ]);
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     ImageBackground,
     Image,
-    Text,
     StyleSheet,
+    TouchableOpacity,
     ScrollView,
-    LayoutRectangle,
-    PanResponderGestureState,
 } from 'react-native';
 import { Audio } from 'expo-av';
-import Draggable from 'react-native-draggable';
 import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../../misc/BackButton';
 import NextButton from '../../misc/NextButton';
 
 const bgImage = require('@/assets/images/ilustraciones-30.jpg');
 
-// Draggable elements data (Based on reference image)
+// Draggable elements data with names for matching
 const draggableElements = [
-    { id: 1, image: require('@/assets/images/chane2.png'), audio: require('@/assets/audios/chane.wav') },
-    { id: 2, image: require('@/assets/images/kowolo2.png'), audio: require('@/assets/audios/kowolo.wav') },
-    { id: 3, image: require('@/assets/images/koklowok2.png'), audio: require('@/assets/audios/ko_klowok.wav') },
-    { id: 4, image: require('@/assets/images/tska_tka2.png'), audio: require('@/assets/audios/tska.wav') },
+    { id: 1, name: 'chane', image: require('@/assets/images/chane2.png'), audio: require('@/assets/audios/chane.wav') },
+    { id: 2, name: 'kowolo', image: require('@/assets/images/kowolo2.png'), audio: require('@/assets/audios/kowolo.wav') },
+    { id: 3, name: 'koklowok', image: require('@/assets/images/koklowok2.png'), audio: require('@/assets/audios/ko_klowok.wav') },
+    { id: 4, name: 'tska', image: require('@/assets/images/tska_tka2.png'), audio: require('@/assets/audios/tska.wav') },
 ];
 
 // Drop zones with predefined positions, sizes, and rotations
 const dropZonesData = [
-    { id: 1, x: 480, y: 39, width: 60, height: 50, rotation: '-68deg', borderColor: 'yellow', backgroundColor: 'rgba(255, 255, 0, 0.3)' },  // "kowolo"
-    { id: 2, x: 590, y: 180, width: 60, height: 80, rotation: '0deg', borderColor: 'green', backgroundColor: 'rgba(0, 255, 0, 0.3)' },      // "chane"
-    { id: 3, x: 570, y: 100, width: 90, height: 40, rotation: '-90deg', borderColor: 'red', backgroundColor: 'rgba(255, 0, 0, 0.3)' },      // "koklowok"
-    { id: 4, x: 630, y: 300, width: 50, height: 100, rotation: '-40deg', borderColor: 'purple', backgroundColor: 'rgba(128, 0, 128, 0.3)' }, // "stairs"
+    { id: 1, matchName: 'kowolo', x: 480, y: 39, width: 60, height: 50, rotation: '-68deg', borderColor: 'yellow', expectedColor: 'rgba(255, 255, 0, 0.3)' },  // "kowolo"
+    { id: 2, matchName: 'chane', x: 590, y: 180, width: 60, height: 80, rotation: '0deg', borderColor: 'green', expectedColor: 'rgba(0, 255, 0, 0.3)' },      // "chane"
+    { id: 3, matchName: 'koklowok', x: 570, y: 100, width: 90, height: 40, rotation: '-90deg', borderColor: 'red', expectedColor: 'rgba(255, 0, 0, 0.3)' },      // "koklowok"
+    { id: 4, matchName: 'tska', x: 630, y: 300, width: 50, height: 100, rotation: '-40deg', borderColor: 'purple', expectedColor: 'rgba(128, 0, 128, 0.3)' }, // "stairs"
 ];
 
 const Level5 = ({ navigation }: { navigation: NavigationProp<any> }) => {
-    const [score, setScore] = useState(0);
-    const [draggables, setDraggables] = useState([...draggableElements]);
-    const dropZones = useRef<Record<number, LayoutRectangle>>({});
+    // State to track which word is currently selected
+    const [selectedWord, setSelectedWord] = useState<any>(null);
+    // State to track matches, where key is the word name and value is the color
+    const [matches, setMatches] = useState<Record<string, string>>({});
     const [canContinue, setCanContinue] = useState(false);
+    // State to keep track of words that haven't been matched yet
+    const [words, setWords] = useState([...draggableElements]);
 
     const playSound = async (audio: any) => {
-        const { sound } = await Audio.Sound.createAsync(audio);
-        await sound.playAsync();
-    };
-
-    const handleDrop = (item: any, gestureState: PanResponderGestureState) => {
-        const dropZone = dropZones.current[item.id];
-        const DRAGGABLE_SIZE = 30;
-
-        if (
-            dropZone &&
-            gestureState.moveX + DRAGGABLE_SIZE >= dropZone.x &&
-            gestureState.moveX - DRAGGABLE_SIZE <= dropZone.x + dropZone.width &&
-            gestureState.moveY + DRAGGABLE_SIZE >= dropZone.y &&
-            gestureState.moveY - DRAGGABLE_SIZE <= dropZone.y + dropZone.height
-        ) {
-            setScore((prevScore) => prevScore + 1);
-            playSound(item.audio);
-            setDraggables((prev) => prev.filter((draggable) => draggable.id !== item.id));
-
-            if (score + 1 === draggableElements.length) {
-                setCanContinue(true);
-            }
+        try {
+            const { sound } = await Audio.Sound.createAsync(audio);
+            await sound.playAsync();
+        } catch (error) {
+            console.error('Error playing sound', error);
         }
     };
+
+    // Handle word selection
+    const handleWordPress = (word: any) => {
+        if (matches[word.name]) return; // Already matched
+        if (selectedWord && selectedWord.name === word.name) {
+            setSelectedWord(null);
+        } else {
+            setSelectedWord(word);
+        }
+    };
+
+    // Handle drop zone press
+    const handleDropZonePress = (zone: any) => {
+        if (!selectedWord) return;
+        console.log('Selected word:', selectedWord.name, 'Expected:', zone.matchName);
+        if (selectedWord.name === zone.matchName) {
+            setMatches((prev) => ({ ...prev, [zone.matchName]: zone.expectedColor }));
+            playSound(selectedWord.audio);
+            setWords((prev) => prev.filter((word) => word.name !== selectedWord.name));
+        }
+        setSelectedWord(null);
+    };
+
+    // When all words have been matched, enable Next button
+    useEffect(() => {
+        if (Object.keys(matches).length === draggableElements.length) {
+            setCanContinue(true);
+        }
+    }, [matches]);
 
     return (
         <View style={{ flex: 1 }}>
             <ImageBackground source={bgImage} style={styles.container}>
                 <BackButton navigation={navigation} />
                 {canContinue && <NextButton navigation={navigation} nextName="LevelMapping" />}
-             
 
                 {/* Drop Zones Positioned Individually with Custom Styles */}
                 <View style={styles.dropZonesContainer}>
                     {dropZonesData.map((item) => (
-                        <View
+                        <TouchableOpacity
                             key={item.id}
                             style={[
                                 dropZoneStyles.dropZone,
@@ -91,33 +102,30 @@ const Level5 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                                     height: item.height,
                                     transform: [{ rotate: item.rotation }],
                                     borderColor: item.borderColor,
-                                    backgroundColor: item.backgroundColor,
+                                    backgroundColor: matches[item.matchName] ? matches[item.matchName] : 'transparent',
                                 }
                             ]}
-                            ref={(ref) => {
-                                if (ref) {
-                                    ref.measure((_, __, width, height, pageX, pageY) => {
-                                        dropZones.current[item.id] = { x: pageX, y: pageY, width, height };
-                                    });
-                                }
-                            }}
+                            onPress={() => handleDropZonePress(item)}
+                            activeOpacity={0.7}
                         />
                     ))}
                 </View>
 
-                {/* Draggable Items in a Horizontal Line */}
+                {/* Word items in a horizontal scroll */}
                 <ScrollView horizontal style={styles.draggableContainer}>
-                    {draggables.map((item) => (
-                        <View key={item.id} style={styles.whiteContainer}>
-                            <Draggable
-                                x={0}
-                                y={0}
-                                onDragRelease={(_, gestureState) => handleDrop(item, gestureState)}
-                                shouldReverse={true}
-                            >
-                                <Image source={item.image} style={styles.draggableImage} />
-                            </Draggable>
-                        </View>
+                    {words.map((item) => (
+                        <TouchableOpacity
+                            key={item.id}
+                            style={[
+                                styles.whiteContainer,
+                                selectedWord && selectedWord.name === item.name && styles.selectedWord,
+                                matches[item.name] && { backgroundColor: matches[item.name] },
+                            ]}
+                            onPress={() => handleWordPress(item)}
+                            disabled={!!matches[item.name]}
+                        >
+                            <Image source={item.image} style={styles.draggableImage} />
+                        </TouchableOpacity>
                     ))}
                 </ScrollView>
             </ImageBackground>
@@ -132,18 +140,24 @@ const dropZoneStyles = StyleSheet.create({
         borderWidth: 3,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+        backgroundColor: 'transparent',
     },
 });
 
 const styles = StyleSheet.create({
-    container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    scoreContainer: { position: 'absolute', top: 20, right: 20, backgroundColor: 'rgba(0,0,0,0.5)', padding: 10, borderRadius: 10 },
-    scoreText: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
-    dropZonesContainer: { position: 'absolute', width: '100%', height: '100%' },
+    container: { 
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
+    dropZonesContainer: { 
+        position: 'absolute', 
+        width: '100%', 
+        height: '100%' 
+    },
     draggableContainer: {
         position: 'absolute',
-        top: 10,
+        bottom: 20,
         flexDirection: 'row',
         width: '100%',
         paddingVertical: 10,
@@ -151,8 +165,9 @@ const styles = StyleSheet.create({
         overflow: 'visible',
     },
     draggableImage: {
-        width: 150, height: 40, resizeMode: 'cover',
-        overflow: 'visible',
+        width: 150, 
+        height: 40, 
+        resizeMode: 'cover',
         marginLeft: 10,
     },
     whiteContainer: {
@@ -163,6 +178,10 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: 'center',
         marginHorizontal: 10,
+    },
+    selectedWord: {
+        borderWidth: 2,
+        borderColor: 'blue',
     },
 });
 
