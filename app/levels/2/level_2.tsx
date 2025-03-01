@@ -17,7 +17,7 @@ import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../../misc/BackButton';
 import NextButton from '../../misc/NextButton';
 
-const bgImage = require('@/assets/images/pantalla_sin_elementos.jpg');
+const bgImage = require('@/assets/images/ilustraciones-01.jpg');
 
 const draggableElements = [
     {
@@ -85,13 +85,13 @@ const dropZonesData = [
     },
     {
         id: 4,
-        x: 190,
-        y: 270,
+        x: 100,
+        y: 195,
         width: 170,
         height: 25,
         rotation: '90deg',
-        borderColor: 'purple',
-        expectedColor: 'rgba(128, 0, 128, 0.3)',
+        borderColor: 'red',
+        expectedColor: 'rgba(255, 0, 0, 0.3)',
     },
     {
         id: 5,
@@ -230,9 +230,9 @@ const styles = StyleSheet.create({
     },
     wordsContainer: {
         position: 'absolute',
-        bottom: 20,
+        top: 20,
+        left: 20,
         flexDirection: 'row',
-        width: '100%',
         paddingVertical: 10,
         backgroundColor: 'rgba(0,0,0,0.1)',
     },
@@ -252,5 +252,6 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
 });
+
 
 export default Level2;
