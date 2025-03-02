@@ -85,11 +85,11 @@ const styles = StyleSheet.create({
     width: wp('27%'),
     height: hp('37%'),
   },
-  // Contenedor inferior que conserva el tamaño original del botón (20% x 30%) y su posición
+
   bottomContainer: {
     position: 'absolute',
-    bottom: wp('-2%'), // Mantiene el valor original (aunque idealmente sería en hp)
-    right: hp('5%'),   // Igual aquí, se usa el valor original
+    bottom: wp('-2%'), 
+    right: hp('5%'),
     width: wp('20%'),
     height: hp('30%'),
   },
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  // Contenedor interno que centra los botones en el cuadro sin estirarlo
+
   bottomButtonsContainer: {
     position: 'absolute',
     width: '100%',
