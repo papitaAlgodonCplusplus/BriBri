@@ -33,14 +33,14 @@ const draggableElements = [
 
 // Base drop zone data with match names and styling
 const baseDropZonesData = [
-    { id: 1, matchName: 'aiko_ko', width: 80, height: 80, borderColor: 'red', expectedColor: 'rgba(255, 0, 0, 0.3)' },
-    { id: 2, matchName: 'kula', width: 105, height: 95, borderColor: 'blue', expectedColor: 'rgba(0, 0, 255, 0.3)' },
-    { id: 3, matchName: 'kule', width: 125, height: 90, borderColor: 'green', expectedColor: 'rgba(0, 255, 0, 0.3)' },
-    { id: 4, matchName: 'sabak_dule', width: 80, height: 110, borderColor: 'orange', expectedColor: 'rgba(255, 165, 0, 0.3)' },
-    { id: 5, matchName: 'sku', width: 90, height: 95, borderColor: 'purple', expectedColor: 'rgba(128, 0, 128, 0.3)' },
-    { id: 7, matchName: 'to_ta', width: 90, height: 80, borderColor: 'yellow', expectedColor: 'rgba(255, 255, 0, 0.3)' },
-    { id: 8, matchName: 'tska_tka', width: 85, height: 95, borderColor: 'cyan', expectedColor: 'rgba(0, 255, 255, 0.3)' },
-    { id: 9, matchName: 'u', width: 85, height: 85, borderColor: 'pink', expectedColor: 'rgba(255, 192, 203, 0.3)' },
+    { id: 1, matchName: 'aiko_ko', width: 80, height: 80, borderColor: 'red', expectedColor: 'rgba(255, 0, 0, 0.3)', x: 300, y: 300 },
+    { id: 2, matchName: 'kula', width: 105, height: 95, borderColor: 'blue', expectedColor: 'rgba(0, 0, 255, 0.3)', x: 675, y: 280 },
+    { id: 3, matchName: 'kule', width: 125, height: 90, borderColor: 'green', expectedColor: 'rgba(0, 255, 0, 0.3)', x: 548, y: 290 },
+    { id: 4, matchName: 'sabak_dule', width: 80, height: 110, borderColor: 'orange', expectedColor: 'rgba(255, 165, 0, 0.3)', x: 465, y: 270 },
+    { id: 5, matchName: 'sku', width: 90, height: 95, borderColor: 'purple', expectedColor: 'rgba(128, 0, 128, 0.3)', x: 584, y: 89 },
+    { id: 7, matchName: 'to_ta', width: 90, height: 80, borderColor: 'yellow', expectedColor: 'rgba(255, 255, 0, 0.3)', x: 680, y: 180 },
+    { id: 8, matchName: 'tska_tka', width: 85, height: 95, borderColor: 'cyan', expectedColor: 'rgba(0, 255, 255, 0.3)', x: 380, y: 285 },
+    { id: 9, matchName: 'u', width: 85, height: 85, borderColor: 'pink', expectedColor: 'rgba(255, 192, 203, 0.3)', x: 465, y: 70 },
 ];
 
 const Level7 = ({ navigation }: { navigation: NavigationProp<any> }) => {
@@ -82,7 +82,9 @@ const Level7 = ({ navigation }: { navigation: NavigationProp<any> }) => {
     };
     
     // Generate drop zones with circular positions
-    const dropZonesData = getCircularDropZones();
+    //const dropZonesData = getCircularDropZones();
+    const dropZonesData = baseDropZonesData;
+
 
     const playSound = async (audio: any) => {
         try {
@@ -128,7 +130,7 @@ const Level7 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 <BackButton navigation={navigation} />
                 {canContinue && <NextButton navigation={navigation} nextName="LevelMapping" />}
 
-                {/* Drop Zones in a circular arrangement */}
+                {/* Drop Zones arrangement */}
                 <View style={styles.dropZonesContainer}>
                     {dropZonesData.map((item) => (
                         <TouchableOpacity
@@ -136,20 +138,21 @@ const Level7 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                             style={[
                                 dropZoneStyles.dropZone,
                                 {
-                                    left: item.x + 300, // Adjust for the container offset
-                                    top: item.y,
+                                    left: item.x, // Use x coordinate from baseDropZonesData
+                                    top: item.y,  // Use y coordinate from baseDropZonesData
                                     width: item.width,
                                     height: item.height,
-                                    transform: [{ rotate: item.rotation }],
+                                    transform: [{ rotate: item.rotation || '0deg' }], // Default rotation
                                     borderColor: item.borderColor,
                                     backgroundColor: matches[item.matchName] ? item.expectedColor : 'transparent',
-                                }
+                                },
                             ]}
                             onPress={() => handleDropZonePress(item)}
                             activeOpacity={0.7}
                         />
                     ))}
                 </View>
+
 
                 {/* Words container at the bottom */}
                 <View style={styles.wordsContainer}>
