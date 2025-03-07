@@ -15,8 +15,8 @@ const NextButton: React.FC<NextButtonProps> = ({ navigation, nextName }) => {
     return (
         <TouchableOpacity style={styles.button} onPress={handleContinue}>
             <Image
-                source={require('@/assets/images/button.png')}
-                style={styles.buttonImageBottom}
+                // source={require('@/assets/images/button.png')}
+                // style={styles.buttonImageBottom}
             />
             <Image
                 source={require('@/assets/images/atras.png')}
