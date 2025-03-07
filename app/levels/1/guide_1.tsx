@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ImageBackground, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { ImageBackground, StyleSheet, View, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from '@/app/misc/BackButton';
 import NextButton from '@/app/misc/NextButton';
 import { NavigationProp } from '@react-navigation/native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const Guide = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const bgImage = require('@/assets/images/guia1.png');
@@ -19,29 +21,47 @@ const Guide = ({ navigation }: { navigation: NavigationProp<any> }) => {
     }, []);
 
     return (
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <ImageBackground source={bgImage} style={styles.bgImage}>
-            </ImageBackground>
-            <BackButton navigation={navigation} />
-            <NextButton navigation={navigation} nextName="Level1" />
-        </View>
+        <SafeAreaProvider>
+          <SafeAreaView style={styles.container}>
+              <ImageBackground 
+                source={bgImage} 
+                style={styles.bgImage}
+                imageStyle={{ resizeMode: 'contain' }}
+              >
+                  <View style={styles.buttonsBackContainer}>
+                    <BackButton navigation={navigation} />
+                  </View>
+                  <View style={styles.buttonsNextContainer}>
+                    <NextButton navigation={navigation} nextName="Level1" />
+                  </View>
+              </ImageBackground>
+          </SafeAreaView>
+        </SafeAreaProvider>
     );
 };
 
-const styles: { [key: string]: any } = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#ffff',
     },
     bgImage: {
         flex: 1,
-        resizeMode: 'cover',
-        justifyContent: 'center',
-        width: '115%',
-        height: '123%',
-        top: -90,
-        left: 17,
+        width: wp('80%'),
     },
+    buttonsBackContainer: {
+        position: 'absolute',
+        top: hp('-4%'),
+        left: wp('-7%'),
+        resizeMode: 'cover',
+    },
+    buttonsNextContainer: {
+        position: 'absolute',
+        bottom: hp('-1%'),
+        right: wp('-5%'),
+    }
 });
 
 export default Guide;
