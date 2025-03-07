@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ImageBackground, StyleSheet, View, Dimensions } from 'react-native';
+import { ImageBackground, StyleSheet, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from '@/app/misc/BackButton';
 import NextButton from '@/app/misc/NextButton';
@@ -28,12 +28,12 @@ const Guide = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 style={styles.bgImage}
                 imageStyle={{ resizeMode: 'contain' }}
               >
-                  <View style={styles.buttonsBackContainer}>
-                    <BackButton navigation={navigation} />
-                  </View>
-                  <View style={styles.buttonsNextContainer}>
-                    <NextButton navigation={navigation} nextName="Level1" />
-                  </View>
+                <View style={styles.buttonsBackContainer}>
+                <BackButton navigation={navigation} />
+                </View>
+                <View style={styles.buttonsNextContainer}>
+                <NextButton navigation={navigation} nextName="Level1" />
+                </View>
               </ImageBackground>
           </SafeAreaView>
         </SafeAreaProvider>
