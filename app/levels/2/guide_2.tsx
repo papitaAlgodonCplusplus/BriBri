@@ -61,7 +61,6 @@ const styles: { [key: string]: any } = StyleSheet.create({
       bottom: hp('-1%'),
       right: wp('-5%'),
   }
-
 });
 
 export default Guide;
