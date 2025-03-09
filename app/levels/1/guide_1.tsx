@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     bgImage: {
         flex: 1,
         width: wp('80%'),
+        height: hp('85%'),
     },
     buttonsBackContainer: {
         position: 'absolute',
