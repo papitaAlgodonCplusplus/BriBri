@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, TouchableOpacity, View } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -20,12 +20,14 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
+        {/* Fondo principal */}
         <Image
           source={require('@/assets/images/pantalla_principal.png')}
           style={styles.backgroundImage}
           resizeMode="stretch"
         />
 
+        {/* Botón "Jugar" */}
         <TouchableOpacity onPress={handlePress} style={styles.buttonImageContainer}>
           <Image
             source={require('@/assets/images/jugar.png')}
@@ -34,27 +36,31 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
           />
         </TouchableOpacity>
 
-        <Image
-          source={require('@/assets/images/button.png')}
-          style={styles.buttonImageBottom}
-          resizeMode="stretch"
-        />
-
-        <TouchableOpacity onPress={handleInstrucciones} style={styles.button}>
+        {/* Contenedor inferior: conserva tamaño original y posicionamiento */}
+        <View style={styles.bottomContainer}>
           <Image
-            source={require('@/assets/images/instrucciones.png')}
-            style={styles.instrucciones}
-            resizeMode="contain"
+            source={require('@/assets/images/button.png')}
+            style={styles.buttonImageBottom}
+            resizeMode="stretch"
           />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={handleCreditos} style={styles.button}>
-          <Image
-            source={require('@/assets/images/creditos.png')}
-            style={styles.creditos}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
+          {/* Contenedor interno para centrar los botones */}
+          <View style={styles.bottomButtonsContainer}>
+            <TouchableOpacity onPress={handleInstrucciones} style={styles.bottomButton}>
+              <Image
+                source={require('@/assets/images/instrucciones.png')}
+                style={styles.buttonIcon}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleCreditos} style={styles.bottomButton}>
+              <Image
+                source={require('@/assets/images/creditos.png')}
+                style={styles.buttonIcon}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -68,9 +74,7 @@ const styles = StyleSheet.create({
   backgroundImage: {
     width: wp('100%'),
     height: hp('100%'),
-    transform: [{ 
-      translateY: '-3%',
-    }],
+    transform: [{ translateY: -hp('3%') }],
   },
   buttonImageContainer: {
     position: 'absolute',
@@ -81,26 +85,33 @@ const styles = StyleSheet.create({
     width: wp('27%'),
     height: hp('37%'),
   },
-  buttonImageBottom: {
+
+  bottomContainer: {
     position: 'absolute',
+    bottom: wp('-2%'), 
+    right: hp('5%'),
     width: wp('20%'),
     height: hp('30%'),
-    bottom: wp('-2%'),
-    right: hp('5%'),
   },
-  button: {
+  buttonImageBottom: {
+    width: '100%',
+    height: '100%',
+  },
+
+  bottomButtonsContainer: {
     position: 'absolute',
-    bottom: hp('7.9%'),
-    right: wp('13%'),
+    width: '100%',
+    height: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  instrucciones: {
+  bottomButton: {
+    marginHorizontal: wp('0.1%'),
+  },
+  buttonIcon: {
     width: wp('7%'),
     height: hp('7%'),
-  },
-  creditos: {
-    width: wp('7%'),
-    height: hp('7%'),
-    left: wp('7.5%'),
   },
 });
 
