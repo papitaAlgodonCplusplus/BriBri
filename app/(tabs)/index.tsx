@@ -22,6 +22,14 @@ import Guide2Listen from '../levels_listen/2/guide_2_listen';
 import Level2Listen from '../levels_listen/2/level_2_listen';
 import Guide3Listen from '../levels_listen/3/guide_3_listen';
 import Level3Listen from '../levels_listen/3/level_3_listen';
+import Level4Listen from '../levels_listen/4/level_4_listen';
+import Guide4Listen from '../levels_listen/4/guide_4_listen';
+import Level5Listen from '../levels_listen/5/level_5_listen';
+import Guide5Listen from '../levels_listen/5/guide_5_listen';
+import Level6Listen from '../levels_listen/6/level_6_listen';
+import Guide6Listen from '../levels_listen/6/guide_6_listen';
+import Level7Listen from '../levels_listen/7/level_7_listen';
+import Guide7Listen from '../levels_listen/7/guide_7_listen';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -135,6 +143,46 @@ export default function App() {
       <Stack.Screen
         name="Level3Listen"
         component={Level3Listen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Level4Listen"
+        component={Level4Listen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Guide4Listen"
+        component={Guide4Listen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Level5Listen"
+        component={Level5Listen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Guide5Listen"
+        component={Guide5Listen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Level6Listen"
+        component={Level6Listen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Guide6Listen"
+        component={Guide6Listen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Level7Listen"
+        component={Level7Listen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Guide7Listen"
+        component={Guide7Listen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
