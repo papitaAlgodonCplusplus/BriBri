@@ -49,6 +49,7 @@ const styles: { [key: string]: any } = StyleSheet.create({
       bgImage: {
         flex: 1,
         width: wp('80%'),
+        height: hp('90%'),
       },
       buttonsBackContainer: {
         position: 'absolute',
