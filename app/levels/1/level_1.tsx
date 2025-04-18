@@ -75,21 +75,25 @@ const draggableElements = [
         id: 1,
         name: 'alè',
         text: 'alè',
+        image: require('@/assets/images/ale.png'),
     },
     {
         id: 2,
         name: 'kapö',
         text: 'kapö',
+        image: require('@/assets/images/kapo.png'),
     },
     {
         id: 3,
         name: 'ñolö kibí',
         text: 'ñolö kibí',
+        image: require('@/assets/images/nolo_kibi.png'),
     },
     {
         id: 4,
         name: 'ñolö nkuö',
         text: 'ñolö nkuö',
+        image: require('@/assets/images/nolo_nkuo.png'),
     },
 ];
 
@@ -293,12 +297,10 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                                         disabled={isMatched}
                                         activeOpacity={0.7}
                                     >
-                                        <Text style={[
-                                            styles.buttonText,
-                                            isMatched && { fontWeight: 'bold' }
-                                        ]}>
-                                            {item.text}
-                                        </Text>
+                                        <Image 
+                                            source={item.image} 
+                                            style={styles.wordImage}
+                                        />
                                     </TouchableOpacity>
                                 </View>
                             );
@@ -399,7 +401,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#000',
         borderRadius: 5,
-        padding: hp('1%'),
+        padding: hp('0.5%'),
         width: wp('11%'),
         height: hp('5%'),
         alignItems: 'center',
@@ -413,6 +415,11 @@ const styles = StyleSheet.create({
     matchedWord: {
         opacity: 0.9,
         borderWidth: 1,
+    },
+    wordImage: {
+        width: wp('11%'),
+        height: hp('6%'),
+        resizeMode: 'contain',
     },
 });
 
