@@ -74,25 +74,21 @@ const draggableElements = [
     {
         id: 1,
         name: 'alè',
-        text: 'alè',
         image: require('@/assets/images/ale.png'),
     },
     {
         id: 2,
         name: 'kapö',
-        text: 'kapö',
         image: require('@/assets/images/kapo.png'),
     },
     {
         id: 3,
         name: 'ñolö kibí',
-        text: 'ñolö kibí',
         image: require('@/assets/images/nolo_kibi.png'),
     },
     {
         id: 4,
         name: 'ñolö nkuö',
-        text: 'ñolö nkuö',
         image: require('@/assets/images/nolo_nkuo.png'),
     },
 ];
