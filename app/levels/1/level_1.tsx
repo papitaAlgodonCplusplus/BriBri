@@ -33,6 +33,10 @@ const visualObjects = [
             x: wp('3%'),
             y: hp('8%')
         },
+        size: {
+            normal: { width: wp('20%'), height: hp('12%') },
+            selected: { width: wp('20%'), height: hp('15%') }
+        },
         correctWord: 'alè'
     },
     {
@@ -41,8 +45,12 @@ const visualObjects = [
         imageNormal: require('@/assets/images/nolo_kuo_normal.png'),
         imageSelected: require('@/assets/images/nolo_kuo_sombra.png'),
         position: { 
-            x: wp('5%'),
+            x: wp('2%'),
             y: hp('20%')
+        },
+        size: {
+            normal: { width: wp('24%'), height: hp('15%') },
+            selected: { width: wp('24%'), height: hp('16%') }
         },
         correctWord: 'ñolö nkuö'
     },
@@ -53,7 +61,11 @@ const visualObjects = [
         imageSelected: require('@/assets/images/kapo_sombra.png'),
         position: { 
             x: wp('5%'),
-            y: hp('30%')
+            y: hp('33%')
+        },
+        size: {
+            normal: { width: wp('18%'), height: hp('11%') },
+            selected: { width: wp('18%'), height: hp('12%') }
         },
         correctWord: 'kapö'
     },
@@ -63,8 +75,12 @@ const visualObjects = [
         imageNormal: require('@/assets/images/nolo_kibi_normal.png'),
         imageSelected: require('@/assets/images/nolo_kibi_sombra.png'),
         position: { 
-            x: wp('1%'),
+            x: wp('0%'),
             y: hp('55%')
+        },
+        size: {
+            normal: { width: wp('20%'), height: hp('12%') },
+            selected: { width: wp('21%'), height: hp('14%') }
         },
         correctWord: 'ñolö kibí'
     }
@@ -261,11 +277,11 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                                     }
                                     style={{
                                         width: selectedObject === item.name || matches[item.name] 
-                                            ? wp('20%') // Tamano sombra
-                                            : wp('20%'),  // Tamaoo normal 
+                                            ? item.size.selected.width
+                                            : item.size.normal.width,
                                         height: selectedObject === item.name || matches[item.name] 
-                                            ? hp('13%')   // Tamano sombra
-                                            : hp('12%'),  // Tamaoo normal
+                                            ? item.size.selected.height
+                                            : item.size.normal.height,
                                         resizeMode: 'contain',
                                     }}
                                 />
