@@ -425,7 +425,7 @@ const Level2 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                                             isMatched && {
                                                 backgroundColor: '#ffffff',
                                                 borderColor: wordColor?.color || '#9e9e9e',
-                                                borderWidth: 1.2,
+                                                borderWidth: 2,
                                             }
                                         ]}
                                         onPress={() => handleWordPress(item)}
