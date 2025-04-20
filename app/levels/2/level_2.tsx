@@ -74,12 +74,12 @@ const visualObjects = [
         imageNormal: require('@/assets/images/kule_normal.png'),
         imageSelected: require('@/assets/images/kule_sombra.png'),
         position: { 
-            x: wp('37.4%'),
-            y: hp('17.5%')
+            x: wp('40%'),
+            y: hp('22%')
         },
         size: {
-            normal: { width: wp('20%'), height: hp('27%') },
-            selected: { width: wp('20%'), height: hp('24%') }
+            normal: { width: wp('16%'), height: hp('18%') },
+            selected: { width: wp('16%'), height: hp('20%') }
         },
         correctWord: 'kule'
     },
