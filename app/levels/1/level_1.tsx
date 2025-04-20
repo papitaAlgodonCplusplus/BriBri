@@ -429,8 +429,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     wordImage: {
-        width: wp('11%'),
-        height: hp('6%'),
+        width: wp('13%'),
+        height: hp('8%'),
         resizeMode: 'contain',
     },
 });
