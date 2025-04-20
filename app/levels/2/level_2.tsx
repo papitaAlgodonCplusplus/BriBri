@@ -495,7 +495,7 @@ const styles = StyleSheet.create({
         borderWidth: 1.5,
     },
     wordImage: {
-        width: wp('11%'),
+        width: wp('13%'),
         height: hp('7%'),
         resizeMode: 'contain',
     },
