@@ -30,7 +30,11 @@ const visualObjects = [
         imageSelected: require('@/assets/images/tso_klowok_sombra.png'),
         position: { 
             x: wp('2%'),
-            y: hp('60%')
+            y: hp('49%')
+        },
+        size: {
+            normal: { width: wp('21%'), height: hp('23%') },
+            selected: { width: wp('20%'), height: hp('24%') }
         },
         correctWord: 'tso klowok'
     },
@@ -41,7 +45,11 @@ const visualObjects = [
         imageSelected: require('@/assets/images/shkeki_sombra.png'),
         position: { 
             x: wp('26%'),
-            y: hp('27%')
+            y: hp('25%')
+        },
+        size: {
+            normal: { width: wp('20%'), height: hp('19%') },
+            selected: { width: wp('20%'), height: hp('20%') }
         },
         correctWord: 'shkeki'
     },
@@ -52,7 +60,11 @@ const visualObjects = [
         imageSelected: require('@/assets/images/tso_sombra.png'),
         position: { 
             x: wp('66%'),
-            y: hp('27%')
+            y: hp('25%')
+        },
+        size: {
+            normal: { width: wp('20%'), height: hp('15%') },
+            selected: { width: wp('20%'), height: hp('18%') }
         },
         correctWord: 'tso'
     },
@@ -62,8 +74,12 @@ const visualObjects = [
         imageNormal: require('@/assets/images/kule_normal.png'),
         imageSelected: require('@/assets/images/kule_sombra.png'),
         position: { 
-            x: wp('37%'),
-            y: hp('25%')
+            x: wp('37.4%'),
+            y: hp('17.5%')
+        },
+        size: {
+            normal: { width: wp('20%'), height: hp('27%') },
+            selected: { width: wp('20%'), height: hp('24%') }
         },
         correctWord: 'kule'
     },
@@ -74,7 +90,11 @@ const visualObjects = [
         imageSelected: require('@/assets/images/nak_kata_sombra.png'),
         position: { 
             x: wp('51%'),
-            y: hp('75%')
+            y: hp('68%')
+        },
+        size: {
+            normal: { width: wp('24%'), height: hp('20%') },
+            selected: { width: wp('24%'), height: hp('21%') }
         },
         correctWord: 'nak kata'
     },
@@ -84,8 +104,12 @@ const visualObjects = [
         imageNormal: require('@/assets/images/se_normal.png'),
         imageSelected: require('@/assets/images/se_sombra.png'),
         position: { 
-            x: wp('11%'),
-            y: hp('52%')
+            x: wp('12%'),
+            y: hp('51%')
+        },
+        size: {
+            normal: { width: wp('15%'), height: hp('22%') },
+            selected: { width: wp('15%'), height: hp('24%') }
         },
         correctWord: 'se'
     },
@@ -95,8 +119,12 @@ const visualObjects = [
         imageNormal: require('@/assets/images/seukuo_normal.png'),
         imageSelected: require('@/assets/images/seukuo_sombra.png'),
         position: { 
-            x: wp('29.7%'),
-            y: hp('84%')
+            x: wp('30%'),
+            y: hp('83%')
+        },
+        size: {
+            normal: { width: wp('20%'), height: hp('14%') },
+            selected: { width: wp('20%'), height: hp('15%') }
         },
         correctWord: 'seukuo'
     },
@@ -106,8 +134,12 @@ const visualObjects = [
         imageNormal: require('@/assets/images/i_kule_normal.png'),
         imageSelected: require('@/assets/images/i_kule_sombra.png'),
         position: { 
-            x: wp('8%'),
-            y: hp('29%')
+            x: wp('3%'),
+            y: hp('23%')
+        },
+        size: {
+            normal: { width: wp('30%'), height: hp('24%') },
+            selected: { width: wp('28%'), height: hp('22%') }
         },
         correctWord: 'i kule'
     },
@@ -117,8 +149,12 @@ const visualObjects = [
         imageNormal: require('@/assets/images/chamulikata_normal.png'),
         imageSelected: require('@/assets/images/chamulikata_sombra.png'),
         position: { 
-            x: wp('7%'),
-            y: hp('82%')
+            x: wp('-9%'),
+            y: hp('68%')
+        },
+        size: {
+            normal: { width: wp('40%'), height: hp('30%') },
+            selected: { width: wp('34%'), height: hp('24%') }
         },
         correctWord: 'chamulikata'
     }
@@ -362,11 +398,11 @@ const Level2 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                                     }
                                     style={{
                                         width: selectedObject === item.name || matches[item.name] 
-                                            ? wp('20%') // Tamaño sombra
-                                            : wp('20%'),  // Tamaño normal 
+                                            ? item.size.selected.width
+                                            : item.size.normal.width,
                                         height: selectedObject === item.name || matches[item.name] 
-                                            ? hp('15%')   // Tamaño sombra
-                                            : hp('14%'),  // Tamaño normal
+                                            ? item.size.selected.height
+                                            : item.size.normal.height,
                                         resizeMode: 'contain',
                                     }}
                                 />
