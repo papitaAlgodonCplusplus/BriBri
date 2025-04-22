@@ -3,176 +3,471 @@ LogBox.ignoreLogs([
     'Draggable: Support for defaultProps will be removed'
 ]);
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     View,
     ImageBackground,
     Image,
     StyleSheet,
     TouchableOpacity,
-    Dimensions,
+    Text,
+    Animated,
+    Easing,
 } from 'react-native';
-import { Audio } from 'expo-av';
 import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../../misc/BackButton';
 import NextButton from '../../misc/NextButton';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-const bgImage = require('@/assets/images/ilustraciones-05-Photoroom.png');
+const bgImage = require('@/assets/images/guia7juego.png');
 
-// Draggable elements with names for matching
-const draggableElements = [
-    { id: 1, name: 'aiko_ko', image: require('@/assets/images/aiko_ko2.png'), audio: require('@/assets/audios/ko.wav') },
-    { id: 2, name: 'kula', image: require('@/assets/images/kula2.png'), audio: require('@/assets/audios/kula.wav') },
-    { id: 3, name: 'kule', image: require('@/assets/images/kule2.png'), audio: require('@/assets/audios/kule.wav') },
-    { id: 4, name: 'sabak_dule', image: require('@/assets/images/sabak_dule2.png'), audio: require('@/assets/audios/sabak_dule.wav') },
-    { id: 5, name: 'sku', image: require('@/assets/images/sku2.png'), audio: require('@/assets/audios/sku.wav') },
-    { id: 7, name: 'to_ta', image: require('@/assets/images/to_ta2.png'), audio: require('@/assets/audios/to.wav') },
-    { id: 8, name: 'tska_tka', image: require('@/assets/images/tska_tka2.png'), audio: require('@/assets/audios/tska.wav') },
-    { id: 9, name: 'u', image: require('@/assets/images/u2.png'), audio: require('@/assets/audios/u.wav') },
+const visualObjects = [
+    {
+        id: 1,
+        name: 'obj_ajko_ko',
+        imageNormal: require('@/assets/images/ajko_ko_normal.png'),
+        imageSelected: require('@/assets/images/ajko_ko_sombra.png'),
+        position: { 
+            x: wp('2%'),
+            y: hp('50%')
+        },
+        size: {
+            normal: { width: wp('25%'), height: hp('30%') },
+            selected: { width: wp('25%'), height: hp('32%') }
+        },
+        correctWord: 'ajko_ko'
+    },
+    {
+        id: 2,
+        name: 'obj_sabak_dule',
+        imageNormal: require('@/assets/images/sabak_dule_normal.png'),
+        imageSelected: require('@/assets/images/sabak_dule_sombra.png'),
+        position: { 
+            x: wp('28%'),
+            y: hp('51%')
+        },
+        size: {
+            normal: { width: wp('21%'), height: hp('28%') },
+            selected: { width: wp('21%'), height: hp('28%') }
+        },
+        correctWord: 'sabak_dule'
+    },
+    {
+        id: 3,
+        name: 'obj_kula',
+        imageNormal: require('@/assets/images/kula_normal.png'),
+        imageSelected: require('@/assets/images/kula_sombra.png'),
+        position: { 
+            x: wp('56.5%'),
+            y: hp('64%')
+        },
+        size: {
+            normal: { width: wp('12%'), height: hp('14%') },
+            selected: { width: wp('16%'), height: hp('17%') }
+        },
+        correctWord: 'kula'
+    },
+    {
+        id: 4,
+        name: 'obj_to_ta',
+        imageNormal: require('@/assets/images/to_ta_normal.png'),
+        imageSelected: require('@/assets/images/to_ta_sombra.png'),
+        position: { 
+            x: wp('60%'),
+            y: hp('20%')
+        },
+        size: {
+            normal: { width: wp('16%'), height: hp('18%') },
+            selected: { width: wp('21%'), height: hp('28%') }
+        },
+        correctWord: 'to_ta'
+    },
+    {
+        id: 5,
+        name: 'obj_sku',
+        imageNormal: require('@/assets/images/sku_normal.png'),
+        imageSelected: require('@/assets/images/sku_sombra.png'),
+        position: { 
+            x: wp('43%'),
+            y: hp('0%')
+        },
+        size: {
+            normal: { width: wp('18%'), height: hp('20%') },
+            selected: { width: wp('18%'), height: hp('22%') }
+        },
+        correctWord: 'sku'
+    },
+    {
+        id: 6,
+        name: 'obj_tska_tka',
+        imageNormal: require('@/assets/images/tska_tka_normal.png'),
+        imageSelected: require('@/assets/images/tska_tka_sombra.png'),
+        position: { 
+            x: wp('18%'),
+            y: hp('53%')
+        },
+        size: {
+            normal: { width: wp('18%'), height: hp('14%') },
+            selected: { width: wp('18%'), height: hp('17%') }
+        },
+        correctWord: 'tska_tka'
+    },
+    {
+        id: 7,
+        name: 'obj_kule',
+        imageNormal: require('@/assets/images/kule2_normal.png'),
+        imageSelected: require('@/assets/images/kule2_sombra.png'),
+        position: { 
+            x: wp('42%'),
+            y: hp('60%')
+        },
+        size: {
+            normal: { width: wp('18%'), height: hp('14%') },
+            selected: { width: wp('18%'), height: hp('17%') }
+        },
+        correctWord: 'kule'
+    },
+    {
+        id: 8,
+        name: 'obj_skou',
+        imageNormal: require('@/assets/images/skou_normal.png'),
+        imageSelected: require('@/assets/images/skou_sombra.png'),
+        position: { 
+            x: wp('57%'),
+            y: hp('40%')
+        },
+        size: {
+            normal: { width: wp('20%'), height: hp('14%') },
+            selected: { width: wp('21%'), height: hp('17%') }
+        },
+        correctWord: 'skou'
+    },
+    {
+        id: 9,
+        name: 'obj_tcho_tka',
+        imageNormal: require('@/assets/images/tcho_tka_normal.png'),
+        imageSelected: require('@/assets/images/tcho_tka_sombra.png'),
+        position: { 
+            x: wp('55%'),
+            y: hp('8%')
+        },
+        size: {
+            normal: { width: wp('14%'), height: hp('14%') },
+            selected: { width: wp('14%'), height: hp('17%') }
+        },
+        correctWord: 'tcho_tka'
+    },
+    {
+        id: 10,
+        name: 'obj_u',
+        imageNormal: require('@/assets/images/u_normal.png'),
+        imageSelected: require('@/assets/images/u_sombra.png'),
+        position: { 
+            x: wp('27%'),
+            y: hp('-3%')
+        },
+        size: {
+            normal: { width: wp('20%'), height: hp('20%') },
+            selected: { width: wp('21%'), height: hp('28%') }
+        },
+        correctWord: 'u'
+    }
 ];
 
-// Base drop zone data with match names and styling
-const baseDropZonesData = [
-    { id: 1, matchName: 'aiko_ko', width: 80, height: 80, borderColor: 'red', expectedColor: 'rgba(255, 0, 0, 0.3)', x: 300, y: 300 },
-    { id: 2, matchName: 'kula', width: 105, height: 95, borderColor: 'blue', expectedColor: 'rgba(0, 0, 255, 0.3)', x: 680, y: 300 },
-    { id: 3, matchName: 'kule', width: 125, height: 90, borderColor: 'green', expectedColor: 'rgba(0, 255, 0, 0.3)', x: 548, y: 290 },
-    { id: 4, matchName: 'sabak_dule', width: 80, height: 110, borderColor: 'orange', expectedColor: 'rgba(255, 165, 0, 0.3)', x: 465, y: 270 },
-    { id: 5, matchName: 'sku', width: 90, height: 95, borderColor: 'purple', expectedColor: 'rgba(128, 0, 128, 0.3)', x: 584, y: 89 },
-    { id: 7, matchName: 'to_ta', width: 90, height: 80, borderColor: 'yellow', expectedColor: 'rgba(255, 255, 0, 0.3)', x: 695, y: 170 },
-    { id: 8, matchName: 'tska_tka', width: 85, height: 95, borderColor: 'cyan', expectedColor: 'rgba(0, 255, 255, 0.3)', x: 380, y: 285 },
-    { id: 9, matchName: 'u', width: 85, height: 85, borderColor: 'pink', expectedColor: 'rgba(255, 192, 203, 0.3)', x: 465, y: 70 },
+const draggableElements = [
+    {
+        id: 1,
+        name: 'ajko_ko',
+        image: require('@/assets/images/ajko_ko2.png'),
+    },
+    {
+        id: 2,
+        name: 'sabak_dule',
+        image: require('@/assets/images/sabak_dule2.png'),
+    },
+    {
+        id: 3,
+        name: 'kula',
+        image: require('@/assets/images/kula2.png'),
+    },
+    {
+        id: 4,
+        name: 'to_ta',
+        image: require('@/assets/images/to_ta2.png'),
+    },
+    {
+        id: 5,
+        name: 'sku',
+        image: require('@/assets/images/sku2.png'),
+    },
+    {
+        id: 6,
+        name: 'tska_tka',
+        image: require('@/assets/images/tska_tka2.png'),
+    },
+    {
+        id: 7,
+        name: 'kule',
+        image: require('@/assets/images/kule2.png'),
+    },
+    {
+        id: 8,
+        name: 'skou',
+        image: require('@/assets/images/skou2.png'),
+    },
+    {
+        id: 9,
+        name: 'tcho_tka',
+        image: require('@/assets/images/tcho_tka2.png'),
+    },
+    {
+        id: 10,
+        name: 'u',
+        image: require('@/assets/images/u2.png'),
+    },
+];
+
+const wordColors = [
+    {
+        name: 'ajko_ko',
+        color: '#0046e3',
+    },
+    {
+        name: 'sabak_dule',
+        color: '#603f91',
+    },
+    {
+        name: 'kula',
+        color: '#e6175c',
+    },
+    {
+        name: 'to_ta',
+        color: '#d92a73',
+    },
+    {
+        name: 'sku',
+        color: '#48ac8f',
+    },
+    {
+        name: 'tska_tka',
+        color: '#e4191c',
+    },
+    {
+        name: 'kule',
+        color: '#ede430',
+    },
+    {
+        name: 'skou',
+        color: '#e94d1f',
+    },
+    {
+        name: 'tcho_tka',
+        color: '#68e033',
+    },
+    {
+        name: 'u',
+        color: '#99307a',
+    },
 ];
 
 const Level7 = ({ navigation }: { navigation: NavigationProp<any> }) => {
-    // State to track which word is currently selected
-    const [selectedWord, setSelectedWord] = useState<any>(null);
-    // State to track matches, where key is the word name and value is the color
+    // Use a state copy for words that haven't been matched yet.
+    const [words, setWords] = useState([...draggableElements]);
+    const [selectedWord, setSelectedWord] = useState<string | null>(null);
+    const [selectedObject, setSelectedObject] = useState<string | null>(null);
     const [matches, setMatches] = useState<Record<string, string>>({});
     const [canContinue, setCanContinue] = useState(false);
-    // State to keep track of words that haven't been matched yet
-    const [words, setWords] = useState([...draggableElements]);
-    
-    // Calculate drop zone positions in a circle
-    const getCircularDropZones = () => {
-        const screenWidth = Dimensions.get('window').width;
-        const screenHeight = Dimensions.get('window').height;
-        
-        // Center of the circle
-        const centerX = screenWidth / 2 - 150; // Adjust for the container offset
-        const centerY = screenHeight / 2;
-        
-        // Radius of the circle - make it 35% of the smaller dimension
-        const radius = Math.min(screenWidth, screenHeight) * 0.35;
-        
-        return baseDropZonesData.map((zone, index) => {
-            // Calculate angle for this item (in radians)
-            const angle = (2 * Math.PI * index) / baseDropZonesData.length;
-            
-            // Calculate position
-            const x = centerX + radius * Math.cos(angle) - zone.width / 2;
-            const y = centerY + radius * Math.sin(angle) - zone.height / 2;
-            
-            return {
-                ...zone,
-                x, 
-                y,
-                rotation: '0deg'
-            };
-        });
-    };
-    
-    // Generate drop zones with circular positions
-    //const dropZonesData = getCircularDropZones();
-    const dropZonesData = baseDropZonesData;
 
+    const animatedValues = useRef(
+        visualObjects.reduce((acc, obj) => {
+            acc[obj.name] = new Animated.Value(1);
+            return acc;
+        }, {} as Record<string, Animated.Value>)
+    ).current;
 
-    const playSound = async (audio: any) => {
-        try {
-            const { sound } = await Audio.Sound.createAsync(audio);
-            await sound.playAsync();
-        } catch (error) {
-            console.error('Error playing sound', error);
-        }
+    const startPulseAnimation = (objectName: string) => {
+        animatedValues[objectName].setValue(1);
+        
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(animatedValues[objectName], {
+                    toValue: 1.1,
+                    duration: 800,
+                    easing: Easing.inOut(Easing.ease),
+                    useNativeDriver: true
+                }),
+                Animated.timing(animatedValues[objectName], {
+                    toValue: 1,
+                    duration: 800,
+                    easing: Easing.inOut(Easing.ease),
+                    useNativeDriver: true
+                })
+            ])
+        ).start();
     };
 
-    // Handle word selection
-    const handleWordPress = (word: any) => {
-        if (matches[word.name]) return; // Already matched
-        if (selectedWord && selectedWord.name === word.name) {
-            setSelectedWord(null);
+    const stopPulseAnimation = (objectName: string) => {
+        animatedValues[objectName].stopAnimation();
+        animatedValues[objectName].setValue(1);
+    };
+
+    // When a word is tapped, toggle its selection
+    const handleWordPress = (item: { name: string }) => {
+        if (Object.values(matches).includes(item.name)) return;
+        
+        if (selectedObject) {
+            const objectInfo = visualObjects.find(obj => obj.name === selectedObject);
+            if (objectInfo && objectInfo.correctWord === item.name) {
+                setMatches(prev => ({
+                    ...prev,
+                    [selectedObject]: item.name
+                }));
+                stopPulseAnimation(selectedObject);
+                setSelectedObject(null);
+                setSelectedWord(null);
+            } else {
+                setSelectedWord(selectedWord === item.name ? null : item.name);
+            }
         } else {
-            setSelectedWord(word);
+            setSelectedWord(selectedWord === item.name ? null : item.name);
         }
     };
 
-    // Handle drop zone press
-    const handleDropZonePress = (zone: any) => {
-        if (!selectedWord) return;
-        console.log('Selected word:', selectedWord.name, 'Expected:', zone.matchName);
-        if (selectedWord.name === zone.matchName) {
-            setMatches((prev) => ({ ...prev, [zone.matchName]: zone.expectedColor }));
-            playSound(selectedWord.audio);
-            setWords((prev) => prev.filter((word) => word.name !== selectedWord.name));
+    const handleObjectPress = (objectName: string) => {
+        if (matches[objectName]) return;
+        if (selectedObject === objectName) {
+            setSelectedObject(null);
+            stopPulseAnimation(objectName);
+            return;
         }
-        setSelectedWord(null);
+        if (selectedObject) {
+            stopPulseAnimation(selectedObject);
+        }
+        setSelectedObject(objectName);
+        startPulseAnimation(objectName);
+        if (selectedWord) {
+            const objectInfo = visualObjects.find(obj => obj.name === objectName);
+            if (objectInfo && objectInfo.correctWord === selectedWord) {
+                setMatches(prev => ({
+                    ...prev,
+                    [objectName]: selectedWord
+                }));
+                stopPulseAnimation(objectName);
+                setSelectedObject(null);
+                setSelectedWord(null);
+            }
+        }
     };
 
-    // When all words have been matched, enable Next button
     useEffect(() => {
-        if (Object.keys(matches).length === draggableElements.length) {
+        return () => {
+            Object.keys(animatedValues).forEach(key => {
+                animatedValues[key].stopAnimation();
+            });
+        };
+    }, []);
+
+    useEffect(() => {
+        if (Object.keys(matches).length === visualObjects.length) {
             setCanContinue(true);
         }
     }, [matches]);
 
     return (
-        <View style={{ flex: 1 }}>
-            <ImageBackground source={bgImage} style={styles.container}>
-                <BackButton navigation={navigation} />
-                {canContinue && <NextButton navigation={navigation} nextName="LevelMapping" />}
+        <SafeAreaProvider>
+            <SafeAreaView style={styles.container}>
+                <ImageBackground
+                    source={require('../../../assets/images/guia7juego.png')}
+                    style={styles.backgroundImage}
+                    resizeMode="contain"
+                >
+                    {/* Back Button */}
+                    <View style={styles.buttonsBackContainer}>
+                        <BackButton navigation={navigation} />
+                    </View>
 
-                {/* Drop Zones arrangement */}
-                <View style={styles.dropZonesContainer}>
-                    {dropZonesData.map((item) => (
+                    {/* Next Button */}
+                    {canContinue && (
+                        <View style={styles.buttonsNextContainer}>
+                            <NextButton navigation={navigation} nextName="LevelMapping" />
+                        </View>
+                    )}
+
+                    {/* Images - Normal and Selected */}
+                    {visualObjects.map((item) => (
                         <TouchableOpacity
                             key={item.id}
-                            style={[
-                                dropZoneStyles.dropZone,
-                                {
-                                    left: item.x, // Use x coordinate from baseDropZonesData
-                                    top: item.y,  // Use y coordinate from baseDropZonesData
-                                    width: item.width,
-                                    height: item.height,
-                                    transform: [{ rotate: item.rotation || '0deg' }], // Default rotation
-                                    borderColor: item.borderColor,
-                                    backgroundColor: matches[item.matchName] ? item.expectedColor : 'transparent',
-                                },
-                            ]}
-                            onPress={() => handleDropZonePress(item)}
-                            activeOpacity={0.7}
-                        />
-                    ))}
-                </View>
-
-
-                {/* Words container at the bottom */}
-                <View style={styles.wordsContainer}>
-                    {words.map((item) => (
-                        <TouchableOpacity
-                            key={item.id}
-                            style={[
-                                styles.wordButton,
-                                selectedWord && selectedWord.name === item.name && styles.selectedWord,
-                                matches[item.name] && { backgroundColor: matches[item.name] },
-                            ]}
-                            onPress={() => handleWordPress(item)}
+                            style={{
+                                position: 'absolute',
+                                left: item.position.x,
+                                top: item.position.y,
+                                zIndex: 5,
+                            }}
+                            onPress={() => handleObjectPress(item.name)}
                             disabled={!!matches[item.name]}
                         >
-                            <Image source={item.image} style={styles.wordImage} />
+                            <Animated.View
+                                style={{
+                                    transform: [
+                                        { scale: animatedValues[item.name] }
+                                    ],
+                                }}
+                            >
+                                <Image
+                                    source={
+                                        selectedObject === item.name || matches[item.name] 
+                                        ? item.imageSelected 
+                                        : item.imageNormal
+                                    }
+                                    style={{
+                                        width: selectedObject === item.name || matches[item.name] 
+                                            ? item.size.selected.width
+                                            : item.size.normal.width,
+                                        height: selectedObject === item.name || matches[item.name] 
+                                            ? item.size.selected.height
+                                            : item.size.normal.height,
+                                        resizeMode: 'contain',
+                                    }}
+                                />
+                            </Animated.View>
                         </TouchableOpacity>
                     ))}
-                </View>
-            </ImageBackground>
-        </View>
+
+                    {/* Buttons Container - Word Options */}
+                    <View style={styles.buttonsContainer}>
+                        {draggableElements.map((item) => {
+                            const isMatched = Object.values(matches).includes(item.name);
+                            const wordColor = wordColors.find(word => word.name === item.name);
+                            
+                            return (
+                                <View key={item.id} style={styles.buttonWrapper}>
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.button,
+                                            selectedWord === item.name && styles.selectedWord,
+                                            isMatched && {
+                                                backgroundColor: '#ffffff',
+                                                borderColor: wordColor?.color || '#9e9e9e',
+                                                borderWidth: 2,
+                                            }
+                                        ]}
+                                        onPress={() => handleWordPress(item)}
+                                        disabled={isMatched}
+                                        activeOpacity={0.7}
+                                    >
+                                        <Image 
+                                            source={item.image} 
+                                            style={styles.wordImage}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            );
+                        })}
+                    </View>
+                </ImageBackground>
+            </SafeAreaView>
+        </SafeAreaProvider>
     );
 };
 
@@ -191,48 +486,82 @@ const dropZoneStyles = StyleSheet.create({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: '120%',
+        backgroundColor: '#fff',
         justifyContent: 'center',
-        alignItems: 'center',
-        left: -150,
-        top: -20,
     },
-    dropZonesContainer: {
+    backgroundImage: {
+        alignSelf: 'center',
+        width: wp('80%'),
+        height: hp('100%'),
+    },
+    buttonsBackContainer: {
         position: 'absolute',
-        width: '100%',
-        height: '100%',
+        top: hp('-2%'),
+        left: wp('-8%'),
+        zIndex: 1,
+    },
+    buttonsNextContainer: {
+        position: 'absolute',
+        bottom: hp('-0%'),
+        right: wp('-6%'),
+        zIndex: 1,
     },
     wordsContainer: {
         position: 'absolute',
-        top: 10,
-        left: 150,
+        bottom: hp('8%'),
+        left: wp('5%'),
+        width: wp('25%'),
         flexDirection: 'row',
         flexWrap: 'wrap',
-        width: '80%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingVertical: 10,
-        backgroundColor: 'rgba(0,0,0,0.2)',
-        alignSelf: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        gap: wp('1%'),
     },
     wordButton: {
         backgroundColor: 'rgba(255,255,255,0.5)',
         borderRadius: 10,
-        padding: 5,
+        padding: 2,
         margin: 5,
-        width: 90,
-        height: 30,
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center',
     },
     selectedWord: {
-        borderWidth: 2,
-        borderColor: 'blue',
+        backgroundColor: '#f0f0f0',
+        borderColor: '#677',
+        borderWidth: 1.5,
     },
     wordImage: {
-        width: 80,
-        height: 20,
+        width: wp('13%'),
+        height: hp('7%'),
         resizeMode: 'contain',
+    },
+    buttonsContainer: {
+        position: 'absolute',
+        bottom: hp('5%'),
+        left: wp('11%'),
+        width: wp('60%'),
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        gap: wp('1%'),
+    },
+    buttonWrapper: {
+        width: wp('11%'),
+        height: hp('5%'),
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    button: {
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#000',
+        borderRadius: 5,
+        padding: hp('0.5%'),
+        width: wp('11%'),
+        height: hp('5%'),
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
 
