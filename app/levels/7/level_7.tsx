@@ -17,7 +17,7 @@ import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../../misc/BackButton';
 import NextButton from '../../misc/NextButton';
 
-const bgImage = require('@/assets/images/ilustraciones-05.jpg');
+const bgImage = require('@/assets/images/ilustraciones-05-Photoroom.png');
 
 // Draggable elements with names for matching
 const draggableElements = [
@@ -34,11 +34,11 @@ const draggableElements = [
 // Base drop zone data with match names and styling
 const baseDropZonesData = [
     { id: 1, matchName: 'aiko_ko', width: 80, height: 80, borderColor: 'red', expectedColor: 'rgba(255, 0, 0, 0.3)', x: 300, y: 300 },
-    { id: 2, matchName: 'kula', width: 105, height: 95, borderColor: 'blue', expectedColor: 'rgba(0, 0, 255, 0.3)', x: 675, y: 280 },
+    { id: 2, matchName: 'kula', width: 105, height: 95, borderColor: 'blue', expectedColor: 'rgba(0, 0, 255, 0.3)', x: 680, y: 300 },
     { id: 3, matchName: 'kule', width: 125, height: 90, borderColor: 'green', expectedColor: 'rgba(0, 255, 0, 0.3)', x: 548, y: 290 },
     { id: 4, matchName: 'sabak_dule', width: 80, height: 110, borderColor: 'orange', expectedColor: 'rgba(255, 165, 0, 0.3)', x: 465, y: 270 },
     { id: 5, matchName: 'sku', width: 90, height: 95, borderColor: 'purple', expectedColor: 'rgba(128, 0, 128, 0.3)', x: 584, y: 89 },
-    { id: 7, matchName: 'to_ta', width: 90, height: 80, borderColor: 'yellow', expectedColor: 'rgba(255, 255, 0, 0.3)', x: 680, y: 180 },
+    { id: 7, matchName: 'to_ta', width: 90, height: 80, borderColor: 'yellow', expectedColor: 'rgba(255, 255, 0, 0.3)', x: 695, y: 170 },
     { id: 8, matchName: 'tska_tka', width: 85, height: 95, borderColor: 'cyan', expectedColor: 'rgba(0, 255, 255, 0.3)', x: 380, y: 285 },
     { id: 9, matchName: 'u', width: 85, height: 85, borderColor: 'pink', expectedColor: 'rgba(255, 192, 203, 0.3)', x: 465, y: 70 },
 ];

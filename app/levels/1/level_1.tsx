@@ -165,8 +165,8 @@ const dropZoneStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 10,
-        left: 380, // adjusted from 580, -50
-        top: -155, // adjusted from -60, -100
+        left: 445, // adjusted from 580, -50
+        top: -95, // adjusted from -60, -100
         borderColor: 'orange',
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
         borderWidth: 4,
@@ -177,10 +177,9 @@ const dropZoneStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 10,
-        left: -180, // adjusted from -280, -50
+        left: 100, // adjusted from -280, -50
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
-        top: -70, // adjusted from 80, -100
-        transform: [{ rotate: '20deg' }],
+        top: -50, // adjusted from 80, -100
         borderColor: 'green',
         borderWidth: 4,
     },
@@ -191,8 +190,8 @@ const dropZoneStyles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 10,
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
-        left: -335, // adjusted from -430, -50
-        top: -90, // adjusted from 45, -100
+        left: -505, // adjusted from -430, -50
+        top: -40, // adjusted from 45, -100
         borderColor: 'yellow',
         borderWidth: 4,
     },
@@ -203,8 +202,8 @@ const dropZoneStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 10,
-        left: -420, // adjusted from -430, -50
-        top: -250, // adjusted from -120, -100
+        left: -570, // adjusted from -430, -50
+        top: -300, // adjusted from -120, -100
         borderColor: 'red',
         borderWidth: 4,
     },
@@ -221,7 +220,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         width: '100%',
-        top: 340,
+        top: 360,
         zIndex: 3,
         backgroundColor: 'rgba(0, 0, 0, 0.65)',
         paddingVertical: 10,
@@ -231,8 +230,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
         borderRadius: 10,
         padding: 10,
-        width: 200,
-        height: 50,
+        width: 120,
+        height: 30,
         justifyContent: 'center',
         alignItems: 'center',
         marginHorizontal: 5,
@@ -252,10 +251,10 @@ const styles = StyleSheet.create({
         flex: 1,
         resizeMode: 'cover',
         justifyContent: 'center',
-        width: '115%',
-        height: '140%',
-        left: 18,
-        top: -100,
+        width: '100%',
+        height: '110%',
+        top: 0,
+        left: 10,
     },
 });
 

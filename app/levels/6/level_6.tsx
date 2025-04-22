@@ -164,10 +164,10 @@ const styles = StyleSheet.create({
     },
     wordsContainer: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 0,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        width: '40%',
+        width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 10,

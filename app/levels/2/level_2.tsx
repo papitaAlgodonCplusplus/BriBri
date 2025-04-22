@@ -17,7 +17,7 @@ import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../../misc/BackButton';
 import NextButton from '../../misc/NextButton';
 
-const bgImage = require('@/assets/images/ilustraciones-01.jpg');
+const bgImage = require('@/assets/images/ilustraciones-01-Photoroom.png');
 
 const draggableElements = [
     {
@@ -247,8 +247,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 10,
         flexDirection: 'row',
-        flexWrap: 'wrap', // Allow words to wrap to the next line
-        width: '90%',
+        flexWrap: 'wrap', 
+        width: '100%',
         paddingVertical: 10,
         backgroundColor: 'rgba(0,0,0,0.2)',
     },
@@ -263,8 +263,8 @@ const styles = StyleSheet.create({
         borderColor: 'blue',
     },
     wordImage: {
-        width: 120, // Reduced width
-        height: 40, // Increased height
+        width: 100, // Reduced width
+        height: 30, // Increased height
         resizeMode: 'cover',
     },
 });

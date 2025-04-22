@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     },
     draggableContainer: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 10,
         flexDirection: 'row',
         width: '100%',
         paddingVertical: 10,
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     },
     draggableImage: {
         width: 150, 
-        height: 40, 
+        height: 35, 
         resizeMode: 'cover',
         marginLeft: 10,
     },
@@ -174,8 +174,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,255,255,0.5)',
         borderRadius: 10,
         padding: 5,
-        width: 170,
+        width: 120,
         height: 40,
+        left: 0,
         alignItems: 'center',
         marginHorizontal: 10,
     },

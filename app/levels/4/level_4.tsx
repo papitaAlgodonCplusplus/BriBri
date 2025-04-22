@@ -29,9 +29,9 @@ const draggableElements = [
 
 // Drop zones with predefined positions, sizes, and rotations
 const dropZonesData = [
-    { id: 1, matchName: 'kowolo', x: 270, y: 180, width: 30, height: 15, rotation: '-90deg', borderColor: 'red', expectedColor: 'rgba(255, 0, 0, 0.3)' },      // Drop zone for first element
+    { id: 1, matchName: 'kowolo', x: 121, y: 240, width: 60, height: 15, rotation: '-90deg', borderColor: 'red', expectedColor: 'rgba(255, 0, 0, 0.3)' },      // Drop zone for first element
     { id: 2, matchName: 'klowok', x: 620, y: 0, width: 30, height: 150, rotation: '0deg', borderColor: 'yellow', expectedColor: 'rgba(255, 255, 0, 0.3)' },    // Drop zone for second element
-    { id: 3, matchName: 'kochane', x: 305, y: 60, width: 70, height: 70, rotation: '10deg', borderColor: 'purple', expectedColor: 'rgba(128, 0, 128, 0.3)' }, // Drop zone for third element
+    { id: 3, matchName: 'kochane', x: 460, y: 5, width: 15, height: 70, rotation: '0deg', borderColor: 'purple', expectedColor: 'rgba(128, 0, 128, 0.3)' }, // Drop zone for third element
     { id: 4, matchName: 'kokata', x: 570, y: 235, width: 170, height: 50, rotation: '0deg', borderColor: 'green', expectedColor: 'rgba(0, 128, 0, 0.3)' },    // Drop zone for fourth element
 ];
 
