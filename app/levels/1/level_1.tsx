@@ -20,8 +20,6 @@ import NextButton from '../../misc/NextButton';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-const bgImage = require('@/assets/images/guia1juego.png');
-
 // Objetos visuales (imágenes)
 const visualObjects = [
     {
@@ -29,9 +27,9 @@ const visualObjects = [
         name: 'obj_ale',
         imageNormal: require('@/assets/images/ale_normal.png'),
         imageSelected: require('@/assets/images/ale_sombra.png'),
-        position: { 
-            x: wp('3%'),
-            y: hp('8%')
+        position: {
+            x: wp('15%'),
+            y: hp('42%')
         },
         size: {
             normal: { width: wp('20%'), height: hp('12%') },
@@ -44,9 +42,9 @@ const visualObjects = [
         name: 'obj_nolo_nkuo',
         imageNormal: require('@/assets/images/nolo_kuo_normal.png'),
         imageSelected: require('@/assets/images/nolo_kuo_sombra.png'),
-        position: { 
-            x: wp('2%'),
-            y: hp('20%')
+        position: {
+            x: wp('3%'),
+            y: hp('104%')
         },
         size: {
             normal: { width: wp('24%'), height: hp('15%') },
@@ -59,9 +57,9 @@ const visualObjects = [
         name: 'obj_kapo',
         imageNormal: require('@/assets/images/kapo_normal.png'),
         imageSelected: require('@/assets/images/kapo_sombra.png'),
-        position: { 
-            x: wp('5%'),
-            y: hp('33%')
+        position: {
+            x: wp('52%'),
+            y: hp('96%')
         },
         size: {
             normal: { width: wp('18%'), height: hp('11%') },
@@ -74,9 +72,9 @@ const visualObjects = [
         name: 'obj_nolo_kibi',
         imageNormal: require('@/assets/images/nolo_kibi_normal.png'),
         imageSelected: require('@/assets/images/nolo_kibi_sombra.png'),
-        position: { 
-            x: wp('0%'),
-            y: hp('55%')
+        position: {
+            x: wp('38%'),
+            y: hp('103%')
         },
         size: {
             normal: { width: wp('20%'), height: hp('12%') },
@@ -144,7 +142,7 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
     const startPulseAnimation = (objectName: string) => {
         animatedValues[objectName].setValue(1);
-        
+
         Animated.loop(
             Animated.sequence([
                 Animated.timing(animatedValues[objectName], {
@@ -170,7 +168,7 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
     const handleWordPress = (item: { name: string }) => {
         if (Object.values(matches).includes(item.name)) return;
-        
+
         if (selectedObject) {
             const objectInfo = visualObjects.find(obj => obj.name === selectedObject);
             if (objectInfo && objectInfo.correctWord === item.name) {
@@ -271,15 +269,15 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                             >
                                 <Image
                                     source={
-                                        selectedObject === item.name || matches[item.name] 
-                                        ? item.imageSelected 
-                                        : item.imageNormal
+                                        selectedObject === item.name || matches[item.name]
+                                            ? item.imageSelected
+                                            : item.imageNormal
                                     }
                                     style={{
-                                        width: selectedObject === item.name || matches[item.name] 
+                                        width: selectedObject === item.name || matches[item.name]
                                             ? item.size.selected.width
                                             : item.size.normal.width,
-                                        height: selectedObject === item.name || matches[item.name] 
+                                        height: selectedObject === item.name || matches[item.name]
                                             ? item.size.selected.height
                                             : item.size.normal.height,
                                         resizeMode: 'contain',
@@ -309,8 +307,8 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                                         disabled={isMatched}
                                         activeOpacity={0.7}
                                     >
-                                        <Image 
-                                            source={item.image} 
+                                        <Image
+                                            source={item.image}
                                             style={styles.wordImage}
                                         />
                                     </TouchableOpacity>
@@ -388,13 +386,14 @@ const styles = StyleSheet.create({
     },
     backgroundImage: {
         alignSelf: 'center',
-        width: wp('80%'),
-        height: hp('100%'),
+        width: wp('100%'),
+        height: hp('135%'),
+        top: hp('-2%'),
     },
     buttonsContainer: {
         position: 'absolute',
-        bottom: hp('8%'),
-        left: wp('5%'),
+        top: hp('30%'),
+        left: wp('2%'),
         width: wp('25%'),
         flexDirection: 'row',
         flexWrap: 'wrap',

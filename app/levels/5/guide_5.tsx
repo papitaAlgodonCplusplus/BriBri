@@ -48,19 +48,20 @@ const styles: { [key: string]: any } = StyleSheet.create({
       },
       bgImage: {
         flex: 1,
-        width: wp('80%'),
-        height: hp('85%'),
+        width: wp('100%'),
+        height: hp('115%'),
+        right: wp('4%'),
       },
       buttonsBackContainer: {
         position: 'absolute',
-        top: hp('-4%'),
-        left: wp('-7%'),
+        top: hp('0%'),
+        left: wp('0%'),
         resizeMode: 'cover',
     },
     buttonsNextContainer: {
         position: 'absolute',
-        bottom: hp('-1%'),
-        right: wp('-5%'),
+        bottom: hp('0%'),
+        right: wp('0%'),
     }
 });
 

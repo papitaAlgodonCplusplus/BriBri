@@ -8,7 +8,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const Guide = ({ navigation }: { navigation: NavigationProp<any> }) => {
-  const bgImage = require('@/assets/images/guia1.png');
+  const bgImage = require('@/assets/images/guia1.jpeg');
 
   const [mode, setMode] = useState<'read' | 'listen' | null>(null);
 
@@ -48,8 +48,9 @@ const styles = StyleSheet.create({
   bgImage: {
     position: 'absolute',
     alignSelf: 'center',
-    width: wp('80%'),
-    height: hp('100%'),
+    width: wp('100%'),
+    height: hp('135%'),
+    top: hp('-23%'),
 },
 buttonsBackContainer: {
     bottom: hp('53%'),

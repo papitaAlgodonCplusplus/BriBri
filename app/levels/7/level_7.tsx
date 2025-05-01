@@ -59,7 +59,7 @@ const visualObjects = [
         imageNormal: require('@/assets/images/kula_normal.png'),
         imageSelected: require('@/assets/images/kula_sombra.png'),
         position: { 
-            x: wp('56.5%'),
+            x: wp('55.5%'),
             y: hp('64%')
         },
         size: {
@@ -74,7 +74,7 @@ const visualObjects = [
         imageNormal: require('@/assets/images/to_ta_normal.png'),
         imageSelected: require('@/assets/images/to_ta_sombra.png'),
         position: { 
-            x: wp('60%'),
+            x: wp('56%'),
             y: hp('20%')
         },
         size: {
@@ -105,7 +105,7 @@ const visualObjects = [
         imageSelected: require('@/assets/images/tska_tka_sombra.png'),
         position: { 
             x: wp('18%'),
-            y: hp('53%')
+            y: hp('56%')
         },
         size: {
             normal: { width: wp('18%'), height: hp('14%') },
@@ -119,7 +119,7 @@ const visualObjects = [
         imageNormal: require('@/assets/images/kule2_normal.png'),
         imageSelected: require('@/assets/images/kule2_sombra.png'),
         position: { 
-            x: wp('42%'),
+            x: wp('40%'),
             y: hp('60%')
         },
         size: {
@@ -134,7 +134,7 @@ const visualObjects = [
         imageNormal: require('@/assets/images/skou_normal.png'),
         imageSelected: require('@/assets/images/skou_sombra.png'),
         position: { 
-            x: wp('57%'),
+            x: wp('54%'),
             y: hp('40%')
         },
         size: {
@@ -165,7 +165,7 @@ const visualObjects = [
         imageSelected: require('@/assets/images/u_sombra.png'),
         position: { 
             x: wp('27%'),
-            y: hp('-3%')
+            y: hp('-5%')
         },
         size: {
             normal: { width: wp('20%'), height: hp('20%') },

@@ -20,9 +20,6 @@ import NextButton from '../../misc/NextButton';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-
-const bgImage = require('@/assets/images/guia5juego.png');
-
 const visualObjects = [
     {
         id: 1,

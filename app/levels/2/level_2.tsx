@@ -19,8 +19,6 @@ import NextButton from '../../misc/NextButton';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-const bgImage = require('@/assets/images/guia2juego.png');
-
 // Objetos visuales (imágenes)
 const visualObjects = [
     {
@@ -29,8 +27,8 @@ const visualObjects = [
         imageNormal: require('@/assets/images/tso_klowok_normal.png'),
         imageSelected: require('@/assets/images/tso_klowok_sombra.png'),
         position: { 
-            x: wp('2%'),
-            y: hp('49%')
+            x: wp('3%'),
+            y: hp('50%')
         },
         size: {
             normal: { width: wp('21%'), height: hp('23%') },
@@ -59,7 +57,7 @@ const visualObjects = [
         imageNormal: require('@/assets/images/tso_normal.png'),
         imageSelected: require('@/assets/images/tso_sombra.png'),
         position: { 
-            x: wp('66%'),
+            x: wp('65%'),
             y: hp('25%')
         },
         size: {
@@ -74,7 +72,7 @@ const visualObjects = [
         imageNormal: require('@/assets/images/kule_normal.png'),
         imageSelected: require('@/assets/images/kule_sombra.png'),
         position: { 
-            x: wp('40%'),
+            x: wp('39%'),
             y: hp('22%')
         },
         size: {
@@ -104,7 +102,7 @@ const visualObjects = [
         imageNormal: require('@/assets/images/se_normal.png'),
         imageSelected: require('@/assets/images/se_sombra.png'),
         position: { 
-            x: wp('12%'),
+            x: wp('13%'),
             y: hp('51%')
         },
         size: {
@@ -120,7 +118,7 @@ const visualObjects = [
         imageSelected: require('@/assets/images/seukuo_sombra.png'),
         position: { 
             x: wp('30%'),
-            y: hp('83%')
+            y: hp('84%')
         },
         size: {
             normal: { width: wp('20%'), height: hp('14%') },
@@ -149,8 +147,8 @@ const visualObjects = [
         imageNormal: require('@/assets/images/chamulikata_normal.png'),
         imageSelected: require('@/assets/images/chamulikata_sombra.png'),
         position: { 
-            x: wp('-9%'),
-            y: hp('68%')
+            x: wp('-3%'),
+            y: hp('77%')
         },
         size: {
             normal: { width: wp('40%'), height: hp('30%') },

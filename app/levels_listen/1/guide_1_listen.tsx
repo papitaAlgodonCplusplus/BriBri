@@ -5,10 +5,11 @@ import { NavigationProp } from '@react-navigation/native';
 import { Audio } from 'expo-av';
 import BackButton from '@/app/misc/BackButton';
 import NextButton from '@/app/misc/NextButton';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const GuideListen = ({ navigation }: { navigation: NavigationProp<any> }) => {
-  // Use the same background image as before.
-  const bgImage = require('@/assets/images/guia1.png');
+  const bgImage = require('@/assets/images/guia1.jpeg');
 
   const [mode, setMode] = useState<'read' | 'listen' | null>(null);
 
@@ -40,78 +41,15 @@ const GuideListen = ({ navigation }: { navigation: NavigationProp<any> }) => {
     },
   ];
 
-  // Define drop zone styles (these are used to position the audio boxes).
-  // The colors are as follows:
-  //   zoneContainer1 (orange)  -> for kapo
-  //   zoneContainer2 (green)   -> for nolo kibi
-  //   zoneContainer3 (yellow)  -> for nolo nkuo
-  //   zoneContainer4 (red)     -> for ale
-  const dropZoneStyles = StyleSheet.create({
-    zoneContainer1: {
-      width: 145,
-      height: 45,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginHorizontal: 10,
-      left: 110 + 300,
-      top: 150 + 80,
-      borderColor: 'orange',
-      backgroundColor: 'rgba(255, 255, 255, 0.5)',
-      borderWidth: 4,
-    },
-    zoneContainer2: {
-      width: 60,
-      height: 40,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginHorizontal: 10,
-      left: -80 + 320,
-      top: 170 + 80,
-      backgroundColor: 'rgba(255, 255, 255, 0.5)',
-      transform: [{ rotate: '-20deg' }],
-      borderColor: 'green',
-      borderWidth: 4,
-    },
-    zoneContainer3: {
-      width: 300,
-      height: 40,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginHorizontal: 10,
-      backgroundColor: 'rgba(255, 255, 255, 0.5)',
-      left: -230 + 300,
-      top: 170 + 80,
-      transform: [{ rotate: '30deg' }],
-      borderColor: 'yellow',
-      borderWidth: 4,
-    },
-    zoneContainer4: {
-      width: 80,
-      height: 60,
-      backgroundColor: 'rgba(255, 255, 255, 0.5)',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginHorizontal: 10,
-      left: 20 + 300,
-      top: -70 + 80,
-      borderColor: 'red',
-      borderWidth: 4,
-    },
-  } as Record<string, any>);
-
-  // Map the audio boxes with the desired mapping:
-  //   - Orange box (zoneContainer1) for kapo
-  //   - Green box (zoneContainer2) for nolo kibi
-  //   - Yellow box (zoneContainer3) for nolo nkuo
-  //   - Red box (zoneContainer4) for ale
+  // Map audio boxes with the desired mapping
   const audioBoxesData = [
-    { name: 'kapo', style: dropZoneStyles.zoneContainer1 },
-    { name: 'nolo kibi', style: dropZoneStyles.zoneContainer2 },
-    { name: 'nolo nkuo', style: dropZoneStyles.zoneContainer3 },
-    { name: 'ale', style: dropZoneStyles.zoneContainer4 },
+    { name: 'kapo', style: audioBoxStyles.zoneContainer1 },
+    { name: 'nolo kibi', style: audioBoxStyles.zoneContainer2 },
+    { name: 'nolo nkuo', style: audioBoxStyles.zoneContainer3 },
+    { name: 'ale', style: audioBoxStyles.zoneContainer4 },
   ];
 
-  // Function to play audio.
+  // Function to play audio
   const playSound = async (audio: any) => {
     try {
       const { sound } = await Audio.Sound.createAsync(audio);
@@ -121,7 +59,7 @@ const GuideListen = ({ navigation }: { navigation: NavigationProp<any> }) => {
     }
   };
 
-  // When an audio box is pressed, find its audio file and play it.
+  // When an audio box is pressed, find its audio file and play it
   const handleAudioBoxPress = (name: string) => {
     const element = draggableElements.find(e => e.name === name);
     if (element) {
@@ -130,45 +68,124 @@ const GuideListen = ({ navigation }: { navigation: NavigationProp<any> }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
-      <ImageBackground source={bgImage} style={styles.bgImage} />
-      <BackButton navigation={navigation} />
-      {/* Audio boxes container overlays the background */}
-      <View style={styles.audioBoxesContainer}>
-        {audioBoxesData.map((box) => (
-          <TouchableOpacity
-            key={box.name}
-            style={box.style}
-            onPress={() => handleAudioBoxPress(box.name)}
-          >
-            <Image source={require('@/assets/images/audio.png')} style={styles.audioIcon} />
-          </TouchableOpacity>
-        ))}
-      </View>
-      {/* Next button navigates to the Level1Listen screen */}
-      <NextButton navigation={navigation} nextName="Level1Listen" />
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <ImageBackground 
+          source={bgImage} 
+          style={styles.bgImage}
+          imageStyle={{ resizeMode: 'contain' }}
+        >
+          {/* Audio boxes overlay on the background */}
+          <View style={styles.audioBoxesContainer}>
+            {audioBoxesData.map((box) => (
+              <TouchableOpacity
+                key={box.name}
+                style={box.style}
+                onPress={() => handleAudioBoxPress(box.name)}
+              >
+                <Image source={require('@/assets/images/audio.png')} style={styles.audioIcon} />
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ImageBackground>
+        
+        <View style={styles.buttonsBackContainer}>
+          <BackButton navigation={navigation} />
+        </View>
+        
+        <View style={styles.buttonsNextContainer}>
+          <NextButton navigation={navigation} nextName="Level1Listen" />
+        </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 
-const styles = StyleSheet.create({
-  bgImage: {
-    flex: 1,
-    resizeMode: 'cover',
+// Audio box styles based on drop zones positions
+const audioBoxStyles = StyleSheet.create({
+  zoneContainer1: {
+    position: 'absolute',
+    width: wp('12%'),
+    height: hp('5%'),
     justifyContent: 'center',
-    width: '115%',
-    height: '123%',
-    top: -90,
-    left: 17,
+    alignItems: 'center',
+    left: wp('40%'),
+    top: hp('23%'),
+    borderColor: 'orange',
+    backgroundColor: 'rgba(255, 165, 0, 0.3)',
+    borderWidth: 2,
+    borderRadius: 5,
+  },
+  zoneContainer2: {
+    position: 'absolute',
+    width: wp('12%'),
+    height: hp('5%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    left: wp('16%'),
+    top: hp('24%'),
+    backgroundColor: 'rgba(0, 255, 0, 0.3)',
+    borderColor: 'green',
+    borderWidth: 2,
+    borderRadius: 5,
+  },
+  zoneContainer3: {
+    position: 'absolute',
+    width: wp('12%'),
+    height: hp('5%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    left: wp('10%'),
+    top: hp('12%'),
+    backgroundColor: 'rgba(255, 255, 0, 0.3)',
+    borderColor: 'yellow',
+    borderWidth: 2,
+    borderRadius: 5,
+  },
+  zoneContainer4: {
+    position: 'absolute',
+    width: wp('12%'),
+    height: hp('5%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    left: wp('20%'),
+    top: hp('5%'),
+    backgroundColor: 'rgba(255, 0, 0, 0.3)',
+    borderColor: 'red',
+    borderWidth: 2,
+    borderRadius: 5,
+  },
+});
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ffff',
+    justifyContent: 'center',
+  },
+  bgImage: {
+    position: 'absolute',
+    alignSelf: 'center',
+    width: wp('80%'),
+    height: hp('100%'),
   },
   audioBoxesContainer: {
-    position: 'absolute',
+    flex: 1,
     width: '100%',
     height: '100%',
   },
   audioIcon: {
-    width: 30,
-    height: 30,
+    width: wp('6%'),
+    height: hp('3%'),
+    resizeMode: 'contain',
+  },
+  buttonsBackContainer: {
+    bottom: hp('53%'),
+    right: wp('3%'),
+  },
+  buttonsNextContainer: {
+    top: hp('47.5%'),
+    left: wp('1.2%'),
   },
 });
 

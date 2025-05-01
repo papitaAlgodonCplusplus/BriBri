@@ -13,7 +13,7 @@ import BackButton from '../../misc/BackButton';
 import NextButton from '../../misc/NextButton';
 import { transform } from '@babel/core';
 
-const bgImage = require('@/assets/images/guia1.png');
+const bgImage = require('@/assets/images/guia1.jpeg');
 
 // Draggable elements now only need the audio information for matching.
 const draggableElements = [

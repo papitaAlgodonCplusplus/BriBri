@@ -59,8 +59,8 @@ const visualObjects = [
         imageNormal: require('@/assets/images/ak_wawe_normal.png'),
         imageSelected: require('@/assets/images/ak_wawe_sombra.png'),
         position: { 
-            x: wp('2%'),
-            y: hp('5%')
+            x: wp('5%'),
+            y: hp('7%')
         },
         size: {
             normal: { width: wp('18%'), height: hp('21%') },
@@ -104,7 +104,7 @@ const visualObjects = [
         imageNormal: require('@/assets/images/ko_normal.png'),
         imageSelected: require('@/assets/images/ko_sombra.png'),
         position: { 
-            x: wp('57%'),
+            x: wp('54%'),
             y: hp('1%')
         },
         size: {
@@ -119,7 +119,7 @@ const visualObjects = [
         imageNormal: require('@/assets/images/u_kko_normal.png'),
         imageSelected: require('@/assets/images/u_kko_sombra.png'),
         position: { 
-            x: wp('39.5%'),
+            x: wp('36.5%'),
             y: hp('-3%')
         },
         size: {
