@@ -2,154 +2,455 @@ import { LogBox } from 'react-native';
 LogBox.ignoreLogs([
   'Draggable: Support for defaultProps will be removed'
 ]);
-import React, { useState, useEffect } from 'react';
-import { View, ImageBackground, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, ImageBackground, StyleSheet, TouchableOpacity, ScrollView, Image, Animated, Easing } from 'react-native';
 import { Audio } from 'expo-av';
 import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../../misc/BackButton';
 import NextButton from '../../misc/NextButton';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-const bgImage = require('@/assets/images/pantalla_sin_elementos.jpg');
-
-// Draggable elements for listening—only the audio is needed.
-const draggableElements = [
-  { id: 1, audio: require('@/assets/audios/cahmulikata.wav') },
-  { id: 2, audio: require('@/assets/audios/ikule.wav') },
-  { id: 3, audio: require('@/assets/audios/nakkata.wav') },
-  { id: 4, audio: require('@/assets/audios/se.wav') },
-  { id: 5, audio: require('@/assets/audios/tsoklowok.wav') },
-  { id: 6, audio: require('@/assets/audios/tso.wav') },
+// Drop zones with same positions and sizes as visualObjects in level_2.tsx
+const dropZones = [
+    {
+        id: 1,
+        name: 'obj_tso_klowok',
+        position: { 
+            x: wp('3%'),
+            y: hp('50%')
+        },
+        size: {
+            width: wp('21%'),
+            height: hp('23%')
+        },
+        borderColor: '#e4191c',
+        backgroundColor: 'rgba(228, 25, 28, 0.3)',
+        matchName: 'tso_klowok'
+    },
+    {
+        id: 2,
+        name: 'obj_shkeki',
+        position: { 
+            x: wp('26%'),
+            y: hp('25%')
+        },
+        size: {
+            width: wp('20%'),
+            height: hp('19%')
+        },
+        borderColor: '#e94d1f',
+        backgroundColor: 'rgba(233, 77, 31, 0.3)',
+        matchName: 'shkeki'
+    },
+    {
+        id: 3,
+        name: 'obj_tso',
+        position: { 
+            x: wp('65%'),
+            y: hp('25%')
+        },
+        size: {
+            width: wp('20%'),
+            height: hp('15%')
+        },
+        borderColor: '#48ac8f',
+        backgroundColor: 'rgba(72, 172, 143, 0.3)',
+        matchName: 'tso'
+    },
+    {
+        id: 4,
+        name: 'obj_kule',
+        position: { 
+            x: wp('39%'),
+            y: hp('22%')
+        },
+        size: {
+            width: wp('16%'),
+            height: hp('18%')
+        },
+        borderColor: '#d92a73',
+        backgroundColor: 'rgba(217, 42, 115, 0.3)',
+        matchName: 'kule'
+    },
+    {
+        id: 5,
+        name: 'obj_nak_kata',
+        position: { 
+            x: wp('51%'),
+            y: hp('68%')
+        },
+        size: {
+            width: wp('24%'),
+            height: hp('20%')
+        },
+        borderColor: '#68e033',
+        backgroundColor: 'rgba(104, 224, 51, 0.3)',
+        matchName: 'nak_kata'
+    },
+    {
+        id: 6,
+        name: 'obj_se',
+        position: { 
+            x: wp('13%'),
+            y: hp('51%')
+        },
+        size: {
+            width: wp('15%'),
+            height: hp('22%')
+        },
+        borderColor: '#99307a',
+        backgroundColor: 'rgba(153, 48, 122, 0.3)',
+        matchName: 'se'
+    },
+    {
+        id: 7,
+        name: 'obj_seukuo',
+        position: { 
+            x: wp('30%'),
+            y: hp('84%')
+        },
+        size: {
+            width: wp('20%'),
+            height: hp('14%')
+        },
+        borderColor: '#e6175c',
+        backgroundColor: 'rgba(230, 23, 92, 0.3)',
+        matchName: 'seukuo'
+    },
+    {
+        id: 8,
+        name: 'obj_i_kule',
+        position: { 
+            x: wp('3%'),
+            y: hp('23%')
+        },
+        size: {
+            width: wp('30%'),
+            height: hp('24%')
+        },
+        borderColor: '#ede430',
+        backgroundColor: 'rgba(237, 228, 48, 0.3)',
+        matchName: 'i_kule'
+    },
+    {
+        id: 9,
+        name: 'obj_chamulikata',
+        position: { 
+            x: wp('-3%'),
+            y: hp('77%')
+        },
+        size: {
+            width: wp('40%'),
+            height: hp('30%')
+        },
+        borderColor: '#0046e3',
+        backgroundColor: 'rgba(0, 70, 227, 0.3)',
+        matchName: 'chamulikata'
+    }
 ];
 
-const dropZonesData = [
-  { id: 1, x: 345, y: 225, width: 120, height: 30, rotation: '20deg', borderColor: 'red', expectedColor: 'rgba(255, 0, 0, 0.3)' },
-  { id: 2, x: 350, y: 130, width: 350, height: 25, rotation: '-15deg', borderColor: 'blue', expectedColor: 'rgba(0, 0, 255, 0.3)' },
-  { id: 3, x: 445, y: 155, width: 330, height: 30, rotation: '-30deg', borderColor: 'green', expectedColor: 'rgba(0, 255, 0, 0.3)' },
-  { id: 4, x: 190, y: 270, width: 170, height: 25, rotation: '90deg', borderColor: 'purple', expectedColor: 'rgba(128, 0, 128, 0.3)' },
-  { id: 5, x: 270, y: 300, width: 160, height: 25, rotation: '90deg', borderColor: 'orange', expectedColor: 'rgba(255, 165, 0, 0.3)' },
-  { id: 6, x: 350, y: 90, width: 320, height: 25, rotation: '-27deg', borderColor: 'pink', expectedColor: 'rgba(255, 192, 203, 0.3)' },
+// Draggable elements with audio for the listen mode
+const draggableElements = [
+    {
+        id: 1,
+        name: 'tso_klowok',
+        audio: require('@/assets/audios/tsoklowok.wav')
+    },
+    {
+        id: 2,
+        name: 'shkeki',
+        audio: require('@/assets/audios/cahmulikata.wav')
+    },
+    {
+        id: 3,
+        name: 'tso',
+        audio: require('@/assets/audios/tso.wav')
+    },
+    {
+        id: 4,
+        name: 'kule',
+        audio: require('@/assets/audios/ikule.wav')
+    },
+    {
+        id: 5,
+        name: 'nak_kata',
+        audio: require('@/assets/audios/nakkata.wav')
+    },
+    {
+        id: 6,
+        name: 'se',
+        audio: require('@/assets/audios/se.wav')
+    },
+    {
+        id: 7,
+        name: 'seukuo',
+        audio: require('@/assets/audios/cahmulikata.wav')
+    },
+    {
+        id: 8,
+        name: 'i_kule',
+        audio: require('@/assets/audios/ikule.wav')
+    },
+    {
+        id: 9,
+        name: 'chamulikata',
+        audio: require('@/assets/audios/cahmulikata.wav')
+    }
 ];
 
 const Level2Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
-  const [selectedAudio, setSelectedAudio] = useState<any>(null);
-  const [matches, setMatches] = useState<Record<number, string>>({});
-  const [canContinue, setCanContinue] = useState(false);
+    const [selectedAudio, setSelectedAudio] = useState<any>(null);
+    const [matches, setMatches] = useState<Record<string, boolean>>({});
+    const [canContinue, setCanContinue] = useState(false);
+    
+    const animatedValues = useRef(
+        dropZones.reduce((acc, zone) => {
+            acc[zone.name] = new Animated.Value(1);
+            return acc;
+        }, {} as Record<string, Animated.Value>)
+    ).current;
 
-  const playSound = async (audio: any) => {
-    try {
-      const { sound } = await Audio.Sound.createAsync(audio);
-      await sound.playAsync();
-    } catch (error) {
-      console.error('Error playing sound', error);
-    }
-  };
+    const playSound = async (audio: any) => {
+        try {
+            const { sound } = await Audio.Sound.createAsync(audio);
+            await sound.playAsync();
+        } catch (error) {
+            console.error('Error playing sound', error);
+        }
+    };
 
-  const handleAudioPress = (item: any) => {
-    if (matches[item.id]) return;
-    setSelectedAudio(item);
-    playSound(item.audio);
-  };
+    const startPulseAnimation = (zoneName: string) => {
+        animatedValues[zoneName].setValue(1);
+        
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(animatedValues[zoneName], {
+                    toValue: 1.1,
+                    duration: 800,
+                    easing: Easing.inOut(Easing.ease),
+                    useNativeDriver: true
+                }),
+                Animated.timing(animatedValues[zoneName], {
+                    toValue: 1,
+                    duration: 800,
+                    easing: Easing.inOut(Easing.ease),
+                    useNativeDriver: true
+                })
+            ])
+        ).start();
+    };
 
-  const handleDropZonePress = (zone: { id: number; expectedColor: string }) => {
-    if (!selectedAudio) return;
-    if (selectedAudio.id === zone.id) {
-      setMatches(prev => ({ ...prev, [zone.id]: zone.expectedColor }));
-    }
-    setSelectedAudio(null);
-  };
+    const stopPulseAnimation = (zoneName: string) => {
+        animatedValues[zoneName].stopAnimation();
+        animatedValues[zoneName].setValue(1);
+    };
 
-  useEffect(() => {
-    if (Object.keys(matches).length === draggableElements.length) {
-      setCanContinue(true);
-    }
-  }, [matches]);
+    // When audio button is pressed
+    const handleAudioPress = (item: any) => {
+        const isMatched = Object.entries(matches).some(([key, value]) => {
+            const zone = dropZones.find(z => z.name === key);
+            return value && zone && zone.matchName === item.name;
+        });
+        
+        if (isMatched) return;
+        
+        setSelectedAudio(item);
+        playSound(item.audio);
+    };
 
-  return (
-    <View style={{ flex: 1 }}>
-      <ImageBackground source={bgImage} style={styles.bgImage} />
-      <BackButton navigation={navigation} />
-      {canContinue && <NextButton navigation={navigation} nextName="LevelMapping" />}
-      <View style={styles.audioContainer}>
-        <ScrollView horizontal contentContainerStyle={styles.audioScroll}>
-          {draggableElements.map(item => (
-            <TouchableOpacity
-              key={item.id}
-              style={[
-                styles.audioButton,
-                selectedAudio && selectedAudio.id === item.id && styles.selectedAudio,
-                matches[item.id] && { backgroundColor: matches[item.id] },
-              ]}
-              onPress={() => handleAudioPress(item)}
-              disabled={!!matches[item.id]}
-            >
-              <Image source={require('@/assets/images/audio.png')} style={styles.audioIcon} />
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-      {dropZonesData.map(zone => (
-        <TouchableOpacity
-          key={zone.id}
-          style={[
-            styles.dropZone,
-            {
-              left: zone.x,
-              top: zone.y,
-              width: zone.width,
-              height: zone.height,
-              transform: [{ rotate: zone.rotation }],
-              borderColor: zone.borderColor,
-              backgroundColor: matches[zone.id] ? matches[zone.id] : 'transparent',
-            },
-          ]}
-          onPress={() => handleDropZonePress(zone)}
-          activeOpacity={0.7}
-        />
-      ))}
-    </View>
-  );
+    // When a drop zone is pressed
+    const handleZonePress = (zone: any) => {
+        if (matches[zone.name]) return;
+        
+        if (!selectedAudio) {
+            // If no audio is selected, highlight this zone
+            startPulseAnimation(zone.name);
+            setTimeout(() => {
+                stopPulseAnimation(zone.name);
+            }, 2000);
+            return;
+        }
+        
+        if (selectedAudio.name === zone.matchName) {
+            // Correct match
+            setMatches(prev => ({ ...prev, [zone.name]: true }));
+            stopPulseAnimation(zone.name);
+            setSelectedAudio(null);
+        } else {
+            // Incorrect match
+            setSelectedAudio(null);
+        }
+    };
+
+    // Enable Continue button when all matches are made
+    useEffect(() => {
+        if (Object.keys(matches).length === dropZones.length) {
+            setCanContinue(true);
+        }
+    }, [matches]);
+
+    // Clean up animations
+    useEffect(() => {
+        return () => {
+            Object.keys(animatedValues).forEach(key => {
+                animatedValues[key].stopAnimation();
+            });
+        };
+    }, []);
+
+    return (
+        <SafeAreaProvider>
+            <SafeAreaView style={styles.container}>
+                <ImageBackground
+                    source={require('../../../assets/images/guia2juego.png')}
+                    style={styles.backgroundImage}
+                    resizeMode="contain"
+                >
+                    {/* Back Button */}
+                    <View style={styles.buttonsBackContainer}>
+                        <BackButton navigation={navigation} />
+                    </View>
+
+                    {/* Next Button */}
+                    {canContinue && (
+                        <View style={styles.buttonsNextContainer}>
+                            <NextButton navigation={navigation} nextName="LevelMapping" />
+                        </View>
+                    )}
+
+                    {/* Colored zones */}
+                    {dropZones.map((zone) => (
+                        <TouchableOpacity
+                            key={zone.id}
+                            style={{
+                                position: 'absolute',
+                                left: zone.position.x,
+                                top: zone.position.y,
+                                zIndex: 5,
+                            }}
+                            onPress={() => handleZonePress(zone)}
+                            disabled={!!matches[zone.name]}
+                        >
+                            <Animated.View
+                                style={{
+                                    transform: [
+                                        { scale: animatedValues[zone.name] }
+                                    ],
+                                    width: zone.size.width,
+                                    height: zone.size.height,
+                                    borderWidth: 3,
+                                    borderColor: zone.borderColor,
+                                    backgroundColor: matches[zone.name] ? zone.backgroundColor : 'transparent',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                {matches[zone.name] && (
+                                    <Image source={require('@/assets/images/audio.png')} style={styles.audioIcon} />
+                                )}
+                            </Animated.View>
+                        </TouchableOpacity>
+                    ))}
+
+                    {/* Audio Buttons */}
+                    <View style={styles.buttonsContainer}>
+                        {draggableElements.map((item) => {
+                            const isMatched = Object.entries(matches).some(([key, value]) => {
+                                const zone = dropZones.find(z => z.name === key);
+                                return value && zone && zone.matchName === item.name;
+                            });
+                            
+                            return (
+                                <View key={item.id} style={styles.buttonWrapper}>
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.button,
+                                            selectedAudio && selectedAudio.name === item.name && styles.selectedAudio,
+                                            isMatched && {
+                                                opacity: 0.5,
+                                            }
+                                        ]}
+                                        onPress={() => handleAudioPress(item)}
+                                        disabled={isMatched}
+                                        activeOpacity={0.7}
+                                    >
+                                        <Image 
+                                            source={require('@/assets/images/audio.png')} 
+                                            style={styles.audioIcon}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            );
+                        })}
+                    </View>
+                </ImageBackground>
+            </SafeAreaView>
+        </SafeAreaProvider>
+    );
 };
 
 const styles = StyleSheet.create({
-  bgImage: {
-    flex: 1,
-    resizeMode: 'cover',
-  },
-  audioContainer: {
-    position: 'absolute',
-    bottom: 20,
-    width: '100%',
-  },
-  audioScroll: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-  },
-  audioButton: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-    padding: 10,
-    marginHorizontal: 5,
-    width: 60,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  selectedAudio: {
-    borderWidth: 2,
-    borderColor: 'blue',
-  },
-  audioIcon: {
-    width: 30,
-    height: 30,
-  },
-  dropZone: {
-    position: 'absolute',
-    borderWidth: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+    },
+    backgroundImage: {
+        alignSelf: 'center',
+        width: wp('80%'),
+        height: hp('100%'),
+    },
+    buttonsBackContainer: {
+        position: 'absolute',
+        top: hp('-2%'),
+        left: wp('-8%'),
+        zIndex: 10,
+    },
+    buttonsNextContainer: {
+        position: 'absolute',
+        bottom: hp('-0%'),
+        right: wp('-6%'),
+        zIndex: 10,
+    },
+    buttonsContainer: {
+        position: 'absolute',
+        bottom: hp('78%'),
+        left: wp('7%'),
+        width: wp('60%'),
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        gap: wp('1%'),
+    },
+    buttonWrapper: {
+        width: wp('11%'),
+        height: hp('5%'),
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    button: {
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#000',
+        borderRadius: 5,
+        padding: hp('0.5%'),
+        width: wp('11%'),
+        height: hp('5%'),
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    selectedAudio: {
+        backgroundColor: '#f0f0f0',
+        borderColor: '#677',
+        borderWidth: 1.5,
+    },
+    audioIcon: {
+        width: wp('6%'),
+        height: hp('3%'),
+        resizeMode: 'contain',
+    },
 });
 
 export default Level2Listen;

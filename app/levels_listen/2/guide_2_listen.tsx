@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, ImageBackground, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { ImageBackground, StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationProp } from '@react-navigation/native';
-import { Audio } from 'expo-av';
 import BackButton from '@/app/misc/BackButton';
 import NextButton from '@/app/misc/NextButton';
+import { NavigationProp } from '@react-navigation/native';
+import { Audio } from 'expo-av';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const GuideListen = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const bgImage = require('@/assets/images/guia2.png');
@@ -20,162 +22,248 @@ const GuideListen = ({ navigation }: { navigation: NavigationProp<any> }) => {
     }, []);
 
     // Draggable elements now hold only audio information.
-    // Their order corresponds exactly with the drop zones defined below.
     const draggableElements = [
-        { name: 'audio1', audio: require('@/assets/audios/cahmulikata.wav') },
-        { name: 'audio2', audio: require('@/assets/audios/ikule.wav') },
-        { name: 'audio3', audio: require('@/assets/audios/nakkata.wav') },
-        { name: 'audio4', audio: require('@/assets/audios/se.wav') },
-        { name: 'audio5', audio: require('@/assets/audios/tsoklowok.wav') },
-        { name: 'audio6', audio: require('@/assets/audios/tso.wav') },
+        { id: 1, name: 'tso_klowok', audio: require('@/assets/audios/tsoklowok.wav') },
+        { id: 2, name: 'shkeki', audio: require('@/assets/audios/cahmulikata.wav') },
+        { id: 3, name: 'tso', audio: require('@/assets/audios/tso.wav') },
+        { id: 4, name: 'kule', audio: require('@/assets/audios/ikule.wav') },
+        { id: 5, name: 'nak_kata', audio: require('@/assets/audios/nakkata.wav') },
+        { id: 6, name: 'se', audio: require('@/assets/audios/se.wav') },
+        { id: 7, name: 'seukuo', audio: require('@/assets/audios/cahmulikata.wav') },
+        { id: 8, name: 'i_kule', audio: require('@/assets/audios/ikule.wav') },
+        { id: 9, name: 'chamulikata', audio: require('@/assets/audios/cahmulikata.wav') },
     ];
 
-    // Audio boxes styled exactly as the drop zones in Level2Listen.
-    const dropZoneStyles = StyleSheet.create({
-        zoneContainer1: {
-            position: 'absolute',
-            left: 445,
-            top: 205,
-            width: 120,
-            height: 30,
-            transform: [{ rotate: '20deg' }],
-            borderColor: 'red',
-            backgroundColor: 'rgba(255, 0, 0, 0.3)',
-            borderWidth: 3,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        zoneContainer2: {
-            position: 'absolute',
-            left: 450,
-            top: 110,
-            width: 350,
-            height: 25,
-            transform: [{ rotate: '-15deg' }],
-            borderColor: 'blue',
-            backgroundColor: 'rgba(0, 0, 255, 0.3)',
-            borderWidth: 3,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        zoneContainer3: {
-            position: 'absolute',
-            left: 545,
-            top: 135,
-            width: 330,
-            height: 30,
-            transform: [{ rotate: '-30deg' }],
-            borderColor: 'green',
-            backgroundColor: 'rgba(0, 255, 0, 0.3)',
-            borderWidth: 3,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        zoneContainer4: {
-            position: 'absolute',
-            left: 290,
-            top: 250,
-            width: 170,
-            height: 25,
-            transform: [{ rotate: '90deg' }],
-            borderColor: 'purple',
-            backgroundColor: 'rgba(128, 0, 128, 0.3)',
-            borderWidth: 3,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        zoneContainer5: {
-            position: 'absolute',
-            left: 370,
-            top: 280,
-            width: 160,
-            height: 25,
-            transform: [{ rotate: '90deg' }],
-            borderColor: 'orange',
-            backgroundColor: 'rgba(255, 165, 0, 0.3)',
-            borderWidth: 3,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        zoneContainer6: {
-            position: 'absolute',
-            left: 450,
-            top: 70,
-            width: 320,
-            height: 25,
-            transform: [{ rotate: '-27deg' }],
-            borderColor: 'pink',
-            backgroundColor: 'rgba(255, 192, 203, 0.3)',
-            borderWidth: 3,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-    });
-
+    // Audio boxes positioned to match visual objects in level_2.tsx
     const audioBoxesData = [
-        { name: 'audio1', style: dropZoneStyles.zoneContainer1 },
-        { name: 'audio2', style: dropZoneStyles.zoneContainer2 },
-        { name: 'audio3', style: dropZoneStyles.zoneContainer3 },
-        { name: 'audio4', style: dropZoneStyles.zoneContainer4 },
-        { name: 'audio5', style: dropZoneStyles.zoneContainer5 },
-        { name: 'audio6', style: dropZoneStyles.zoneContainer6 },
+        { 
+            id: 1, 
+            name: 'obj_tso_klowok', 
+            style: {
+                position: 'absolute',
+                left: wp('4%'),
+                top: hp('50%'),
+                width: wp('5%'),
+                height: hp('6%'),
+                borderWidth: 3,
+                borderColor: '#e4191c',
+                backgroundColor: 'rgba(228, 25, 28, 0.3)',
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            audioName: 'tso_klowok'
+        },
+        { 
+            id: 2, 
+            name: 'obj_shkeki', 
+            style: {
+                position: 'absolute',
+                left: wp('11.5%'),
+                top: hp('9.5%'),
+                width: wp('11.67%'),
+                height: hp('6.33%'),
+                borderWidth: 3,
+                borderColor: '#e94d1f',
+                backgroundColor: 'rgba(233, 77, 31, 0.3)',
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            audioName: 'shkeki'
+        },
+        { 
+            id: 3, 
+            name: 'obj_tso', 
+            style: {
+                position: 'absolute',
+                left: wp('67.5%'),
+                top: hp('24%'),
+                width: wp('5%'),
+                height: hp('5%'),
+                borderWidth: 3,
+                borderColor: '#48ac8f',
+                backgroundColor: 'rgba(72, 172, 143, 0.3)',
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            audioName: 'tso'
+        },
+        { 
+            id: 4, 
+            name: 'obj_kule', 
+            style: {
+                position: 'absolute',
+                left: wp('39%'),
+                top: hp('83.5%'),
+                width: wp('5%'),
+                height: hp('6%'),
+                borderWidth: 3,
+                borderColor: '#d92a73',
+                backgroundColor: 'rgba(217, 42, 115, 0.3)',
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            audioName: 'kule'
+        },
+        { 
+            id: 5, 
+            name: 'obj_nak_kata', 
+            style: {
+                position: 'absolute',
+                left: wp('55.5%'),
+                top: hp('69%'),
+                width: wp('5%'),
+                height: hp('6%'),
+                borderWidth: 3,
+                borderColor: '#68e033',
+                backgroundColor: 'rgba(104, 224, 51, 0.3)',
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            audioName: 'nak_kata'
+        },
+        { 
+            id: 6, 
+            name: 'obj_se', 
+            style: {
+                position: 'absolute',
+                left: wp('11.5%'),
+                top: hp('59%'),
+                width: wp('8%'),
+                height: hp('5.33%'),
+                borderWidth: 3,
+                borderColor: '#99307a',
+                backgroundColor: 'rgba(153, 48, 122, 0.3)',
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            audioName: 'se'
+        },
+        { 
+            id: 7, 
+            name: 'obj_seukuo', 
+            style: {
+                position: 'absolute',
+                left: wp('31.5%'),
+                top: hp('83.2%'),
+                width: wp('6.67%'),
+                height: hp('4.67%'),
+                borderWidth: 3,
+                borderColor: '#e6175c',
+                backgroundColor: 'rgba(230, 23, 92, 0.3)',
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            audioName: 'seukuo'
+        },
+        { 
+            id: 8, 
+            name: 'obj_i_kule', 
+            style: {
+                position: 'absolute',
+                left: wp('5%'),
+                top: hp('28%'),
+                width: wp('8%'),
+                height: hp('5%'),
+                borderWidth: 3,
+                borderColor: '#ede430',
+                backgroundColor: 'rgba(237, 228, 48, 0.3)',
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            audioName: 'i_kule'
+        },
+        { 
+            id: 9, 
+            name: 'obj_chamulikata', 
+            style: {
+                position: 'absolute',
+                left: wp('18%'),
+                top: hp('75%'),
+                width: wp('7%'),
+                height: hp('5%'),
+                borderWidth: 3,
+                borderColor: '#0046e3',
+                backgroundColor: 'rgba(0, 70, 227, 0.3)',
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+            audioName: 'chamulikata'
+        }
     ];
 
-    const playSound = async (audio: any) => {
+    // Function to play audio
+    const playSound = async (audioName: string) => {
+        const element = draggableElements.find(e => e.name === audioName);
+        if (!element) return;
+        
         try {
-            const { sound } = await Audio.Sound.createAsync(audio);
+            const { sound } = await Audio.Sound.createAsync(element.audio);
             await sound.playAsync();
         } catch (error) {
             console.error('Error playing sound', error);
         }
     };
 
-    const handleAudioBoxPress = (name: string) => {
-        const element = draggableElements.find(e => e.name === name);
-        if (element) {
-            playSound(element.audio);
-        }
-    };
-
     return (
-        <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <ImageBackground source={bgImage} style={styles.bgImage} />
-            <BackButton navigation={navigation} />
-            <View style={styles.audioBoxesContainer}>
-                {audioBoxesData.map((box) => (
-                    <TouchableOpacity
-                        key={box.name}
-                        style={box.style}
-                        onPress={() => handleAudioBoxPress(box.name)}
-                    >
-                        <Image source={require('@/assets/images/audio.png')} style={styles.audioIcon} />
-                    </TouchableOpacity>
-                ))}
-            </View>
-            <NextButton navigation={navigation} nextName="Level2Listen" />
-        </View>
+        <SafeAreaProvider>
+            <SafeAreaView style={styles.container}>
+                <ImageBackground 
+                    source={bgImage} 
+                    style={styles.bgImage}
+                    imageStyle={{ resizeMode: 'contain' }}
+                >
+                    {/* Audio boxes overlay on the background */}
+                    {audioBoxesData.map((box) => (
+                        <TouchableOpacity
+                            key={box.id}
+                            style={box.style}
+                            onPress={() => playSound(box.audioName)}
+                        >
+                            <Image source={require('@/assets/images/audio.png')} style={styles.audioIcon} />
+                        </TouchableOpacity>
+                    ))}
+
+                    <View style={styles.buttonsBackContainer}>
+                        <BackButton navigation={navigation} />
+                    </View>
+                    
+                    <View style={styles.buttonsNextContainer}>
+                        <NextButton navigation={navigation} nextName="Level2Listen" />
+                    </View>
+                </ImageBackground>
+            </SafeAreaView>
+        </SafeAreaProvider>
     );
 };
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#ffff',
+    },
     bgImage: {
         flex: 1,
-        resizeMode: 'stretch',
-        justifyContent: 'center',
-        width: '90%',
-        height: '100%',
-        top: 0,
-        left: 190,
-    },
-    audioBoxesContainer: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
+        width: wp('80%'),
+        height: hp('90%'),
     },
     audioIcon: {
-        width: 30,
-        height: 30,
+        width: wp('8%'),
+        height: hp('4%'),
+        resizeMode: 'contain',
     },
+    buttonsBackContainer: {
+        position: 'absolute',
+        top: hp('-4%'),
+        left: wp('-7%'),
+        resizeMode: 'cover',
+    },
+    buttonsNextContainer: {
+        position: 'absolute',
+        bottom: hp('-1%'),
+        right: wp('-5%'),
+    }
 });
 
 export default GuideListen;
