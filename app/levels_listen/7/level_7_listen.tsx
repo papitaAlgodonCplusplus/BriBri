@@ -17,12 +17,12 @@ const dropZones = [
         id: 1,
         name: 'obj_ajko_ko',
         position: { 
-            x: wp('2%'),
-            y: hp('50%')
+            x: wp('6%'), // x + 4
+            y: hp('53%') // y + 3
         },
         size: {
-            width: wp('25%'),
-            height: hp('30%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#0046e3',
         backgroundColor: 'rgba(0, 70, 227, 0.3)',
@@ -32,12 +32,12 @@ const dropZones = [
         id: 2,
         name: 'obj_sabak_dule',
         position: { 
-            x: wp('28%'),
-            y: hp('51%')
+            x: wp('32%'), // x + 4
+            y: hp('54%') // y + 3
         },
         size: {
-            width: wp('21%'),
-            height: hp('28%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#603f91',
         backgroundColor: 'rgba(96, 63, 145, 0.3)',
@@ -47,12 +47,12 @@ const dropZones = [
         id: 3,
         name: 'obj_kula',
         position: { 
-            x: wp('55.5%'),
-            y: hp('64%')
+            x: wp('59.5%'), // x + 4
+            y: hp('67%') // y + 3
         },
         size: {
-            width: wp('12%'),
-            height: hp('14%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#e6175c',
         backgroundColor: 'rgba(230, 23, 92, 0.3)',
@@ -62,12 +62,12 @@ const dropZones = [
         id: 4,
         name: 'obj_to_ta',
         position: { 
-            x: wp('56%'),
-            y: hp('20%')
+            x: wp('60%'), // x + 4
+            y: hp('23%') // y + 3
         },
         size: {
-            width: wp('16%'),
-            height: hp('18%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#d92a73',
         backgroundColor: 'rgba(217, 42, 115, 0.3)',
@@ -77,12 +77,12 @@ const dropZones = [
         id: 5,
         name: 'obj_sku',
         position: { 
-            x: wp('43%'),
-            y: hp('0%')
+            x: wp('47%'), // x + 4
+            y: hp('3%') // y + 3
         },
         size: {
-            width: wp('18%'),
-            height: hp('20%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#48ac8f',
         backgroundColor: 'rgba(72, 172, 143, 0.3)',
@@ -92,12 +92,12 @@ const dropZones = [
         id: 6,
         name: 'obj_tska_tka',
         position: { 
-            x: wp('18%'),
-            y: hp('56%')
+            x: wp('22%'), // x + 4
+            y: hp('59%') // y + 3
         },
         size: {
-            width: wp('18%'),
-            height: hp('14%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#e4191c',
         backgroundColor: 'rgba(228, 25, 28, 0.3)',
@@ -107,12 +107,12 @@ const dropZones = [
         id: 7,
         name: 'obj_kule',
         position: { 
-            x: wp('40%'),
-            y: hp('60%')
+            x: wp('44%'), // x + 4
+            y: hp('63%') // y + 3
         },
         size: {
-            width: wp('18%'),
-            height: hp('14%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#ede430',
         backgroundColor: 'rgba(237, 228, 48, 0.3)',
@@ -122,12 +122,12 @@ const dropZones = [
         id: 8,
         name: 'obj_skou',
         position: { 
-            x: wp('54%'),
-            y: hp('40%')
+            x: wp('58%'), // x + 4
+            y: hp('43%') // y + 3
         },
         size: {
-            width: wp('20%'),
-            height: hp('14%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#e94d1f',
         backgroundColor: 'rgba(233, 77, 31, 0.3)',
@@ -137,12 +137,12 @@ const dropZones = [
         id: 9,
         name: 'obj_tcho_tka',
         position: { 
-            x: wp('55%'),
-            y: hp('8%')
+            x: wp('59%'), // x + 4
+            y: hp('11%') // y + 3
         },
         size: {
-            width: wp('14%'),
-            height: hp('14%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#68e033',
         backgroundColor: 'rgba(104, 224, 51, 0.3)',
@@ -152,12 +152,12 @@ const dropZones = [
         id: 10,
         name: 'obj_u',
         position: { 
-            x: wp('27%'),
-            y: hp('-5%')
+            x: wp('31%'), // x + 4
+            y: hp('-2%') // y + 3
         },
         size: {
-            width: wp('20%'),
-            height: hp('20%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#99307a',
         backgroundColor: 'rgba(153, 48, 122, 0.3)',

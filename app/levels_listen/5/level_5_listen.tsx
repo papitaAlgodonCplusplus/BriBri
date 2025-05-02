@@ -18,11 +18,11 @@ const dropZones = [
         name: 'obj_chane',
         position: { 
             x: wp('45%'),
-            y: hp('0%')
+            y: hp('6%')
         },
         size: {
-            width: wp('25%'),
-            height: hp('30%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#ede430',
         backgroundColor: 'rgba(237, 228, 48, 0.3)',
@@ -33,11 +33,11 @@ const dropZones = [
         name: 'obj_tiska',
         position: { 
             x: wp('57%'),
-            y: hp('56%')
+            y: hp('62%')
         },
         size: {
-            width: wp('24%'),
-            height: hp('35%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#603f91',
         backgroundColor: 'rgba(96, 63, 145, 0.3)',
@@ -48,11 +48,11 @@ const dropZones = [
         name: 'obj_kowolo',
         position: { 
             x: wp('60%'),
-            y: hp('40%')
+            y: hp('46%')
         },
         size: {
-            width: wp('18%'),
-            height: hp('21%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#68e033',
         backgroundColor: 'rgba(104, 224, 51, 0.3)',
@@ -63,11 +63,11 @@ const dropZones = [
         name: 'obj_klowok',
         position: { 
             x: wp('57%'),
-            y: hp('19%')
+            y: hp('25%')
         },
         size: {
-            width: wp('20%'),
-            height: hp('26%')
+            width: wp('6%'),
+            height: hp('6%')
         },
         borderColor: '#e4191c',
         backgroundColor: 'rgba(228, 25, 28, 0.3)',

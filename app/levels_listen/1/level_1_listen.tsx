@@ -22,12 +22,12 @@ const dropZones = [
     id: 1,
     name: 'obj_ale',
     position: {
-      x: wp('15%'),
-      y: hp('42%')
+      x: wp('25%'),
+      y: hp('48%')
     },
     size: {
-      width: wp('20%'),
-      height: hp('12%')
+      width: wp('5.5%'),
+      height: hp('5.5%')
     },
     borderColor: 'red',
     backgroundColor: 'rgba(255, 0, 0, 0.3)',
@@ -37,12 +37,12 @@ const dropZones = [
     id: 2,
     name: 'obj_nolo_nkuo',
     position: {
-      x: wp('3%'),
-      y: hp('104%')
+      x: wp('15%'),
+      y: hp('110%')
     },
     size: {
-      width: wp('24%'),
-      height: hp('15%')
+      width: wp('5.5%'),
+      height: hp('5.5%')
     },
     borderColor: 'yellow',
     backgroundColor: 'rgba(255, 255, 0, 0.3)',
@@ -52,12 +52,12 @@ const dropZones = [
     id: 3,
     name: 'obj_kapo',
     position: {
-      x: wp('52%'),
-      y: hp('96%')
+      x: wp('56%'),
+      y: hp('101%')
     },
     size: {
-      width: wp('18%'),
-      height: hp('11%')
+      width: wp('5.5%'),
+      height: hp('5.5%')
     },
     borderColor: 'orange',
     backgroundColor: 'rgba(255, 165, 0, 0.3)',
@@ -67,15 +67,15 @@ const dropZones = [
     id: 4,
     name: 'obj_nolo_kibi',
     position: {
-      x: wp('38%'),
-      y: hp('103%')
+      x: wp('45%'),
+      y: hp('108%')
     },
     size: {
-      width: wp('20%'),
-      height: hp('12%')
+      width: wp('5.5%'),
+      height: hp('5.5%')
     },
-    borderColor: 'green',
-    backgroundColor: 'rgba(0, 255, 0, 0.3)',
+    borderColor: 'lime',
+    backgroundColor: 'rgba(86, 255, 24, 0.77)',
     matchName: 'nolo kibi'
   }
 ];

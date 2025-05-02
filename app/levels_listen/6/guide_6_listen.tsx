@@ -68,9 +68,9 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             style: {
                 position: 'absolute',
                 left: wp('10%'),
-                top: hp('1%'),
-                width: wp('25%'),
-                height: hp('30%'),
+                top: hp('11%'), // y + 10
+                width: wp('6%'),
+                height: hp('6%'),
                 borderWidth: 3,
                 borderColor: '#e4191c',
                 backgroundColor: 'rgba(228, 25, 28, 0.3)',
@@ -85,9 +85,9 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             style: {
                 position: 'absolute',
                 left: hp('90%'),
-                top: hp('28%'),
-                width: wp('24%'),
-                height: hp('42%'),
+                top: hp('38%'), // y + 10
+                width: wp('6%'),
+                height: hp('6%'),
                 borderWidth: 3,
                 borderColor: '#ede430',
                 backgroundColor: 'rgba(237, 228, 48, 0.3)',
@@ -102,9 +102,9 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             style: {
                 position: 'absolute',
                 left: wp('5%'),
-                top: hp('7%'),
-                width: wp('18%'),
-                height: hp('21%'),
+                top: hp('17%'), // y + 10
+                width: wp('6%'),
+                height: hp('6%'),
                 borderWidth: 3,
                 borderColor: '#0046e3',
                 backgroundColor: 'rgba(0, 70, 227, 0.3)',
@@ -119,9 +119,9 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             style: {
                 position: 'absolute',
                 left: wp('34%'),
-                top: hp('52%'),
-                width: wp('20%'),
-                height: hp('26%'),
+                top: hp('62%'), // y + 10
+                width: wp('6%'),
+                height: hp('6%'),
                 borderWidth: 3,
                 borderColor: '#603f91',
                 backgroundColor: 'rgba(96, 63, 145, 0.3)',
@@ -136,9 +136,9 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             style: {
                 position: 'absolute',
                 left: wp('27%'),
-                top: hp('1%'),
-                width: wp('21%'),
-                height: hp('28%'),
+                top: hp('11%'), // y + 10
+                width: wp('6%'),
+                height: hp('6%'),
                 borderWidth: 3,
                 borderColor: '#68e033',
                 backgroundColor: 'rgba(104, 224, 51, 0.3)',
@@ -153,9 +153,9 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             style: {
                 position: 'absolute',
                 left: wp('54%'),
-                top: hp('1%'),
-                width: wp('21%'),
-                height: hp('28%'),
+                top: hp('11%'), // y + 10
+                width: wp('6%'),
+                height: hp('6%'),
                 borderWidth: 3,
                 borderColor: '#e6175c',
                 backgroundColor: 'rgba(230, 23, 92, 0.3)',
@@ -170,9 +170,9 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             style: {
                 position: 'absolute',
                 left: wp('36.5%'),
-                top: hp('-3%'),
-                width: wp('20%'),
-                height: hp('26%'),
+                top: hp('7%'), // y + 10
+                width: wp('6%'),
+                height: hp('6%'),
                 borderWidth: 3,
                 borderColor: '#e94d1f',
                 backgroundColor: 'rgba(233, 77, 31, 0.3)',
