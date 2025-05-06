@@ -17,8 +17,8 @@ const dropZones = [
         id: 1,
         name: 'obj_tso_klowok',
         position: { 
-            x: wp('13%'),
-            y: hp('50%')
+            x: wp('10%'),
+            y: hp('70%')
         },
         size: {
             width: wp('6%'),
@@ -32,8 +32,8 @@ const dropZones = [
         id: 2,
         name: 'obj_shkeki',
         position: { 
-            x: wp('36%'),
-            y: hp('25%')
+            x: wp('33%'),
+            y: hp('30%')
         },
         size: {
             width: wp('6%'),
@@ -47,8 +47,8 @@ const dropZones = [
         id: 3,
         name: 'obj_tso',
         position: { 
-            x: wp('75%'),
-            y: hp('25%')
+            x: wp('73%'),
+            y: hp('28%')
         },
         size: {
             width: wp('6%'),
@@ -62,8 +62,8 @@ const dropZones = [
         id: 4,
         name: 'obj_kule',
         position: { 
-            x: wp('49%'),
-            y: hp('22%')
+            x: wp('45%'),
+            y: hp('30%')
         },
         size: {
             width: wp('6%'),
@@ -77,8 +77,8 @@ const dropZones = [
         id: 5,
         name: 'obj_nak_kata',
         position: { 
-            x: wp('61%'),
-            y: hp('68%')
+            x: wp('58%'),
+            y: hp('80%')
         },
         size: {
             width: wp('6%'),
@@ -92,8 +92,8 @@ const dropZones = [
         id: 6,
         name: 'obj_se',
         position: { 
-            x: wp('23%'),
-            y: hp('51%')
+            x: wp('16%'),
+            y: hp('61%')
         },
         size: {
             width: wp('6%'),
@@ -107,8 +107,8 @@ const dropZones = [
         id: 7,
         name: 'obj_seukuo',
         position: { 
-            x: wp('40%'),
-            y: hp('84%')
+            x: wp('39%'),
+            y: hp('90%')
         },
         size: {
             width: wp('6%'),
@@ -122,8 +122,8 @@ const dropZones = [
         id: 8,
         name: 'obj_i_kule',
         position: { 
-            x: wp('13%'),
-            y: hp('23%')
+            x: wp('14%'),
+            y: hp('29%')
         },
         size: {
             width: wp('6%'),
@@ -137,8 +137,8 @@ const dropZones = [
         id: 9,
         name: 'obj_chamulikata',
         position: { 
-            x: wp('7%'),
-            y: hp('77%')
+            x: wp('14%'),
+            y: hp('86%')
         },
         size: {
             width: wp('6%'),

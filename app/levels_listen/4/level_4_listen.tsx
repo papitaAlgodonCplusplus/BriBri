@@ -17,8 +17,8 @@ const dropZones = [
         id: 1,
         name: 'obj_kochane',
         position: { 
-            x: wp('7%'), // -3% + 10%
-            y: hp('56%')
+            x: wp('3%'), // -3% + 10%
+            y: hp('60%')
         },
         size: {
             width: wp('6%'),
@@ -32,8 +32,8 @@ const dropZones = [
         id: 2,
         name: 'obj_kokata',
         position: { 
-            x: wp('62%'), // 52% + 10%
-            y: hp('56%')
+            x: wp('55%'), // 52% + 10%
+            y: hp('68%')
         },
         size: {
             width: wp('6%'),
@@ -47,8 +47,8 @@ const dropZones = [
         id: 3,
         name: 'obj_kowolo',
         position: { 
-            x: wp('65%'), // 55% + 10%
-            y: hp('18%')
+            x: wp('61%'), // 55% + 10%
+            y: hp('24%')
         },
         size: {
             width: wp('6%'),
@@ -62,8 +62,8 @@ const dropZones = [
         id: 4,
         name: 'obj_klowok',
         position: { 
-            x: wp('45%'), // 35% + 10%
-            y: hp('1%')
+            x: wp('43.4%'), // 35% + 10%
+            y: hp('7%')
         },
         size: {
             width: wp('6%'),

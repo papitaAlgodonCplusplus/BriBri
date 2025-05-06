@@ -18,7 +18,7 @@ const dropZones = [
         name: 'obj_u_tto',
         position: { 
             x: wp('9%'),
-            y: hp('55%')
+            y: hp('60%')
         },
         size: {
             width: wp('6%'),
@@ -32,8 +32,8 @@ const dropZones = [
         id: 2,
         name: 'obj_uko',
         position: { 
-            x: wp('68%'),
-            y: hp('66%')
+            x: wp('65.4%'),
+            y: hp('67%')
         },
         size: {
             width: wp('6%'),
@@ -47,8 +47,8 @@ const dropZones = [
         id: 3,
         name: 'obj_u_tso_pabakok',
         position: { 
-            x: wp('69%'),
-            y: hp('20%')
+            x: wp('70%'),
+            y: hp('29%')
         },
         size: {
             width: wp('6%'),
@@ -62,8 +62,8 @@ const dropZones = [
         id: 4,
         name: 'obj_u_tsi',
         position: { 
-            x: wp('53%'),
-            y: hp('58%')
+            x: wp('50%'),
+            y: hp('61%')
         },
         size: {
             width: wp('6%'),
@@ -78,7 +78,7 @@ const dropZones = [
         name: 'obj_pabakok',
         position: { 
             x: wp('32%'),
-            y: hp('9%')
+            y: hp('17%')
         },
         size: {
             width: wp('6%'),
@@ -92,8 +92,8 @@ const dropZones = [
         id: 6,
         name: 'obj_etsok',
         position: { 
-            x: wp('13%'),
-            y: hp('25%')
+            x: wp('11%'),
+            y: hp('27%')
         },
         size: {
             width: wp('6%'),
