@@ -67,9 +67,9 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             name: 'obj_iwo', 
             style: {
                 position: 'absolute',
-                left: wp('10%'),
-                top: hp('11%'), // y + 10
-                width: wp('6%'),
+                left: wp('18%'),
+                top: hp('71%'), // y + 10
+                width: wp('5%'),
                 height: hp('6%'),
                 borderWidth: 3,
                 borderColor: '#e4191c',
@@ -84,9 +84,9 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             name: 'obj_kapokwa', 
             style: {
                 position: 'absolute',
-                left: hp('90%'),
-                top: hp('38%'), // y + 10
-                width: wp('6%'),
+                left: hp('126.5%'),
+                top: hp('40%'), // y + 10
+                width: wp('7%'),
                 height: hp('6%'),
                 borderWidth: 3,
                 borderColor: '#ede430',
@@ -101,9 +101,9 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             name: 'obj_ak_wawe', 
             style: {
                 position: 'absolute',
-                left: wp('5%'),
-                top: hp('17%'), // y + 10
-                width: wp('6%'),
+                left: wp('12.3%'),
+                top: hp('46%'), // y + 10
+                width: wp('8%'),
                 height: hp('6%'),
                 borderWidth: 3,
                 borderColor: '#0046e3',
@@ -118,8 +118,8 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             name: 'obj_u_shu', 
             style: {
                 position: 'absolute',
-                left: wp('34%'),
-                top: hp('62%'), // y + 10
+                left: wp('33%'),
+                top: hp('53%'), // y + 10
                 width: wp('6%'),
                 height: hp('6%'),
                 borderWidth: 3,
@@ -135,9 +135,9 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             name: 'obj_ulok', 
             style: {
                 position: 'absolute',
-                left: wp('27%'),
-                top: hp('11%'), // y + 10
-                width: wp('6%'),
+                left: wp('37%'),
+                top: hp('28%'), // y + 10
+                width: wp('5%'),
                 height: hp('6%'),
                 borderWidth: 3,
                 borderColor: '#68e033',
@@ -152,8 +152,8 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             name: 'obj_ko', 
             style: {
                 position: 'absolute',
-                left: wp('54%'),
-                top: hp('11%'), // y + 10
+                left: wp('60%'),
+                top: hp('20%'), // y + 10
                 width: wp('6%'),
                 height: hp('6%'),
                 borderWidth: 3,
@@ -169,8 +169,8 @@ const Guide6Listen = ({ navigation }: { navigation: NavigationProp<any> }) => {
             name: 'obj_u_kko', 
             style: {
                 position: 'absolute',
-                left: wp('36.5%'),
-                top: hp('7%'), // y + 10
+                left: wp('56.5%'),
+                top: hp('1%'), // y + 10
                 width: wp('6%'),
                 height: hp('6%'),
                 borderWidth: 3,

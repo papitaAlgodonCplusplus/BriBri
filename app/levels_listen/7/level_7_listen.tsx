@@ -17,7 +17,7 @@ const dropZones = [
         id: 1,
         name: 'obj_ajko_ko',
         position: { 
-            x: wp('6%'), // x + 4
+            x: wp('13%'), // x + 4
             y: hp('53%') // y + 3
         },
         size: {
@@ -32,8 +32,8 @@ const dropZones = [
         id: 2,
         name: 'obj_sabak_dule',
         position: { 
-            x: wp('32%'), // x + 4
-            y: hp('54%') // y + 3
+            x: wp('36%'), // x + 4
+            y: hp('56%') // y + 3
         },
         size: {
             width: wp('6%'),
@@ -47,7 +47,7 @@ const dropZones = [
         id: 3,
         name: 'obj_kula',
         position: { 
-            x: wp('59.5%'), // x + 4
+            x: wp('60%'), // x + 4
             y: hp('67%') // y + 3
         },
         size: {
@@ -62,8 +62,8 @@ const dropZones = [
         id: 4,
         name: 'obj_to_ta',
         position: { 
-            x: wp('60%'), // x + 4
-            y: hp('23%') // y + 3
+            x: wp('61.5%'), // x + 4
+            y: hp('32%') // y + 3
         },
         size: {
             width: wp('6%'),
@@ -78,7 +78,7 @@ const dropZones = [
         name: 'obj_sku',
         position: { 
             x: wp('47%'), // x + 4
-            y: hp('3%') // y + 3
+            y: hp('10%') // y + 3
         },
         size: {
             width: wp('6%'),
@@ -92,8 +92,8 @@ const dropZones = [
         id: 6,
         name: 'obj_tska_tka',
         position: { 
-            x: wp('22%'), // x + 4
-            y: hp('59%') // y + 3
+            x: wp('25%'), // x + 4
+            y: hp('58%') // y + 3
         },
         size: {
             width: wp('6%'),
@@ -107,8 +107,8 @@ const dropZones = [
         id: 7,
         name: 'obj_kule',
         position: { 
-            x: wp('44%'), // x + 4
-            y: hp('63%') // y + 3
+            x: wp('45%'), // x + 4
+            y: hp('67%') // y + 3
         },
         size: {
             width: wp('6%'),
@@ -122,7 +122,7 @@ const dropZones = [
         id: 8,
         name: 'obj_skou',
         position: { 
-            x: wp('58%'), // x + 4
+            x: wp('62.4%'), // x + 4
             y: hp('43%') // y + 3
         },
         size: {
@@ -138,7 +138,7 @@ const dropZones = [
         name: 'obj_tcho_tka',
         position: { 
             x: wp('59%'), // x + 4
-            y: hp('11%') // y + 3
+            y: hp('15.5%') // y + 3
         },
         size: {
             width: wp('6%'),
@@ -152,8 +152,8 @@ const dropZones = [
         id: 10,
         name: 'obj_u',
         position: { 
-            x: wp('31%'), // x + 4
-            y: hp('-2%') // y + 3
+            x: wp('35.5%'), // x + 4
+            y: hp('6%') // y + 3
         },
         size: {
             width: wp('6%'),
