@@ -35,11 +35,15 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="ToucanSettings" component={ToucanSettings} />
+    <Stack.Navigator initialRouteName="HomePage">
       <Stack.Screen
         name="HomePage"
         component={HomePage}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ToucanSettings"
+        component={ToucanSettings}
         options={{ headerShown: false }}
       />
       <Stack.Screen

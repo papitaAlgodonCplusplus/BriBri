@@ -11,7 +11,7 @@ interface ToucanSettingsProps {
 
 const ToucanSettings: React.FC<ToucanSettingsProps> = ({ navigation }) => {
   const [toucanEnabled, setToucanEnabled] = useState(true);
-  
+
   useEffect(() => {
     const loadSettings = async () => {
       try {
@@ -21,10 +21,19 @@ const ToucanSettings: React.FC<ToucanSettingsProps> = ({ navigation }) => {
         console.error('Error loading settings:', error);
       }
     };
-    
+
     loadSettings();
   }, []);
-  
+
+  const handleGoBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      // Fallback for when we can't go back
+      navigation.navigate('HomePage');
+    }
+  };
+
   const toggleToucan = async (value: boolean) => {
     setToucanEnabled(value);
     try {
@@ -33,33 +42,33 @@ const ToucanSettings: React.FC<ToucanSettingsProps> = ({ navigation }) => {
       console.error('Error saving settings:', error);
     }
   };
-  
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.backButton}
-          onPress={() => navigation.goBack()}
+          onPress={handleGoBack}
         >
           <Image
             source={require('@/assets/images/atras.png')}
             style={styles.backIcon}
           />
         </TouchableOpacity>
-        
+
         <View style={styles.content}>
           <Image
             source={require('@/assets/images/toucan_happy.png')}
             style={styles.toucanImage}
             resizeMode="contain"
           />
-          
+
           <Text style={styles.title}>Tuki el Tucán</Text>
-          
+
           <Text style={styles.description}>
             Tuki es tu guía para aprender BriBri. Te ayudará con consejos y celebrará tus logros mientras aprendes.
           </Text>
-          
+
           <View style={styles.settingRow}>
             <Text style={styles.settingLabel}>Activar Tuki</Text>
             <Switch
@@ -69,12 +78,12 @@ const ToucanSettings: React.FC<ToucanSettingsProps> = ({ navigation }) => {
               thumbColor={toucanEnabled ? '#4CAF50' : '#f4f3f4'}
             />
           </View>
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             style={styles.continueButton}
-            onPress={() => navigation.goBack()}
+            onPress={handleGoBack}
           >
-            <Text style={styles.continueText}>Volver</Text>
+            <Text style={styles.continueText}>Listo</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
