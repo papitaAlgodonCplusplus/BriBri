@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  StyleSheet, 
-  Image, 
-  TouchableOpacity, 
-  View, 
-  Text, 
-  Animated, 
-  Easing 
+import {
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  View,
+  Text,
+  Animated,
+  Easing
 } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -148,7 +148,7 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
       await AsyncStorage.setItem('tutorialCompleted', 'true');
       await AsyncStorage.setItem('toucanGuideEnabled', 'true');
       setFirstTimeUser(false);
-      
+
       // Animate toucan to its final resting position
       Animated.parallel([
         Animated.timing(bubbleOpacity, {
@@ -188,12 +188,30 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
     // Lógica para créditos
   };
 
+  // In homepage.tsx:
+
+  // In the handleToucanPress function
   const handleToucanPress = () => {
+    // Make sure we're showing a message when toucan is pressed outside of tutorial
     if (tutorialStep > 0 && tutorialStep < 5) {
       advanceTutorial();
     } else {
-      // Normal behavior when not in tutorial
-      // Show a helpful tip or toggle toucan settings
+      // Show a helpful message when toucan is pressed normally
+      bubbleOpacity.setValue(0);
+      Animated.timing(bubbleOpacity, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+
+      // Display a helpful message for 5 seconds
+      setTimeout(() => {
+        Animated.timing(bubbleOpacity, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }).start();
+      }, 5000);
     }
   };
 
@@ -231,20 +249,20 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
         {/* Toucan Guide with animated position */}
         {(firstTimeUser || toucanEnabled) && (
-          <Animated.View 
+          <Animated.View
             style={[
               styles.toucanContainer,
-              { 
+              {
                 transform: [
                   { translateX: toucanPosition.x },
                   { translateY: toucanPosition.y },
                   { scale: toucanScale }
-                ] 
+                ]
               }
             ]}
           >
             <Animated.View style={[
-              styles.speechBubble, 
+              styles.speechBubble,
               { opacity: bubbleOpacity }
             ]}>
               <Text style={styles.speechText}>{getTutorialMessage()}</Text>
@@ -253,12 +271,12 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
               )}
             </Animated.View>
 
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={handleToucanPress}
               activeOpacity={0.7}
             >
               <Image
-                source={require('@/assets/images/toucan_idle.png')} 
+                source={require('@/assets/images/toucan_idle.png')}
                 style={styles.toucanImage}
                 resizeMode="contain"
               />
@@ -268,7 +286,7 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
         {/* Animated highlight for "Jugar" button during tutorial */}
         {tutorialStep === 2 && (
-          <Animated.View 
+          <Animated.View
             style={[
               styles.buttonHighlight,
               { backgroundColor: playButtonHighlight }
@@ -287,7 +305,7 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
         {/* Highlight for bottom buttons during tutorial */}
         {tutorialStep === 3 && (
-          <Animated.View 
+          <Animated.View
             style={[
               styles.bottomButtonsHighlight,
               { opacity: buttonHighlight }
@@ -347,7 +365,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     position: 'absolute',
-    bottom: wp('-2%'), 
+    bottom: wp('-2%'),
     right: hp('5%'),
     width: wp('20%'),
     height: hp('30%'),
@@ -417,7 +435,7 @@ const styles = StyleSheet.create({
   },
   bottomButtonsHighlight: {
     position: 'absolute',
-    bottom: wp('-2%'), 
+    bottom: wp('-2%'),
     right: hp('5%'),
     width: wp('20%'),
     height: hp('30%'),

@@ -73,7 +73,9 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const advanceTutorial = () => {
     // Reset animations
     bubbleOpacity.setValue(0);
-    buttonHighlight.setValue(0);
+    if (tutorialStep !== 2) {
+      buttonHighlight.setValue(0);
+    }
 
     // Move to next step
     const nextStep = tutorialStep + 1;
@@ -102,7 +104,7 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 useNativeDriver: false,
               }),
               Animated.timing(buttonHighlight, {
-                toValue: 0.2,
+                toValue: 0.3,
                 duration: 800,
                 useNativeDriver: false,
               }),
@@ -456,9 +458,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: wp('80%'),
     marginVertical: hp('2%'),
+    zIndex: 5,
   },
   button: {
     marginHorizontal: wp('2%'),
+    zIndex: 6,
   },
   buttonImage: {
     width: wp('20%'),
