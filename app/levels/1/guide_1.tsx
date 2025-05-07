@@ -25,7 +25,7 @@ const Guide1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const [toucanEnabled, setToucanEnabled] = useState(true);
   
   // Animation values
-  const toucanPosition = useRef(new Animated.ValueXY({ x: wp('70%'), y: hp('50%') })).current;
+  const toucanPosition = useRef(new Animated.ValueXY({ x: wp('30%'), y: hp('10%') })).current;
   const bubbleOpacity = useRef(new Animated.Value(0)).current;
   const elementHighlight = useRef(new Animated.Value(0)).current;
 
@@ -40,12 +40,24 @@ const Guide1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
         const toucanStatus = await AsyncStorage.getItem('toucanGuideEnabled');
         setToucanEnabled(toucanStatus !== 'false');
         
-        // Check if level 1 tutorial has been completed
+        // Check if the toucan should be shown
+        // We'll check both level mapping completion and level 1 tutorial
+        const levelMappingCompleted = await AsyncStorage.getItem('levelMappingTutorialCompleted');
         const level1Tutorial = await AsyncStorage.getItem('level1TutorialCompleted');
         
-        // Start tutorial if it hasn't been completed and toucan is enabled
-        if (level1Tutorial !== 'true' && toucanStatus !== 'false') {
-          startTutorial();
+        // Start tutorial if toucan is enabled and either:
+        // 1. This is the first time seeing guide 1 (level1Tutorial is not true), OR
+        // 2. The user just came from level mapping (levelMappingCompleted is true)
+        if (toucanStatus !== 'false' && 
+            (level1Tutorial !== 'true' || levelMappingCompleted === 'true')) {
+          // If the user just completed the level mapping tutorial, we should show the toucan
+          // as a continuation of that flow
+          const tutorialStartDelay = levelMappingCompleted === 'true' ? 1000 : 0;
+          
+          // Delay the tutorial start to make it feel like a continuous flow
+          setTimeout(() => {
+            startTutorial();
+          }, tutorialStartDelay);
         }
       } catch (error) {
         console.error('Error loading settings:', error);
@@ -61,7 +73,7 @@ const Guide1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
     // Start with intro animation
     Animated.sequence([
       Animated.timing(toucanPosition, {
-        toValue: { x: wp('50%'), y: hp('30%') },
+        toValue: { x: wp('80%'), y: hp('-10%') },
         duration: 1000,
         useNativeDriver: true,
       }),
@@ -87,7 +99,7 @@ const Guide1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
       case 2: // Point to the guide image
         Animated.parallel([
           Animated.timing(toucanPosition, {
-            toValue: { x: wp('50%'), y: hp('40%') },
+            toValue: { x: wp('80%'), y: hp('20%') },
             duration: 1000,
             useNativeDriver: true,
           }),
@@ -117,7 +129,7 @@ const Guide1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
       case 3: // Point to Next button
         Animated.parallel([
           Animated.timing(toucanPosition, {
-            toValue: { x: wp('65%'), y: hp('55%') },
+            toValue: { x: wp('65%'), y: hp('25%') },
             duration: 1000,
             useNativeDriver: true,
           }),
@@ -147,7 +159,7 @@ const Guide1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
       case 4: // Final message
         Animated.parallel([
           Animated.timing(toucanPosition, {
-            toValue: { x: wp('70%'), y: hp('30%') },
+            toValue: { x: wp('80%'), y: hp('20%') },
             duration: 1000,
             useNativeDriver: true,
           }),
@@ -159,7 +171,7 @@ const Guide1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
           }),
         ]).start();
         break;
-      case 5: // Complete tutorial
+      case 5: // Save state and complete tutorial
         completeTutorial();
         break;
     }
@@ -167,7 +179,13 @@ const Guide1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
   
   const completeTutorial = async () => {
     try {
+      // Mark the tutorial as completed
       await AsyncStorage.setItem('level1TutorialCompleted', 'true');
+      
+      // Important: If we just came from level mapping, mark that we're now moving to level 1
+      // This helps create a continuous flow of the toucan guide
+      await AsyncStorage.setItem('movingToLevel1', 'true');
+      
       setTutorialStep(0);
       
       // Animate toucan to final position
@@ -178,7 +196,7 @@ const Guide1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
           useNativeDriver: true,
         }),
         Animated.timing(toucanPosition, {
-          toValue: { x: wp('70%'), y: hp('50%') },
+          toValue: { x: wp('80%'), y: hp('-10%') },
           duration: 800,
           useNativeDriver: true,
         }),
@@ -194,7 +212,21 @@ const Guide1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
     } else {
       // Normal toucan behavior when not in tutorial
       // Show helpful tips about this level
+      startTutorial();
     }
+  };
+  
+  // Navigate to level 1 and ensure the toucan follows
+  const handleNextButtonPress = async () => {
+    if (tutorialStep === 3) {
+      // If we're in the tutorial pointing at the next button,
+      // mark that we're transitioning to level_1
+      await AsyncStorage.setItem('movingToLevel1', 'true');
+      advanceTutorial();
+    }
+    
+    // Navigate to level 1
+    navigation.navigate(mode === 'listen' ? 'Level1Listen' : 'Level1');
   };
   
   // Get tutorial message based on current step
@@ -284,7 +316,13 @@ const Guide1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
               ]}
             />
           )}
-          <NextButton navigation={navigation} nextName="Level1" />
+          {/* Custom Next button that calls our custom handler */}
+          <TouchableOpacity onPress={handleNextButtonPress} style={styles.button}>
+            <Image
+              source={require('@/assets/images/atras.png')}
+              style={styles.adelante}
+            />
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -313,6 +351,18 @@ const styles = StyleSheet.create({
     top: hp('47.5%'),
     left: wp('1.2%'),
     zIndex: 5,
+  },
+  button: {
+    position: 'absolute',
+    bottom: 20,
+    right: 10,
+    zIndex: 1,
+  },
+  adelante: {
+    width: 70,
+    height: 40,
+    transform: [{ rotate: '180deg' }, { translateX: 0 }, { translateY: 1 }],
+    resizeMode: 'stretch',
   },
   // Toucan Guide styles
   toucanContainer: {

@@ -19,6 +19,7 @@ import BackButton from '../../misc/BackButton';
 import NextButton from '../../misc/NextButton';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Objetos visuales (imágenes)
 const visualObjects = [
@@ -127,19 +128,71 @@ const wordColors = [
 ];
 
 const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
-
+    // Game state
     const [selectedWord, setSelectedWord] = useState<string | null>(null);
     const [selectedObject, setSelectedObject] = useState<string | null>(null);
     const [matches, setMatches] = useState<Record<string, string>>({});
     const [canContinue, setCanContinue] = useState(false);
 
+    // Toucan guide state
+    const [tutorialStep, setTutorialStep] = useState(0);
+    const [toucanEnabled, setToucanEnabled] = useState(true);
+    
+    // Animation values for visual objects
     const animatedValues = useRef(
         visualObjects.reduce((acc, obj) => {
             acc[obj.name] = new Animated.Value(1);
             return acc;
         }, {} as Record<string, Animated.Value>)
     ).current;
+    
+    // Animation values for toucan guide
+    const toucanPosition = useRef(new Animated.ValueXY({ x: wp('70%'), y: hp('70%') })).current;
+    const bubbleOpacity = useRef(new Animated.Value(0)).current;
+    const elementHighlight = useRef(new Animated.Value(0)).current;
 
+    // Load settings and setup toucan guide
+    useEffect(() => {
+        const loadSettings = async () => {
+            try {
+                // Check toucan preferences
+                const toucanStatus = await AsyncStorage.getItem('toucanGuideEnabled');
+                setToucanEnabled(toucanStatus !== 'false');
+                
+                // Check if we're coming from guide 1 (continuation of the tutorial)
+                const movingToLevel1 = await AsyncStorage.getItem('movingToLevel1');
+                const level1GameTutorial = await AsyncStorage.getItem('level1GameTutorialCompleted');
+                
+                // Start tutorial if toucan is enabled and either:
+                // 1. We're coming from guide 1 (continuation), OR
+                // 2. This is the first time seeing level 1 game
+                if (toucanStatus !== 'false' && 
+                    (movingToLevel1 === 'true' || level1GameTutorial !== 'true')) {
+                    
+                    // Clear the flag so we don't show it again next time
+                    await AsyncStorage.setItem('movingToLevel1', 'false');
+                    
+                    // Give a small delay to make it feel like a continuation
+                    setTimeout(() => {
+                        startTutorial();
+                    }, 500);
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            }
+        };
+        
+        loadSettings();
+        
+        // Cleanup animations on unmount
+        return () => {
+            Object.keys(animatedValues).forEach(key => {
+                animatedValues[key].stopAnimation();
+            });
+        };
+    }, []);
+
+    // Pulse animation for visual objects
     const startPulseAnimation = (objectName: string) => {
         animatedValues[objectName].setValue(1);
 
@@ -166,6 +219,138 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
         animatedValues[objectName].setValue(1);
     };
 
+    // Start toucan tutorial
+    const startTutorial = () => {
+        setTutorialStep(1);
+        
+        // Start with intro animation
+        Animated.sequence([
+            Animated.timing(toucanPosition, {
+                toValue: { x: wp('50%'), y: hp('70%') },
+                duration: 1000,
+                useNativeDriver: true,
+            }),
+            Animated.timing(bubbleOpacity, {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true,
+            }),
+        ]).start();
+    };
+    
+    // Advance toucan tutorial to next step
+    const advanceTutorial = () => {
+        // Reset animations
+        bubbleOpacity.setValue(0);
+        elementHighlight.setValue(0);
+        
+        // Move to next step
+        const nextStep = tutorialStep + 1;
+        setTutorialStep(nextStep);
+        
+        // Different animations based on tutorial step
+        switch (nextStep) {
+            case 2: // Point to word options
+                Animated.parallel([
+                    Animated.timing(toucanPosition, {
+                        toValue: { x: wp('35%'), y: hp('70%') },
+                        duration: 1000,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(bubbleOpacity, {
+                        toValue: 1,
+                        duration: 500,
+                        useNativeDriver: true,
+                        delay: 800,
+                    }),
+                    Animated.loop(
+                        Animated.sequence([
+                            Animated.timing(elementHighlight, {
+                                toValue: 1,
+                                duration: 800,
+                                useNativeDriver: false,
+                            }),
+                            Animated.timing(elementHighlight, {
+                                toValue: 0.2,
+                                duration: 800,
+                                useNativeDriver: false,
+                            }),
+                        ]),
+                        { iterations: 3 }
+                    ),
+                ]).start();
+                break;
+            case 3: // Point to images in game
+                Animated.parallel([
+                    Animated.timing(toucanPosition, {
+                        toValue: { x: wp('40%'), y: hp('70%') },
+                        duration: 1000,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(bubbleOpacity, {
+                        toValue: 1,
+                        duration: 500,
+                        useNativeDriver: true,
+                        delay: 800,
+                    }),
+                ]).start();
+                break;
+            case 4: // Give final instructions
+                Animated.parallel([
+                    Animated.timing(toucanPosition, {
+                        toValue: { x: wp('60%'), y: hp('70%') },
+                        duration: 1000,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(bubbleOpacity, {
+                        toValue: 1,
+                        duration: 500,
+                        useNativeDriver: true,
+                        delay: 800,
+                    }),
+                ]).start();
+                break;
+            case 5: // Complete tutorial
+                completeTutorial();
+                break;
+        }
+    };
+    
+    // Complete toucan tutorial and save state
+    const completeTutorial = async () => {
+        try {
+            await AsyncStorage.setItem('level1GameTutorialCompleted', 'true');
+            setTutorialStep(0);
+            
+            // Animate toucan to final position
+            Animated.parallel([
+                Animated.timing(bubbleOpacity, {
+                    toValue: 0,
+                    duration: 500,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(toucanPosition, {
+                    toValue: { x: wp('70%'), y: hp('70%') },
+                    duration: 800,
+                    useNativeDriver: true,
+                }),
+            ]).start();
+        } catch (error) {
+            console.error('Error saving tutorial state:', error);
+        }
+    };
+    
+    // Handle toucan press
+    const handleToucanPress = () => {
+        if (tutorialStep > 0) {
+            advanceTutorial();
+        } else {
+            // Normal toucan behavior when not in tutorial
+            startTutorial();
+        }
+    };
+
+    // Game logic for word selection
     const handleWordPress = (item: { name: string }) => {
         if (Object.values(matches).includes(item.name)) return;
 
@@ -179,6 +364,12 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 stopPulseAnimation(selectedObject);
                 setSelectedObject(null);
                 setSelectedWord(null);
+                
+                // If in tutorial step 3 (matching words), advance to next step
+                // when user makes their first match
+                if (tutorialStep === 3 && Object.keys(matches).length === 0) {
+                    advanceTutorial();
+                }
             } else {
                 setSelectedWord(selectedWord === item.name ? null : item.name);
             }
@@ -187,6 +378,7 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
         }
     };
 
+    // Game logic for object selection
     const handleObjectPress = (objectName: string) => {
         if (matches[objectName]) return;
         if (selectedObject === objectName) {
@@ -209,23 +401,38 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 stopPulseAnimation(objectName);
                 setSelectedObject(null);
                 setSelectedWord(null);
+                
+                // If in tutorial step 3 (matching words), advance to next step
+                // when user makes their first match
+                if (tutorialStep === 3 && Object.keys(matches).length === 0) {
+                    advanceTutorial();
+                }
             }
         }
     };
 
-    useEffect(() => {
-        return () => {
-            Object.keys(animatedValues).forEach(key => {
-                animatedValues[key].stopAnimation();
-            });
-        };
-    }, []);
-
+    // Check if all matches are made to enable continue button
     useEffect(() => {
         if (Object.keys(matches).length === visualObjects.length) {
             setCanContinue(true);
         }
     }, [matches]);
+
+    // Get tutorial message based on current step
+    const getTutorialMessage = () => {
+        switch (tutorialStep) {
+            case 1:
+                return '¡Bienvenido al juego del Nivel 1! Aquí podrás practicar las palabras que acabas de aprender.';
+            case 2:
+                return 'Primero, selecciona una palabra de esta lista. Estas son las palabras en BriBri que has aprendido.';
+            case 3:
+                return 'Luego, toca la imagen correcta para emparejarla con la palabra. ¡Intenta hacer tu primera combinación!';
+            case 4:
+                return '¡Muy bien! Continúa emparejando todas las palabras con sus imágenes correspondientes. Cuando termines, aparecerá el botón "Siguiente".';
+            default:
+                return '';
+        }
+    };
 
     return (
         <SafeAreaProvider>
@@ -287,8 +494,54 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                         </TouchableOpacity>
                     ))}
 
+                    {/* Toucan Guide with animated position */}
+                    {toucanEnabled && (
+                        <Animated.View 
+                            style={[
+                                styles.toucanContainer,
+                                { 
+                                    transform: [
+                                        { translateX: toucanPosition.x },
+                                        { translateY: toucanPosition.y }
+                                    ] 
+                                }
+                            ]}
+                        >
+                            <Animated.View style={[
+                                styles.speechBubble, 
+                                { opacity: bubbleOpacity }
+                            ]}>
+                                <Text style={styles.speechText}>{getTutorialMessage()}</Text>
+                                {tutorialStep > 0 && tutorialStep < 5 && (
+                                    <Text style={styles.tapToContinue}>Tócame para continuar</Text>
+                                )}
+                            </Animated.View>
+
+                            <TouchableOpacity 
+                                onPress={handleToucanPress}
+                                activeOpacity={0.7}
+                            >
+                                <Image
+                                    source={require('@/assets/images/toucan_idle.png')} 
+                                    style={styles.toucanImage}
+                                    resizeMode="contain"
+                                />
+                            </TouchableOpacity>
+                        </Animated.View>
+                    )}
+
                     {/* Buttons Container - Word Options */}
                     <View style={styles.buttonsContainer}>
+                        {/* Word selection tutorial highlight */}
+                        {tutorialStep === 2 && (
+                            <Animated.View
+                                style={[
+                                    styles.wordsHighlight,
+                                    { opacity: elementHighlight }
+                                ]}
+                            />
+                        )}
+                        
                         {draggableElements.map((item) => {
                             const isMatched = Object.values(matches).includes(item.name);
                             return (
@@ -400,12 +653,14 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         gap: wp('1%'),
+        zIndex: 6,
     },
     buttonWrapper: {
         width: wp('11%'),
         height: hp('5%'),
         alignItems: 'center',
         justifyContent: 'center',
+        zIndex: 6,
     },
     button: {
         backgroundColor: '#fff',
@@ -417,6 +672,7 @@ const styles = StyleSheet.create({
         height: hp('5%'),
         alignItems: 'center',
         justifyContent: 'center',
+        zIndex: 6,
     },
     buttonText: {
         fontSize: hp('2.2%'),
@@ -431,6 +687,50 @@ const styles = StyleSheet.create({
         width: wp('13%'),
         height: hp('8%'),
         resizeMode: 'contain',
+    },
+    // Toucan Guide styles
+    toucanContainer: {
+        position: 'absolute',
+        zIndex: 10,
+    },
+    toucanImage: {
+        width: wp('20%'),
+        height: hp('20%'),
+    },
+    speechBubble: {
+        position: 'absolute',
+        top: -hp('12%'),
+        right: wp('5%'),
+        backgroundColor: 'white',
+        borderRadius: 15,
+        padding: 10,
+        borderWidth: 2,
+        borderColor: '#FFD700',
+        width: wp('45%'),
+        minHeight: hp('10%'),
+        zIndex: 11,
+    },
+    speechText: {
+        fontSize: hp('1.8%'),
+        color: '#333',
+        textAlign: 'center',
+    },
+    tapToContinue: {
+        fontSize: hp('1.5%'),
+        color: '#888',
+        textAlign: 'center',
+        marginTop: 5,
+        fontStyle: 'italic',
+    },
+    wordsHighlight: {
+        position: 'absolute',
+        top: -hp('2%'),
+        left: -wp('1%'),
+        width: wp('25%'),
+        height: hp('25%'),
+        backgroundColor: 'rgba(255,255,0,0.3)',
+        borderRadius: 15,
+        zIndex: 1,
     },
 });
 
