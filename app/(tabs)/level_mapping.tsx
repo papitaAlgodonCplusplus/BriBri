@@ -73,6 +73,8 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const advanceTutorial = () => {
     // Reset animations
     bubbleOpacity.setValue(0);
+
+    // Only reset button highlight if not in step 2
     if (tutorialStep !== 2) {
       buttonHighlight.setValue(0);
     }
@@ -83,6 +85,7 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
     // Different animations based on tutorial step
     switch (nextStep) {
+      case 1:
       case 2: // Point to mode selection
         Animated.parallel([
           Animated.timing(toucanPosition, {
@@ -114,7 +117,8 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
         ]).start();
         break;
       case 3: // Point to level selection (after mode is chosen)
-        if (buttonClicked) {
+        // Check if a mode has been selected
+        if (mode) {
           Animated.parallel([
             Animated.timing(toucanPosition, {
               toValue: { x: wp('50%'), y: hp('50%') },
@@ -129,10 +133,10 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
             }),
           ]).start();
         } else {
-          // If mode hasn't been selected yet, just stay at step 2
+          // If mode hasn't been selected yet, stay at step 2
           setTutorialStep(2);
 
-          // Run the step 2 animations again without recursively calling advanceTutorial
+          // Run the step 2 animations again
           Animated.parallel([
             Animated.timing(toucanPosition, {
               toValue: { x: wp('40%'), y: hp('50%') },
@@ -163,6 +167,7 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
           ]).start();
         }
         break;
+      // Rest of the cases remain the same
       case 4: // Final message
         Animated.parallel([
           Animated.timing(toucanPosition, {
@@ -212,9 +217,10 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
       const newMode = button === 'button1' ? 'listen' : 'read';
       await AsyncStorage.setItem('mode', newMode);
       console.log(`${button} clicked, ${newMode} stored in AsyncStorage`);
+      setMode(newMode); // Update the mode state
       setButtonClicked(true);
 
-      // If in tutorial, advance to next step
+      // If in tutorial, advance to next step once mode is selected
       if (tutorialStep === 2) {
         advanceTutorial();
       }
@@ -287,11 +293,7 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
   };
 
   const handleToucanPress = () => {
-    if (tutorialStep > 0) {
-      advanceTutorial();
-    } else {
-      // Normal toucan behavior when not in tutorial
-    }
+    advanceTutorial();
   };
 
   // Get tutorial message based on current step
@@ -480,6 +482,7 @@ const styles = StyleSheet.create({
     marginHorizontal: wp('1%'),
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 6,
   },
   levelImage: {
     width: '100%',

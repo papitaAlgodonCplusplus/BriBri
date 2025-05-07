@@ -67,6 +67,7 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
   };
 
   const advanceTutorial = () => {
+    console.log('Advancing tutorial step:', tutorialStep);
     // Reset animations
     bubbleOpacity.setValue(0);
     buttonHighlight.setValue(0);
@@ -77,6 +78,8 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
     // Different animations based on tutorial step
     switch (nextStep) {
+      case 0:
+      case 1:
       case 2: // Point to "Jugar" button
         Animated.parallel([
           Animated.timing(toucanPosition, {
@@ -137,33 +140,9 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
           }),
         ]).start();
         break;
-      case 5: // Tutorial complete
-        completeTutorial();
+      default: // Tutorial reset
+        setTutorialStep(0);
         break;
-    }
-  };
-
-  const completeTutorial = async () => {
-    try {
-      await AsyncStorage.setItem('tutorialCompleted', 'true');
-      await AsyncStorage.setItem('toucanGuideEnabled', 'true');
-      setFirstTimeUser(false);
-
-      // Animate toucan to its final resting position
-      Animated.parallel([
-        Animated.timing(bubbleOpacity, {
-          toValue: 0,
-          duration: 500,
-          useNativeDriver: true,
-        }),
-        Animated.timing(toucanPosition, {
-          toValue: { x: wp('70%'), y: hp('15%') },
-          duration: 800,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    } catch (error) {
-      console.error('Error saving tutorial state:', error);
     }
   };
 
@@ -192,27 +171,10 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
 
   // In the handleToucanPress function
   const handleToucanPress = () => {
-    // Make sure we're showing a message when toucan is pressed outside of tutorial
-    if (tutorialStep > 0 && tutorialStep < 5) {
-      advanceTutorial();
-    } else {
-      // Show a helpful message when toucan is pressed normally
-      bubbleOpacity.setValue(0);
-      Animated.timing(bubbleOpacity, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
-
-      // Display a helpful message for 5 seconds
-      setTimeout(() => {
-        Animated.timing(bubbleOpacity, {
-          toValue: 0,
-          duration: 500,
-          useNativeDriver: true,
-        }).start();
-      }, 5000);
+    if (tutorialStep > 5) {
+      setTutorialStep(0);
     }
+    advanceTutorial();
   };
 
   // Get tutorial message based on current step
