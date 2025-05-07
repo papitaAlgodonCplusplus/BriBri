@@ -30,11 +30,13 @@ import Level6Listen from '../levels_listen/6/level_6_listen';
 import Guide6Listen from '../levels_listen/6/guide_6_listen';
 import Level7Listen from '../levels_listen/7/level_7_listen';
 import Guide7Listen from '../levels_listen/7/guide_7_listen';
+import ToucanSettings from '../screens/ToucanSettings';
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <Stack.Navigator>
+      <Stack.Screen name="ToucanSettings" component={ToucanSettings} />
       <Stack.Screen
         name="HomePage"
         component={HomePage}
