@@ -349,7 +349,7 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 activeOpacity={0.7}
               >
                 <Image
-                  source={require('@/assets/images/toucan_idle.png')}
+                  source={require('@/assets/images/toucan_happy.png')}
                   style={styles.toucanImage}
                   resizeMode="contain"
                 />

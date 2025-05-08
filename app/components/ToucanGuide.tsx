@@ -1,8 +1,9 @@
 // app/components/ToucanGuide.tsx
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, Animated, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Animated, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import GifImage from 'react-native-gif';
 
 type ToucanMood = 'idle' | 'happy' | 'thinking' | 'speaking';
 
@@ -22,24 +23,23 @@ const ToucanGuide: React.FC<ToucanGuideProps> = ({
   const [isGuideEnabled, setIsGuideEnabled] = useState<boolean>(true);
   const [showMessage, setShowMessage] = useState<boolean>(!!message);
   const bounceAnim = useRef(new Animated.Value(0)).current;
-  
+
   // Get toucan images based on mood
   const getToucanImage = () => {
-    switch(mood) {
+    switch (mood) {
       case 'happy':
-        return require('@/assets/images/toucan_happy.png');
+        return require('@/assets/images/toucan_happy.gif');
       case 'thinking':
         return require('@/assets/images/toucan_thinking.png');
       case 'speaking':
         return require('@/assets/images/toucan_speaking.png');
       case 'idle':
       default:
-        return require('@/assets/images/toucan_idle.png');
+        return require('@/assets/images/toucan_happy.png');
     }
   };
-  
+
   useEffect(() => {
-    // Check if guide is enabled in user preferences
     const checkGuideEnabled = async () => {
       try {
         const guideEnabled = await AsyncStorage.getItem('toucanGuideEnabled');
@@ -48,10 +48,9 @@ const ToucanGuide: React.FC<ToucanGuideProps> = ({
         console.error('Error checking guide status:', error);
       }
     };
-    
+
     checkGuideEnabled();
-    
-    // Start bounce animation
+
     Animated.loop(
       Animated.sequence([
         Animated.timing(bounceAnim, {
@@ -67,37 +66,36 @@ const ToucanGuide: React.FC<ToucanGuideProps> = ({
       ])
     ).start();
   }, []);
-  
+
   useEffect(() => {
     setShowMessage(!!message);
-    
-    // Auto-hide message after 5 seconds
+
     if (message) {
       const timer = setTimeout(() => {
         setShowMessage(false);
       }, 5000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [message]);
-  
+
   if (!isGuideEnabled) return null;
-  
+
   const handlePress = () => {
     if (message) {
       setShowMessage(!showMessage);
     }
-    
+
     if (onPress) {
       onPress();
     }
   };
-  
+
   const translateY = bounceAnim.interpolate({
     inputRange: [0, 1],
     outputRange: [0, -10],
   });
-  
+
   return (
     <View style={[styles.container, position]}>
       {showMessage && (
@@ -105,15 +103,19 @@ const ToucanGuide: React.FC<ToucanGuideProps> = ({
           <Text style={styles.messageText}>{message}</Text>
         </View>
       )}
-      
+
       <TouchableOpacity onPress={handlePress} activeOpacity={0.7}>
-        <Animated.Image
-          source={getToucanImage()}
-          style={[
-            styles.toucanImage,
-            { transform: [{ translateY }] }
-          ]}
-        />
+        <Animated.View
+          style={{
+            transform: [{ translateY }],
+          }}
+        >
+          <GifImage
+            source={getToucanImage()}
+            style={styles.toucanImage}
+            resizeMode="contain"
+          />
+        </Animated.View>
       </TouchableOpacity>
     </View>
   );
@@ -127,7 +129,6 @@ const styles = StyleSheet.create({
   toucanImage: {
     width: wp('15%'),
     height: hp('15%'),
-    resizeMode: 'contain',
   },
   messageContainer: {
     position: 'absolute',

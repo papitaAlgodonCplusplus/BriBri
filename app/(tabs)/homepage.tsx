@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import {Image} from "expo-image";
 import {
   StyleSheet,
-  Image,
   TouchableOpacity,
   View,
   Text,
@@ -238,7 +238,7 @@ const HomePage = ({ navigation }: { navigation: NavigationProp<any> }) => {
               activeOpacity={0.7}
             >
               <Image
-                source={require('@/assets/images/toucan_idle.png')}
+                source={require('@/assets/images/toucan_happy.gif')}
                 style={styles.toucanImage}
                 resizeMode="contain"
               />
@@ -358,8 +358,8 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   toucanImage: {
-    width: wp('20%'),
-    height: hp('20%'),
+    width: wp('30%'),
+    height: hp('30%'),
   },
   speechBubble: {
     position: 'absolute',
