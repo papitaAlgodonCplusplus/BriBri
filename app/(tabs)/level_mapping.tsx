@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import {Image} from "expo-image";
 import {
   StyleSheet,
   View,
-  Image,
   TouchableOpacity,
   ScrollView,
   Text,
@@ -349,7 +349,7 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 activeOpacity={0.7}
               >
                 <Image
-                  source={require('@/assets/images/toucan_happy.png')}
+                  source={require('@/assets/images/toucan_happy.gif')}
                   style={styles.toucanImage}
                   resizeMode="contain"
                 />

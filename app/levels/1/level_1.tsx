@@ -3,10 +3,10 @@ LogBox.ignoreLogs([
     'Draggable: Support for defaultProps will be removed'
 ]);
 import React, { useState, useEffect, useRef } from 'react';
+import {Image} from "expo-image";
 import {
     View,
     ImageBackground,
-    Image,
     StyleSheet,
     TouchableOpacity,
     Text,
@@ -522,7 +522,7 @@ const Level1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
                                 activeOpacity={0.7}
                             >
                                 <Image
-                                    source={require('@/assets/images/toucan_happy.png')} 
+                                    source={require('@/assets/images/toucan_happy.gif')} 
                                     style={styles.toucanImage}
                                     resizeMode="contain"
                                 />

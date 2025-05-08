@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import {Image} from "expo-image";
 import { 
   ImageBackground, 
   StyleSheet, 
@@ -6,8 +7,7 @@ import {
   TouchableOpacity, 
   Text,
   Animated,
-  Easing,
-  Image
+  Easing
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from '@/app/misc/BackButton';
@@ -293,7 +293,7 @@ const Guide1 = ({ navigation }: { navigation: NavigationProp<any> }) => {
               activeOpacity={0.7}
             >
               <Image
-                source={require('@/assets/images/toucan_happy.png')} 
+                source={require('@/assets/images/toucan_happy.gif')} 
                 style={styles.toucanImage}
                 resizeMode="contain"
               />

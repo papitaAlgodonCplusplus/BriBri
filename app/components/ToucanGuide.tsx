@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, TouchableOpacity, Animated, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import GifImage from 'react-native-gif';
+import {Image} from "expo-image";
 
 type ToucanMood = 'idle' | 'happy' | 'thinking' | 'speaking';
 
@@ -35,7 +35,7 @@ const ToucanGuide: React.FC<ToucanGuideProps> = ({
         return require('@/assets/images/toucan_speaking.png');
       case 'idle':
       default:
-        return require('@/assets/images/toucan_happy.png');
+        return require('@/assets/images/toucan_happy.gif');
     }
   };
 
@@ -110,10 +110,9 @@ const ToucanGuide: React.FC<ToucanGuideProps> = ({
             transform: [{ translateY }],
           }}
         >
-          <GifImage
+          <Image
             source={getToucanImage()}
             style={styles.toucanImage}
-            resizeMode="contain"
           />
         </Animated.View>
       </TouchableOpacity>

@@ -58,7 +58,7 @@ const ToucanSettings: React.FC<ToucanSettingsProps> = ({ navigation }) => {
 
         <View style={styles.content}>
           <Image
-            source={require('@/assets/images/toucan_happy.png')}
+            source={require('@/assets/images/toucan_happy.gif')}
             style={styles.toucanImage}
             resizeMode="contain"
           />
