@@ -15,6 +15,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp } from '@react-navigation/native';
 import BackButton from '../misc/BackButton';
 import { LEVELS } from '../misc/constants';
+import StarsProgress from '../screens/StarsProgress';
+import LevelStar from '../screens/LevelStar';
+
+// Define LevelMode enum for mode prop
+enum LevelMode {
+  READ = 'read',
+  LISTEN = 'listen'
+}
 
 const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -232,6 +240,7 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
   const handleLevelPress = (levelId: number) => {
     // If in tutorial step 3, advance tutorial
     if (tutorialStep === 3) {
+      
       advanceTutorial();
     }
 
@@ -306,7 +315,9 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
       case 3:
         return 'Ahora puedes seleccionar el nivel que quieres jugar. ¡Empieza por el primero!';
       case 4:
-        return '¡Perfecto! Ahora ya sabes cómo seleccionar niveles y modos. ¡Vamos a aprender BriBri!';
+        return '¡Mira! Por cada nivel que completes, ganarás una estrella. Las estrellas doradas son para modo lectura y las estrellas azules para modo escucha.';
+      case 5:
+        return '¡Perfecto! Ahora ya sabes cómo seleccionar niveles y ganar estrellas. ¡Vamos a aprender BriBri!';
       default:
         return '';
     }
@@ -320,6 +331,11 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
             source={require('@/assets/images/pantalla_nivel_modo.jpg')}
             style={styles.backgroundImage}
           />
+
+          {/* Stars Progress Display */}
+          <View style={styles.starsProgressContainer}>
+            <StarsProgress showSeparateTypes={true} />
+          </View>
 
           {/* Toucan Guide with animated position */}
           {toucanEnabled && (
@@ -339,7 +355,7 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 { opacity: bubbleOpacity }
               ]}>
                 <Text style={styles.speechText}>{getTutorialMessage()}</Text>
-                {tutorialStep > 0 && tutorialStep < 5 && (
+                {tutorialStep > 0 && tutorialStep < 6 && (
                   <Text style={styles.tapToContinue}>Tócame para continuar</Text>
                 )}
               </Animated.View>
@@ -349,7 +365,7 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 activeOpacity={0.7}
               >
                 <Image
-                  source={require('@/assets/images/toucan_happy.gif')}
+                  source={require('@/assets/images/toucan_idle.png')}
                   style={styles.toucanImage}
                   resizeMode="contain"
                 />
@@ -414,17 +430,28 @@ const LevelMapping = ({ navigation }: { navigation: NavigationProp<any> }) => {
                 )}
 
                 {LEVELS && LEVELS.map((level) => (
-                  <TouchableOpacity
-                    key={level.id}
-                    activeOpacity={0.7}
-                    onPress={() => handleLevelPress(level.id)}
-                    style={styles.levelButton}
-                  >
-                    <Image
-                      source={buttonClicked && mode === 'read' ? level.image2 : level.image}
-                      style={styles.levelImage}
-                    />
-                  </TouchableOpacity>
+                  <View key={level.id} style={styles.levelButtonWrapper}>
+                    {/* Star display above level button */}
+                    <View style={styles.levelStarContainer}>
+                      <LevelStar 
+                        levelId={level.id} 
+                        mode={mode === 'read' ? LevelMode.READ : LevelMode.LISTEN}
+                        size="medium"
+                        showAnimation={true}
+                      />
+                    </View>
+                    
+                    <TouchableOpacity
+                      activeOpacity={0.7}
+                      onPress={() => handleLevelPress(level.id)}
+                      style={styles.levelButton}
+                    >
+                      <Image
+                        source={buttonClicked && mode === 'read' ? level.image2 : level.image}
+                        style={styles.levelImage}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 ))}
               </ScrollView>
             )}
@@ -476,10 +503,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: wp('2%'),
   },
+  levelButtonWrapper: {
+    alignItems: 'center',
+    marginHorizontal: wp('1%'),
+  },
+  levelStarContainer: {
+    height: hp('5%'),
+    marginBottom: hp('1%'),
+  },
   levelButton: {
     width: wp('10%'),
     height: hp('18%'),
-    marginHorizontal: wp('1%'),
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 6,
@@ -488,6 +522,13 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
+  },
+  // Stars progress display
+  starsProgressContainer: {
+    position: 'absolute',
+    top: hp('5%'),
+    right: wp('5%'),
+    zIndex: 10,
   },
   // Toucan Guide styles
   toucanContainer: {
